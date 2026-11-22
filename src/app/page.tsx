@@ -60,17 +60,15 @@ const T_CARD_TITLE = "text-[14px] font-bold text-[#0F2926] tracking-tight";
 const T_ITEM_NAME = "text-[13px] font-semibold text-[#0F2926]";
 const T_META = "text-[11px] font-medium text-slate-400";
 
-// 3. Unified Clickable Buttons (Every interactive button shares the #FFC45A family)
+// 3. Single Unified Clickable Button System (Every interactive button is a solid #FFC45A pill/circle, zero outlined translucent variants)
 const BTN_PRIMARY =
   "bg-[#FFC45A] hover:brightness-105 active:scale-96 text-[#04453F] font-bold text-[13px] rounded-full px-6 py-2.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_PILL_ACTIVE =
-  "bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1";
-const BTN_PILL_SUBTLE =
-  "bg-[#FFC45A]/25 hover:bg-[#FFC45A]/45 active:scale-95 border border-[#FFC45A]/70 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 transition cursor-pointer inline-flex items-center justify-center gap-1";
+  "bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_STEPPER =
-  "w-7 h-7 rounded-[10px] bg-[#FFC45A]/35 hover:bg-[#FFC45A] active:scale-90 text-[#04453F] font-bold text-[13px] flex items-center justify-center transition cursor-pointer";
+  "w-7 h-7 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] font-bold text-[13px] flex items-center justify-center shadow-2xs transition cursor-pointer";
 const BTN_ICON_CIRCLE =
-  "w-9 h-9 rounded-full bg-white hover:bg-[#F4F6EE] active:scale-90 text-[#04453F] flex items-center justify-center pro-card-shadow border border-[#04453F]/8 transition cursor-pointer";
+  "w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer";
 
 export default function FreshDateApp() {
   // =========================================================================
@@ -1097,36 +1095,13 @@ export default function FreshDateApp() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#DCE2D5] flex items-center justify-center sm:p-6 select-none font-sans">
+    <div className="min-h-[100dvh] w-full bg-[#F4F6EE] select-none font-sans">
       <Toaster position="top-center" />
 
       {/* =====================================================================
-          NATIVE IPHONE 16 PRO SHELL
+          CLEAN MOBILE WEB APP CONTAINER (NO FAKE PHONE FRAME OR STATUS BAR)
          ===================================================================== */}
-      <div className="relative w-full h-[100dvh] sm:w-[402px] sm:h-[856px] bg-[#F4F6EE] sm:rounded-[54px] sm:shadow-[0_32px_90px_rgba(4,69,63,0.24),0_0_0_11px_#122421,0_0_0_13px_#324743] overflow-hidden flex flex-col font-sans">
-        {/* iOS Status Bar */}
-        <div className="pt-3 pb-2 px-7 flex items-center justify-between bg-[#F4F6EE]/90 backdrop-blur-md z-30 shrink-0">
-          <span className="text-[14px] font-semibold tracking-tight text-[#0F2926]">
-            9:41
-          </span>
-          <div className="hidden sm:flex w-[114px] h-[31px] bg-[#0B1715] rounded-full items-center justify-between px-3 shadow-inner">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#1b332e] ring-1 ring-white/10" />
-            <div className="w-2 h-2 rounded-full bg-[#94C060]" />
-          </div>
-          <div className="flex items-center gap-1.5 text-[#0F2926]">
-            <div className="flex items-end gap-[2px] h-3">
-              <span className="w-[3px] h-1.5 bg-[#0F2926] rounded-full" />
-              <span className="w-[3px] h-2 bg-[#0F2926] rounded-full" />
-              <span className="w-[3px] h-2.5 bg-[#0F2926] rounded-full" />
-              <span className="w-[3px] h-3 bg-[#0F2926] rounded-full" />
-            </div>
-            <span className="text-[11px] font-semibold ml-0.5">5G</span>
-            <div className="w-6 h-3 rounded-[4px] border border-[#0F2926]/40 p-[1.5px] flex items-center">
-              <div className="w-full h-full bg-[#04453F] rounded-[2px]" />
-            </div>
-          </div>
-        </div>
-
+      <div className="relative w-full max-w-[480px] min-h-[100dvh] mx-auto bg-[#F4F6EE] flex flex-col font-sans">
         {/* ===================================================================
             SCREEN 1: LOGIN PAGE
            =================================================================== */}
@@ -1135,7 +1110,7 @@ export default function FreshDateApp() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-5 pt-4 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 px-5 pt-6 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
           >
             <div className="space-y-5">
               <div className="flex justify-center">
@@ -1193,7 +1168,7 @@ export default function FreshDateApp() {
               <div className="flex justify-center">
                 <button
                   onClick={() => setAppStage("intro")}
-                  className={BTN_PILL_SUBTLE}
+                  className={BTN_PILL_ACTIVE}
                 >
                   I don&apos;t have an account
                 </button>
@@ -1207,14 +1182,14 @@ export default function FreshDateApp() {
         )}
 
         {/* ===================================================================
-            SCREEN 1.5: MINIMAL WELCOME & ONE-SENTENCE INTRO (Image 1 Critique)
+            SCREEN 1.5: MINIMAL WELCOME & ONE-SENTENCE INTRO
            =================================================================== */}
         {appStage === "intro" && (
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-6 pt-3 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 px-6 pt-5 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
           >
             <div className="flex items-center justify-between">
               <button
@@ -1259,7 +1234,7 @@ export default function FreshDateApp() {
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 overflow-y-auto no-scrollbar px-5 pt-3 pb-8 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 overflow-y-auto no-scrollbar px-5 pt-5 pb-8 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
           >
             <div className="space-y-3.5">
               <div className="flex items-center justify-between">
@@ -1320,7 +1295,7 @@ export default function FreshDateApp() {
            =================================================================== */}
         {appStage === "main" && (
           <>
-            <main className="flex-1 overflow-y-auto no-scrollbar pb-24">
+            <main className="flex-1 overflow-y-auto no-scrollbar pt-2 pb-28">
               {/* -------------------------------------------------------------
                   TAB 1: MY WEEK (Screens #8, #9, #10)
                  ------------------------------------------------------------- */}
@@ -1339,7 +1314,7 @@ export default function FreshDateApp() {
                         <div className={T_HEADER_PILL}>My Week</div>
                         <button
                           onClick={() => setImportScreen("hub")}
-                          className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <Plus className="w-5 h-5" />
                         </button>
@@ -1347,8 +1322,7 @@ export default function FreshDateApp() {
 
                       {renderCalendarCard()}
 
-                      {/* Unified Card Hierarchy: Same rounded-[20px] p-4 & text-[14px] font-bold as Breakfast below!
-                          And "2 meals" is static data text, NOT a fake button! */}
+                      {/* Unified Card Hierarchy: Same rounded-[20px] p-4 & text-[14px] font-bold as Breakfast below! */}
                       <div
                         className={`${CARD_CLS} flex items-center justify-between`}
                       >
@@ -1389,7 +1363,7 @@ export default function FreshDateApp() {
                                     />
                                   </div>
 
-                                  {/* Unified Interactive Button Style for Both States */}
+                                  {/* 100% Unified Solid #FFC45A Pill Button System */}
                                   <button
                                     onClick={(e) =>
                                       toggleMealAbsence(
@@ -1398,11 +1372,16 @@ export default function FreshDateApp() {
                                         e
                                       )
                                     }
-                                    className={
-                                      isOut ? BTN_PILL_ACTIVE : BTN_PILL_SUBTLE
-                                    }
+                                    className={BTN_PILL_ACTIVE}
                                   >
-                                    {isOut ? "Out (Absence)" : "Eat at Home"}
+                                    <span
+                                      className={`w-2 h-2 rounded-full ${
+                                        isOut ? "bg-amber-700" : "bg-[#658C38]"
+                                      }`}
+                                    />
+                                    <span>
+                                      {isOut ? "Out (Absence)" : "Eat at Home"}
+                                    </span>
                                   </button>
                                 </div>
 
@@ -1496,7 +1475,7 @@ export default function FreshDateApp() {
                         <div className={T_HEADER_PILL}>Recipes</div>
                         <button
                           onClick={() => setImportScreen("hub")}
-                          className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <Plus className="w-5 h-5" />
                         </button>
@@ -1594,7 +1573,7 @@ export default function FreshDateApp() {
                             }
                             setWeekSubScreen("details");
                           }}
-                          className={`w-full ${BTN_PILL_SUBTLE} py-2`}
+                          className={`w-full ${BTN_PRIMARY}`}
                         >
                           <Sparkles className="w-3.5 h-3.5 text-[#04453F]" />
                           <span>
@@ -1623,7 +1602,7 @@ export default function FreshDateApp() {
                                 setAddedOtherIngredients([]);
                                 notify("Reset ingredients");
                               }}
-                              className={BTN_PILL_SUBTLE}
+                              className={BTN_PILL_ACTIVE}
                             >
                               <RotateCcw className="w-3 h-3" />
                               <span>Reset</span>
@@ -1672,12 +1651,12 @@ export default function FreshDateApp() {
                           <button
                             type="button"
                             onClick={() => setShowOtherIngredientModal(true)}
-                            className="bg-[#FFC45A]/25 hover:bg-[#FFC45A]/45 active:scale-95 border border-[#FFC45A] rounded-[12px] p-2 flex flex-col items-center justify-center text-center transition cursor-pointer"
+                            className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-2 flex flex-col items-center justify-center text-center transition cursor-pointer`}
                           >
-                            <div className="w-7 h-7 rounded-full bg-[#FFC45A] flex items-center justify-center text-[#04453F] mb-1">
+                            <div className={BTN_STEPPER}>
                               <Plus className="w-4 h-4" />
                             </div>
-                            <span className="text-[11px] font-bold text-[#04453F] leading-tight">
+                            <span className="text-[11px] font-bold text-[#04453F] leading-tight mt-1">
                               Other
                             </span>
                           </button>
@@ -2382,7 +2361,7 @@ export default function FreshDateApp() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2, ease: IOS_EASE }}
-                  className="absolute inset-0 z-50 bg-black/35 backdrop-blur-xs flex items-end"
+                  className="fixed inset-0 max-w-[480px] mx-auto z-50 bg-black/35 backdrop-blur-xs flex items-end"
                 >
                   <motion.div
                     initial={{ y: "100%" }}
@@ -2454,7 +2433,7 @@ export default function FreshDateApp() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2, ease: IOS_EASE }}
-                  className="absolute inset-0 z-40 bg-black/35 backdrop-blur-xs flex items-end"
+                  className="fixed inset-0 max-w-[480px] mx-auto z-40 bg-black/35 backdrop-blur-xs flex items-end"
                 >
                   <motion.div
                     initial={{ y: "100%" }}
@@ -2471,8 +2450,6 @@ export default function FreshDateApp() {
                     }}
                     className="w-full bg-white rounded-t-[28px] p-5 space-y-4 shadow-2xl"
                   >
-                    <div className="w-10 h-1.5 rounded-full bg-slate-200 mx-auto cursor-grab" />
-
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
@@ -2541,10 +2518,10 @@ export default function FreshDateApp() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 16 }}
                   transition={{ duration: 0.24, ease: IOS_EASE }}
-                  className="absolute inset-0 z-40 bg-[#F4F6EE] flex flex-col"
+                  className="fixed inset-0 max-w-[480px] mx-auto z-40 bg-[#F4F6EE] flex flex-col"
                 >
                   {importScreen === "hub" && (
-                    <div className="flex-1 overflow-y-auto px-4 pt-3 pb-8 space-y-3 no-scrollbar">
+                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-8 space-y-3 no-scrollbar">
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => setImportScreen("closed")}
@@ -2617,7 +2594,7 @@ export default function FreshDateApp() {
                       <div className="pt-4 px-5 flex items-center justify-between z-20">
                         <button
                           onClick={() => setImportScreen("hub")}
-                          className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white cursor-pointer"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
@@ -2669,27 +2646,20 @@ export default function FreshDateApp() {
                           className="mt-4 w-14 h-14 rounded-full bg-[#FFC45A] border-4 border-white/80 shadow-lg active:scale-95 transition cursor-pointer"
                         />
 
-                        <div className="flex items-center gap-4 mt-4">
-                          <button
-                            onClick={() => setCameraMode("scan")}
-                            className={
-                              cameraMode === "scan"
-                                ? BTN_PILL_ACTIVE
-                                : "text-white/50 text-[12px] font-bold px-3 py-1 cursor-pointer"
-                            }
-                          >
-                            Scan
-                          </button>
-                          <button
-                            onClick={() => setCameraMode("photo")}
-                            className={
-                              cameraMode === "photo"
-                                ? BTN_PILL_ACTIVE
-                                : "text-white/50 text-[12px] font-bold px-3 py-1 cursor-pointer"
-                            }
-                          >
-                            Photo
-                          </button>
+                        <div className="bg-white/10 p-1 rounded-full flex items-center gap-1 mt-4">
+                          {(["scan", "photo"] as const).map((m) => (
+                            <button
+                              key={m}
+                              onClick={() => setCameraMode(m)}
+                              className={
+                                cameraMode === m
+                                  ? `${BTN_PILL_ACTIVE} capitalize`
+                                  : "text-white/70 text-[12px] font-bold px-3.5 py-1.5 capitalize cursor-pointer"
+                              }
+                            >
+                              {m}
+                            </button>
+                          ))}
                         </div>
                       </div>
 
@@ -2723,7 +2693,7 @@ export default function FreshDateApp() {
                   )}
 
                   {importScreen === "manual" && (
-                    <div className="flex-1 overflow-y-auto px-4 pt-3 pb-8 flex flex-col justify-between no-scrollbar">
+                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-8 flex flex-col justify-between no-scrollbar">
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <button
@@ -2748,7 +2718,7 @@ export default function FreshDateApp() {
                         </div>
 
                         <div className={`${CARD_CLS} space-y-3`}>
-                          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                          <div className="bg-[#F4F6EE] p-1 rounded-full grid grid-cols-4 gap-1">
                             {(
                               ["All", "Staples", "Produce", "Protein"] as const
                             ).map((cat) => (
@@ -2757,8 +2727,8 @@ export default function FreshDateApp() {
                                 onClick={() => setManualCategory(cat)}
                                 className={
                                   manualCategory === cat
-                                    ? BTN_PILL_ACTIVE
-                                    : "px-3 py-1 text-[12px] font-bold text-slate-500 cursor-pointer"
+                                    ? `${BTN_PILL_ACTIVE} w-full`
+                                    : "py-1.5 text-[12px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
                                 }
                               >
                                 {cat}
@@ -2785,13 +2755,13 @@ export default function FreshDateApp() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 pt-4">
+                      <div className="bg-white p-1.5 rounded-full pro-card-shadow border border-[#04453F]/8 grid grid-cols-2 gap-1.5 mt-4">
                         <button
                           onClick={() => setDefaultZoneFilter("refrigerated")}
                           className={
                             defaultZoneFilter === "refrigerated"
-                              ? BTN_PRIMARY
-                              : BTN_PILL_SUBTLE
+                              ? `${BTN_PRIMARY} w-full`
+                              : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
                           }
                         >
                           Refrigerated
@@ -2800,8 +2770,8 @@ export default function FreshDateApp() {
                           onClick={() => setDefaultZoneFilter("frozen")}
                           className={
                             defaultZoneFilter === "frozen"
-                              ? BTN_PRIMARY
-                              : BTN_PILL_SUBTLE
+                              ? `${BTN_PRIMARY} w-full`
+                              : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
                           }
                         >
                           Frozen
@@ -2818,7 +2788,7 @@ export default function FreshDateApp() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2, ease: IOS_EASE }}
-                        className="absolute inset-0 z-50 bg-black/35 backdrop-blur-xs flex items-end"
+                        className="fixed inset-0 max-w-[480px] mx-auto z-50 bg-black/35 backdrop-blur-xs flex items-end"
                       >
                         <motion.div
                           initial={{ y: "100%" }}
@@ -2835,8 +2805,6 @@ export default function FreshDateApp() {
                           }}
                           className="w-full bg-[#F4F6EE] rounded-t-[28px] p-5 space-y-3 shadow-2xl border-t-2 border-[#94C060]"
                         >
-                          <div className="w-10 h-1.5 rounded-full bg-slate-300 mx-auto cursor-grab" />
-
                           <div className="flex items-center justify-between px-1">
                             <h3 className="text-[16px] font-extrabold text-[#0F2926] flex items-center gap-2">
                               <span>{selectedCatalogItem.emoji}</span>
@@ -2885,7 +2853,7 @@ export default function FreshDateApp() {
                             <span className={T_ITEM_NAME}>
                               Storage Location
                             </span>
-                            <div className="flex gap-1.5">
+                            <div className="bg-[#F4F6EE] p-1 rounded-full flex items-center gap-1">
                               <button
                                 onClick={() => {
                                   setDraftZone("refrigerated");
@@ -2896,7 +2864,7 @@ export default function FreshDateApp() {
                                 className={
                                   draftZone === "refrigerated"
                                     ? BTN_PILL_ACTIVE
-                                    : BTN_PILL_SUBTLE
+                                    : "px-3 py-1 text-[12px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
                                 }
                               >
                                 Refrigerated
@@ -2911,7 +2879,7 @@ export default function FreshDateApp() {
                                 className={
                                   draftZone === "frozen"
                                     ? BTN_PILL_ACTIVE
-                                    : BTN_PILL_SUBTLE
+                                    : "px-3 py-1 text-[12px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
                                 }
                               >
                                 Frozen
@@ -2957,61 +2925,77 @@ export default function FreshDateApp() {
             </AnimatePresence>
 
             {/* ===============================================================
-                BOTTOM NAVIGATION BAR
+                MODERN FLOATING CAPSULE BOTTOM NAVIGATION BAR (NO FAKE HOME BAR)
                =============================================================== */}
-            <nav className="absolute bottom-0 inset-x-0 z-30 bg-[#04453F] px-6 pt-2.5 pb-5 flex items-center justify-between">
-              {[
-                { id: "week", label: "My Week", icon: Calendar },
-                {
-                  id: "fridge",
-                  label: "My Fridge",
-                  icon: Refrigerator,
-                  badge: urgentCount,
-                },
-                { id: "list", label: "Suggested List", icon: ClipboardList },
-                { id: "me", label: "Me", icon: User },
-              ].map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => {
-                      setImportScreen("closed");
-                      setSelectedCatalogItem(null);
-                      setEditingFridgeItem(null);
-                      setShowRecipeMealMenu(false);
-                      setShowOtherIngredientModal(false);
-                      setOpenDropdownKey(null);
-                      setWeekSubScreen("overview");
-                      setMeSubScreen("menu");
-                      setActiveTab(tab.id as ActiveTab);
-                    }}
-                    className="flex flex-col items-center gap-1 relative active:scale-92 transition-transform cursor-pointer"
-                  >
-                    <div
-                      className={`w-10 h-10 rounded-[12px] flex items-center justify-center transition-colors duration-200 ${
-                        isActive
-                          ? "bg-[#FFC45A] text-[#04453F] shadow-xs"
-                          : "bg-white/10 text-[#F0E98F] hover:bg-white/20"
-                      }`}
+            <div className="fixed bottom-0 inset-x-0 z-30 max-w-[480px] mx-auto px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-2 pointer-events-none">
+              <nav className="pointer-events-auto bg-white/95 backdrop-blur-xl border border-[#04453F]/10 rounded-full p-1.5 shadow-[0_12px_32px_rgba(4,69,63,0.12)] grid grid-cols-4 gap-1">
+                {[
+                  { id: "week", label: "Week", icon: Calendar },
+                  {
+                    id: "fridge",
+                    label: "Fridge",
+                    icon: Refrigerator,
+                    badge: urgentCount,
+                  },
+                  { id: "list", label: "List", icon: ClipboardList },
+                  { id: "me", label: "Me", icon: User },
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setImportScreen("closed");
+                        setSelectedCatalogItem(null);
+                        setEditingFridgeItem(null);
+                        setShowRecipeMealMenu(false);
+                        setShowOtherIngredientModal(false);
+                        setOpenDropdownKey(null);
+                        setWeekSubScreen("overview");
+                        setMeSubScreen("menu");
+                        setActiveTab(tab.id as ActiveTab);
+                      }}
+                      className="relative py-2 rounded-full flex flex-col items-center justify-center gap-0.5 active:scale-95 transition-transform cursor-pointer"
                     >
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    {tab.badge ? (
-                      <span className="absolute -top-1 -right-1 z-20 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center ring-2 ring-[#04453F]">
-                        {tab.badge}
+                      {isActive && (
+                        <motion.div
+                          layoutId="modern-nav-active-pill"
+                          transition={{ duration: 0.25, ease: IOS_EASE }}
+                          className="absolute inset-0 bg-[#FFC45A] rounded-full shadow-2xs"
+                        />
+                      )}
+                      <div className="relative z-10 flex items-center justify-center">
+                        <Icon
+                          strokeWidth={isActive ? 2.4 : 1.9}
+                          className={`w-[19px] h-[19px] transition-colors duration-200 ${
+                            isActive
+                              ? "text-[#04453F]"
+                              : "text-slate-400 hover:text-[#04453F]"
+                          }`}
+                        />
+                        {tab.badge ? (
+                          <span className=" -top-1.5 -right-2.5 absolute min-w-[15px] h-[15px] px-1 rounded-full bg-red-500 text-white text-[9px] font-extrabold flex items-center justify-center ring-2 ring-white">
+                            {tab.badge}
+                          </span>
+                        ) : null}
+                      </div>
+                      <span
+                        className={`relative z-10 text-[10px] tracking-tight transition-colors duration-200 ${
+                          isActive
+                            ? "font-extrabold text-[#04453F]"
+                            : "font-semibold text-slate-400"
+                        }`}
+                      >
+                        {tab.label}
                       </span>
-                    ) : null}
-                  </button>
-                );
-              })}
-            </nav>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
           </>
         )}
-
-        {/* iOS Home Indicator */}
-        <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/30 rounded-full z-50 pointer-events-none" />
       </div>
     </div>
   );
