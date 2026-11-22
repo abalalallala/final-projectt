@@ -48,10 +48,15 @@ const IOS_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 // ============================================================================
 // UNIFIED GRAPHIC DESIGN TOKENS (Strict Radii, Typography & Button Hierarchy)
 // ============================================================================
-// 1. Containers: Outer cards always rounded-[20px] p-4; Inner tiles always rounded-[12px]
+// 1. Containers:
+// - Level 0 Context Strip: flat sage-tinted summary bar (no shadow, distinct from interactive white cards)
+// - Level 1 Primary Interactive Card: white rounded-[20px] p-4 with soft elevation
+// - Level 2 Inner Item Tile: soft surface rounded-[14px]
+const CONTEXT_BAR_CLS =
+  "bg-[#E6ECDC] border border-[#04453F]/8 rounded-[14px] px-4 py-2.5";
 const CARD_CLS =
   "bg-white rounded-[20px] p-4 pro-card-shadow border border-[#04453F]/8";
-const TILE_CLS = "bg-[#F4F6EE] rounded-[12px]";
+const TILE_CLS = "bg-[#F4F6EE] rounded-[14px]";
 
 // 2. Typography: 4 strict levels
 const T_HEADER_PILL =
@@ -60,13 +65,15 @@ const T_CARD_TITLE = "text-[14px] font-bold text-[#0F2926] tracking-tight";
 const T_ITEM_NAME = "text-[13px] font-semibold text-[#0F2926]";
 const T_META = "text-[11px] font-medium text-slate-400";
 
-// 3. Single Unified Clickable Button System (Every interactive button is a solid #FFC45A pill/circle, zero outlined translucent variants)
+// 3. Unified Clickable Button System
+// - Primary / Pill Action Buttons: solid #FFC45A capsules
+// - Quantity Steppers: integrated capsule [ -  1  + ] so secondary counters never drown out primary CTAs
 const BTN_PRIMARY =
   "bg-[#FFC45A] hover:brightness-105 active:scale-96 text-[#04453F] font-bold text-[13px] rounded-full px-6 py-2.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_PILL_ACTIVE =
   "bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_STEPPER =
-  "w-7 h-7 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] font-bold text-[13px] flex items-center justify-center shadow-2xs transition cursor-pointer";
+  "w-5 h-5 rounded-full bg-[#F4F6EE] hover:bg-[#FFC45A] active:scale-90 text-[#04453F] font-bold text-[12px] flex items-center justify-center transition cursor-pointer";
 const BTN_ICON_CIRCLE =
   "w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer";
 
@@ -1030,14 +1037,39 @@ export default function FreshDateApp() {
     </div>
   );
 
-  // Render Fridge Item Row (Uniform 12px inner radius, 13px item name, unified stepper buttons)
+  // Unified Modern Integrated Stepper Capsule [ -  1  + ]
+  const renderStepperCapsule = (
+    value: number,
+    onDecrement: (e: React.MouseEvent) => void,
+    onIncrement: (e: React.MouseEvent) => void,
+    fullWidth?: boolean
+  ) => (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className={`h-7 rounded-full bg-white border border-[#04453F]/10 shadow-2xs inline-flex items-center justify-between px-1 ${
+        fullWidth ? "w-full" : "gap-1.5"
+      }`}
+    >
+      <button type="button" onClick={onDecrement} className={BTN_STEPPER}>
+        -
+      </button>
+      <span className="min-w-[20px] text-center text-[12px] font-extrabold text-[#0F2926]">
+        {value}
+      </span>
+      <button type="button" onClick={onIncrement} className={BTN_STEPPER}>
+        +
+      </button>
+    </div>
+  );
+
+  // Render Fridge Item Row (Uniform 14px inner radius, 13px item name, integrated stepper capsule)
   const renderEnhancedFridgeRow = (item: FridgeItem, isFrozen?: boolean) => {
     const vis = getFreshnessVisuals(item);
     return (
       <div
         key={item.id}
         onClick={() => setEditingFridgeItem(item)}
-        className={`grid grid-cols-12 items-center rounded-[12px] px-2.5 py-2.5 cursor-pointer transition-colors duration-150 ${
+        className={`grid grid-cols-12 items-center rounded-[14px] px-2.5 py-2.5 cursor-pointer transition-colors duration-150 ${
           isFrozen
             ? "bg-sky-50/60 hover:bg-sky-100/60"
             : "bg-[#F4F6EE] hover:bg-[#EAEFDE]"
@@ -1063,23 +1095,13 @@ export default function FreshDateApp() {
           </div>
         </div>
 
-        {/* Unified Stepper Buttons */}
-        <div className="col-span-4 flex items-center justify-center gap-1.5">
-          <button
-            onClick={(e) => adjustFridgeServings(item.id, -1, e)}
-            className={BTN_STEPPER}
-          >
-            -
-          </button>
-          <span className="w-5 text-center text-[13px] font-bold text-[#0F2926]">
-            {item.servings}
-          </span>
-          <button
-            onClick={(e) => adjustFridgeServings(item.id, 1, e)}
-            className={BTN_STEPPER}
-          >
-            +
-          </button>
+        {/* Integrated Stepper Capsule */}
+        <div className="col-span-4 flex items-center justify-center">
+          {renderStepperCapsule(
+            item.servings,
+            (e) => adjustFridgeServings(item.id, -1, e),
+            (e) => adjustFridgeServings(item.id, 1, e)
+          )}
         </div>
 
         {/* Non-clickable Status Badge */}
@@ -1252,23 +1274,11 @@ export default function FreshDateApp() {
 
               <div className={`${CARD_CLS} flex items-center justify-between`}>
                 <span className={T_CARD_TITLE}>Number of Diners</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setDinersCount(Math.max(1, dinersCount - 1))}
-                    className={BTN_STEPPER}
-                  >
-                    -
-                  </button>
-                  <span className="w-6 text-center font-bold text-[14px] text-[#04453F]">
-                    {dinersCount}
-                  </span>
-                  <button
-                    onClick={() => setDinersCount(dinersCount + 1)}
-                    className={BTN_STEPPER}
-                  >
-                    +
-                  </button>
-                </div>
+                {renderStepperCapsule(
+                  dinersCount,
+                  () => setDinersCount(Math.max(1, dinersCount - 1)),
+                  () => setDinersCount(dinersCount + 1)
+                )}
               </div>
 
               {renderDietaryDropdownsWithOther()}
@@ -1322,14 +1332,14 @@ export default function FreshDateApp() {
 
                       {renderCalendarCard()}
 
-                      {/* Unified Card Hierarchy: Same rounded-[20px] p-4 & text-[14px] font-bold as Breakfast below! */}
+                      {/* Level 0 Contextual Summary Bar (flat sage tint so it doesn't compete with primary white cards) */}
                       <div
-                        className={`${CARD_CLS} flex items-center justify-between`}
+                        className={`${CONTEXT_BAR_CLS} flex items-center justify-between`}
                       >
-                        <span className={T_CARD_TITLE}>
+                        <span className="text-[12px] font-bold text-[#0F2926]">
                           Total absences this {calendarRange}
                         </span>
-                        <span className="text-[14px] font-extrabold text-[#04453F]">
+                        <span className="text-[12px] font-extrabold text-[#04453F] bg-white/80 px-2.5 py-0.5 rounded-full">
                           {totalAbsencesCount}{" "}
                           {totalAbsencesCount === 1 ? "meal" : "meals"}
                         </span>
@@ -1781,7 +1791,7 @@ export default function FreshDateApp() {
                     <div className={T_HEADER_PILL}>My Fridge</div>
                     <button
                       onClick={() => setImportScreen("hub")}
-                      className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
+                      className={BTN_ICON_CIRCLE}
                     >
                       <Plus className="w-5 h-5" />
                     </button>
@@ -1802,12 +1812,12 @@ export default function FreshDateApp() {
                         <Thermometer className="w-4 h-4 text-[#658C38]" />
                         <span className={T_CARD_TITLE}>Refrigerated</span>
                         <span className={T_META}>
-                          ({refrigeratedItems.length})
+                          · {refrigeratedItems.length} items
                         </span>
                       </div>
                       <ChevronDown
                         className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                          collapsedFridgeZones.refrigerated ? "-rotate-90" : ""
+                          !collapsedFridgeZones.refrigerated ? "rotate-180" : ""
                         }`}
                       />
                     </div>
@@ -1857,11 +1867,13 @@ export default function FreshDateApp() {
                       <div className="flex items-center gap-2">
                         <Snowflake className="w-4 h-4 text-sky-600" />
                         <span className={T_CARD_TITLE}>Frozen</span>
-                        <span className={T_META}>({frozenItems.length})</span>
+                        <span className={T_META}>
+                          · {frozenItems.length} items
+                        </span>
                       </div>
                       <ChevronDown
                         className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                          collapsedFridgeZones.frozen ? "-rotate-90" : ""
+                          !collapsedFridgeZones.frozen ? "rotate-180" : ""
                         }`}
                       />
                     </div>
@@ -1900,7 +1912,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 3: SUGGESTED LIST (Unified Card & Typography Hierarchy)
+                  TAB 3: SUGGESTED LIST (Refined 3-Tier Visual Hierarchy)
                  ------------------------------------------------------------- */}
               {activeTab === "list" && (
                 <motion.div
@@ -1915,24 +1927,28 @@ export default function FreshDateApp() {
                     <div className={T_HEADER_PILL}>Suggested List</div>
                     <button
                       onClick={() => setImportScreen("hub")}
-                      className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
+                      className={BTN_ICON_CIRCLE}
                     >
                       <Plus className="w-5 h-5" />
                     </button>
                   </div>
 
-                  <div className={`${CARD_CLS} text-center py-3`}>
-                    <p className="text-[12px] text-slate-600 font-medium">
-                      Auto-adjusted from{" "}
-                      <strong className="text-[#04453F]">
-                        {fridgeItems.reduce((s, i) => s + i.servings, 0)}{" "}
-                        servings in fridge
-                      </strong>{" "}
-                      &amp;{" "}
-                      <strong className="text-[#04453F]">
+                  {/* Level 0 Context Summary Bar — flat tinted strip so it doesn't compete with primary white cards */}
+                  <div
+                    className={`${CONTEXT_BAR_CLS} flex items-center justify-between text-[12px]`}
+                  >
+                    <span className="font-semibold text-slate-600">
+                      Auto-adjusted quota
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-bold text-[#04453F] bg-white/80 px-2 py-0.5 rounded-full text-[11px]">
+                        {fridgeItems.reduce((s, i) => s + i.servings, 0)} in
+                        fridge
+                      </span>
+                      <span className="font-bold text-[#04453F] bg-white/80 px-2 py-0.5 rounded-full text-[11px]">
                         {weeklyAbsencesCount} meals out
-                      </strong>
-                    </p>
+                      </span>
+                    </div>
                   </div>
 
                   {(
@@ -1966,18 +1982,22 @@ export default function FreshDateApp() {
                           <div className="flex items-center gap-2">
                             <span className={T_CARD_TITLE}>{catKey}</span>
                             <span className={T_META}>
-                              ({quotaInfo.inFridgeText})
+                              · {quotaInfo.inFridgeText}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1.5">
-                            {quotaInfo.quotaText && (
-                              <span className="text-[13px] font-extrabold text-[#04453F]">
-                                {quotaInfo.quotaText}
+                          <div className="flex items-center gap-2">
+                            {quotaInfo.quotaText ? (
+                              <span className="text-[11px] font-extrabold text-[#04453F] bg-[#F4F6EE] px-2.5 py-0.5 rounded-full">
+                                Buy {quotaInfo.quotaText}
+                              </span>
+                            ) : (
+                              <span className="text-[11px] font-bold text-[#658C38] bg-[#94C060]/18 px-2.5 py-0.5 rounded-full">
+                                Stocked ✓
                               </span>
                             )}
                             <ChevronDown
                               className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                                isCollapsed ? "-rotate-90" : ""
+                                !isCollapsed ? "rotate-180" : ""
                               }`}
                             />
                           </div>
@@ -1992,83 +2012,74 @@ export default function FreshDateApp() {
                               transition={{ duration: 0.24, ease: IOS_EASE }}
                               className="overflow-hidden"
                             >
-                              <div className="pt-3 mt-3 border-t border-slate-100 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
+                              {/* Edge-to-edge bleed scroll (-mx-4 px-4) prevents awkward mid-card clipping */}
+                              <div className="pt-3 mt-3 border-t border-slate-100 -mx-4 px-4 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
                                 {items.map((item) => (
                                   <div
                                     key={item.id}
-                                    className={`w-[104px] shrink-0 snap-start rounded-[12px] p-2.5 flex flex-col items-center text-center border transition ${
+                                    onClick={() =>
+                                      toggleSuggestedCheck(
+                                        item.id,
+                                        item.checked
+                                      )
+                                    }
+                                    className={`w-[112px] shrink-0 snap-start rounded-[16px] p-2.5 flex flex-col justify-between border-[1.5px] transition-all duration-150 cursor-pointer ${
                                       item.checked
-                                        ? "bg-[#94C060]/15 border-[#94C060]"
-                                        : "bg-[#F4F6EE] border-transparent"
+                                        ? "bg-[#FFF9EA] border-[#FFC45A] shadow-2xs"
+                                        : "bg-[#F5F7F0] border-transparent opacity-80 hover:opacity-100"
                                     }`}
                                   >
+                                    {/* Tier 1: Fridge Status Tag + Circular Selection Check */}
                                     <div className="w-full flex items-center justify-between">
-                                      {item.inFridgeServings > 0 ? (
-                                        <span className="text-[10px] font-semibold text-slate-500">
-                                          Have {item.inFridgeServings}
-                                        </span>
-                                      ) : (
-                                        <span />
-                                      )}
+                                      <span className="text-[10px] font-semibold text-slate-400">
+                                        {item.inFridgeServings > 0
+                                          ? `Have ${item.inFridgeServings}`
+                                          : "Suggested"}
+                                      </span>
                                       <button
                                         type="button"
-                                        onClick={() =>
+                                        onClick={(e) => {
+                                          e.stopPropagation();
                                           toggleSuggestedCheck(
                                             item.id,
                                             item.checked
-                                          )
-                                        }
-                                        className={`w-5 h-5 rounded-[6px] flex items-center justify-center text-[11px] font-bold cursor-pointer ${
+                                          );
+                                        }}
+                                        className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold transition cursor-pointer ${
                                           item.checked
-                                            ? "bg-[#FFC45A] text-[#04453F]"
-                                            : "bg-white border border-slate-300"
+                                            ? "bg-[#FFC45A] text-[#04453F] shadow-2xs"
+                                            : "bg-white border-[1.5px] border-slate-300 text-transparent"
                                         }`}
                                       >
-                                        {item.checked && "✓"}
+                                        ✓
                                       </button>
                                     </div>
 
-                                    <span
-                                      onClick={() =>
-                                        toggleSuggestedCheck(
-                                          item.id,
-                                          item.checked
-                                        )
-                                      }
-                                      className="text-3xl my-1 cursor-pointer"
-                                    >
-                                      {item.emoji}
-                                    </span>
-                                    <span
-                                      className={`${T_ITEM_NAME} line-clamp-1`}
-                                    >
-                                      {item.name}
-                                    </span>
-                                    <span className={T_META}>
-                                      {item.servings}{" "}
-                                      {item.servings === 1
-                                        ? item.unit
-                                        : `${item.unit}s`}
-                                    </span>
-
-                                    <div className="mt-2 flex items-center gap-1.5">
-                                      <button
-                                        onClick={() =>
-                                          adjustSuggestedServings(item.id, -1)
-                                        }
-                                        className={BTN_STEPPER}
+                                    {/* Tier 2: Crisp White Icon Stage + Item Name */}
+                                    <div className="my-2 flex flex-col items-center text-center">
+                                      <div className="w-11 h-11 rounded-[12px] bg-white shadow-2xs flex items-center justify-center text-2xl mb-1.5">
+                                        {item.emoji}
+                                      </div>
+                                      <span
+                                        className={`${T_ITEM_NAME} line-clamp-1 w-full`}
                                       >
-                                        -
-                                      </button>
-                                      <button
-                                        onClick={() =>
-                                          adjustSuggestedServings(item.id, 1)
-                                        }
-                                        className={BTN_STEPPER}
-                                      >
-                                        +
-                                      </button>
+                                        {item.name}
+                                      </span>
                                     </div>
+
+                                    {/* Tier 3: Integrated Stepper Capsule [ -  1  + ] */}
+                                    {renderStepperCapsule(
+                                      item.servings,
+                                      (e) => {
+                                        e.stopPropagation();
+                                        adjustSuggestedServings(item.id, -1);
+                                      },
+                                      (e) => {
+                                        e.stopPropagation();
+                                        adjustSuggestedServings(item.id, 1);
+                                      },
+                                      true
+                                    )}
                                   </div>
                                 ))}
                               </div>
@@ -2245,25 +2256,11 @@ export default function FreshDateApp() {
                         className={`${CARD_CLS} flex items-center justify-between`}
                       >
                         <span className={T_CARD_TITLE}>Number of Diners</span>
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() =>
-                              setDinersCount(Math.max(1, dinersCount - 1))
-                            }
-                            className={BTN_STEPPER}
-                          >
-                            -
-                          </button>
-                          <span className="w-6 text-center font-bold text-[14px] text-[#04453F]">
-                            {dinersCount}
-                          </span>
-                          <button
-                            onClick={() => setDinersCount(dinersCount + 1)}
-                            className={BTN_STEPPER}
-                          >
-                            +
-                          </button>
-                        </div>
+                        {renderStepperCapsule(
+                          dinersCount,
+                          () => setDinersCount(Math.max(1, dinersCount - 1)),
+                          () => setDinersCount(dinersCount + 1)
+                        )}
                       </div>
 
                       {renderDietaryDropdownsWithOther()}
@@ -2822,29 +2819,12 @@ export default function FreshDateApp() {
                             className={`${CARD_CLS} py-2.5 flex items-center justify-between`}
                           >
                             <span className={T_ITEM_NAME}>Servings</span>
-                            <div className="flex items-center gap-2">
-                              <button
-                                onClick={() =>
-                                  setDraftServings(
-                                    Math.max(1, draftServings - 1)
-                                  )
-                                }
-                                className={BTN_STEPPER}
-                              >
-                                -
-                              </button>
-                              <span className="w-6 text-center font-bold text-[13px]">
-                                {draftServings}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  setDraftServings(draftServings + 1)
-                                }
-                                className={BTN_STEPPER}
-                              >
-                                +
-                              </button>
-                            </div>
+                            {renderStepperCapsule(
+                              draftServings,
+                              () =>
+                                setDraftServings(Math.max(1, draftServings - 1)),
+                              () => setDraftServings(draftServings + 1)
+                            )}
                           </div>
 
                           <div
