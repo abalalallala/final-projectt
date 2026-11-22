@@ -45,14 +45,40 @@ type MeSubScreen = "menu" | "profile_view" | "profile_edit";
 
 const IOS_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
+// ============================================================================
+// UNIFIED GRAPHIC DESIGN TOKENS (Strict Radii, Typography & Button Hierarchy)
+// ============================================================================
+// 1. Containers: Outer cards always rounded-[20px] p-4; Inner tiles always rounded-[12px]
+const CARD_CLS =
+  "bg-white rounded-[20px] p-4 pro-card-shadow border border-[#04453F]/8";
+const TILE_CLS = "bg-[#F4F6EE] rounded-[12px]";
+
+// 2. Typography: 4 strict levels
+const T_HEADER_PILL =
+  "h-9 px-7 rounded-full bg-[#94C060] text-white font-bold text-[15px] tracking-tight flex items-center justify-center shadow-2xs";
+const T_CARD_TITLE = "text-[14px] font-bold text-[#0F2926] tracking-tight";
+const T_ITEM_NAME = "text-[13px] font-semibold text-[#0F2926]";
+const T_META = "text-[11px] font-medium text-slate-400";
+
+// 3. Unified Clickable Buttons (Every interactive button shares the #FFC45A family)
+const BTN_PRIMARY =
+  "bg-[#FFC45A] hover:brightness-105 active:scale-96 text-[#04453F] font-bold text-[13px] rounded-full px-6 py-2.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
+const BTN_PILL_ACTIVE =
+  "bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1";
+const BTN_PILL_SUBTLE =
+  "bg-[#FFC45A]/25 hover:bg-[#FFC45A]/45 active:scale-95 border border-[#FFC45A]/70 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 transition cursor-pointer inline-flex items-center justify-center gap-1";
+const BTN_STEPPER =
+  "w-7 h-7 rounded-[10px] bg-[#FFC45A]/35 hover:bg-[#FFC45A] active:scale-90 text-[#04453F] font-bold text-[13px] flex items-center justify-center transition cursor-pointer";
+const BTN_ICON_CIRCLE =
+  "w-9 h-9 rounded-full bg-white hover:bg-[#F4F6EE] active:scale-90 text-[#04453F] flex items-center justify-center pro-card-shadow border border-[#04453F]/8 transition cursor-pointer";
+
 export default function FreshDateApp() {
   // =========================================================================
-  // 1. AUTH & ONBOARDING FLOW (Screens #1 & #2)
+  // 1. AUTH & ONBOARDING FLOW
   // =========================================================================
   const [appStage, setAppStage] = useState<AppStage>("login");
   const [userEmail, setUserEmail] = useState("freshie@freshdate.app");
 
-  // Profile Settings with Custom iOS Sans-Serif Dropdowns & "Other..." Input
   const [weightKg, setWeightKg] = useState(65);
   const [dinersCount, setDinersCount] = useState(1);
 
@@ -89,7 +115,6 @@ export default function FreshDateApp() {
   // =========================================================================
   const [activeTab, setActiveTab] = useState<ActiveTab>("fridge");
 
-  // My Fridge State (Screens #11 & #12) + Collapsible Refrigerated/Frozen Zones
   const [fridgeItems, setFridgeItems] =
     useState<FridgeItem[]>(INITIAL_FRIDGE_ITEMS);
   const [editingFridgeItem, setEditingFridgeItem] =
@@ -102,7 +127,7 @@ export default function FreshDateApp() {
     frozen: false,
   });
 
-  // Import Flow State (Screens #3, #4, #5, #6, #7)
+  // Import Flow State
   const [importScreen, setImportScreen] = useState<ImportScreen>("closed");
   const [cameraMode, setCameraMode] = useState<"scan" | "photo">("scan");
   const [manualCategory, setManualCategory] = useState<
@@ -112,7 +137,6 @@ export default function FreshDateApp() {
   const [defaultZoneFilter, setDefaultZoneFilter] =
     useState<StorageZone>("refrigerated");
 
-  // Screen #7: Food Information Bottom Sheet
   const [selectedCatalogItem, setSelectedCatalogItem] =
     useState<CatalogItem | null>(null);
   const [draftServings, setDraftServings] = useState(1);
@@ -123,7 +147,7 @@ export default function FreshDateApp() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // =========================================================================
-  // 3. MY WEEK & RECIPES STATE (Screens #8, #9, #10)
+  // 3. MY WEEK & RECIPES STATE
   // =========================================================================
   const [weekSubScreen, setWeekSubScreen] = useState<WeekSubScreen>("overview");
   const [calendarRange, setCalendarRange] = useState<"week" | "month">("week");
@@ -142,7 +166,6 @@ export default function FreshDateApp() {
   const [showRecipeMealMenu, setShowRecipeMealMenu] = useState(false);
   const [activeRecipe, setActiveRecipe] = useState<Recipe>(RECIPES[0]);
 
-  // Used Ingredients in Recipes screen: Drag-to-Delete + "+ Other"
   const [excludedIngredientIds, setExcludedIngredientIds] = useState<string[]>(
     []
   );
@@ -175,22 +198,20 @@ export default function FreshDateApp() {
     "sug-eggs": true,
     "sug-chicken": true,
   });
-  // Tracks manual user overrides for category collapse; if undefined, auto-collapses when netToBuy === 0!
   const [manualCategoryCollapse, setManualCategoryCollapse] = useState<
     Record<string, boolean>
   >({});
 
-  // Me State (Screens #14, #15, #16)
+  // Me State
   const [meSubScreen, setMeSubScreen] = useState<MeSubScreen>("menu");
 
-  // Sonner Toast Helper
   const notify = (msg: string) => {
     toast.success(msg, {
       style: {
         background: "#04453F",
         color: "#F0E98F",
         border: "1px solid rgba(148,192,96,0.35)",
-        borderRadius: "18px",
+        borderRadius: "16px",
         fontSize: "12px",
         fontWeight: 600,
       },
@@ -299,7 +320,6 @@ export default function FreshDateApp() {
     return Array.from(map.values());
   }, [recipesForCurrentMeal, excludedIngredientIds, addedOtherIngredients]);
 
-  // Realistic Category-Level Quota & Dynamic Item List
   const getCategoryDynamicQuota = (
     category: "Staples" | "Produce" | "Protein" | "Drinks & Condiments"
   ) => {
@@ -322,8 +342,8 @@ export default function FreshDateApp() {
     if (netToBuy === 0) {
       return {
         netToBuy: 0,
-        quotaText: "", // Omit "0 servings (Fridge full)" completely!
-        inFridgeText: `In fridge: ${totalInFridge} srv`,
+        quotaText: "",
+        inFridgeText: `In fridge: ${totalInFridge}`,
       };
     }
 
@@ -337,12 +357,11 @@ export default function FreshDateApp() {
 
     return {
       netToBuy,
-      quotaText: `${netToBuy}–${netToBuy + 1} servings`,
-      inFridgeText: `In fridge: ${totalInFridge} srv`,
+      quotaText: `${netToBuy}–${netToBuy + 1} srv`,
+      inFridgeText: `In fridge: ${totalInFridge}`,
     };
   };
 
-  // Dynamic items for Suggested List: filters out items that already have >= 2 servings in fridge or 0 servings
   const dynamicSuggestedList = useMemo(() => {
     return SUGGESTED_BASE_CATALOG.map((baseItem) => {
       const inFridgeServings = fridgeItems
@@ -355,7 +374,6 @@ export default function FreshDateApp() {
         )
         .reduce((sum, f) => sum + f.servings, 0);
 
-      // If you already have >= 2 servings of this specific item in the fridge, default needed is 0 (auto-hidden unless manually added)
       const baseNeed =
         inFridgeServings >= 2 ? 0 : baseItem.defaultBuyServings;
       const userDelta = suggestedDeltaMap[baseItem.id] || 0;
@@ -370,7 +388,7 @@ export default function FreshDateApp() {
             ? suggestedCheckedMap[baseItem.id] && finalServings > 0
             : false,
       };
-    }).filter((item) => item.servings > 0); // Only show items with servings > 0 (never show "0 servings / Enough in fridge" cards!)
+    }).filter((item) => item.servings > 0);
   }, [fridgeItems, suggestedDeltaMap, suggestedCheckedMap]);
 
   // =========================================================================
@@ -388,11 +406,11 @@ export default function FreshDateApp() {
           if (item.id !== id) return item;
           const nextServings = item.servings + delta;
           if (nextServings <= 0) {
-            notify(`Finished ${item.name} — Suggested List auto-updated!`);
+            notify(`Finished ${item.name} — Suggested List updated`);
             if (editingFridgeItem?.id === id) setEditingFridgeItem(null);
             return null;
           }
-          notify(`${item.name}: ${nextServings} srv (Suggested List updated)`);
+          notify(`${item.name}: ${nextServings} srv`);
           return { ...item, servings: nextServings };
         })
         .filter(Boolean) as FridgeItem[]
@@ -410,7 +428,7 @@ export default function FreshDateApp() {
           : item.shelfLifeDays;
         notify(
           `Moved ${item.name} to ${
-            toFreezer ? "Frozen ❄️" : "Refrigerated"
+            toFreezer ? "Frozen" : "Refrigerated"
           } (${nextDays}d)`
         );
         const updated = { ...item, zone: nextZone, daysLeft: nextDays };
@@ -472,9 +490,7 @@ export default function FreshDateApp() {
     setUploadedPhotoUrl(null);
     setImportScreen("closed");
     setActiveTab("fridge");
-    notify(
-      `Added ${draftServings}x ${selectedCatalogItem.name} — Suggested List adjusted!`
-    );
+    notify(`Added ${draftServings}x ${selectedCatalogItem.name}`);
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -509,7 +525,6 @@ export default function FreshDateApp() {
     );
   };
 
-  // Sync calendar schedule button
   const handleImportSchedule = () => {
     let synced = false;
     setWeekSchedule((prev) =>
@@ -541,9 +556,7 @@ export default function FreshDateApp() {
     setDraggingIngredientId(null);
     setIsOverTrashZone(false);
     if (target) {
-      notify(
-        `Removed "${target.name}" — Tap "+ Other" to pick an alternative ingredient`
-      );
+      notify(`Removed "${target.name}"`);
     }
   };
 
@@ -558,7 +571,7 @@ export default function FreshDateApp() {
       prev.some((i) => i.id === ing.id) ? prev : [...prev, ing]
     );
     setShowOtherIngredientModal(false);
-    notify(`Added "${ing.name}" to ingredients used`);
+    notify(`Added "${ing.name}"`);
   };
 
   const handleAddCustomOtherIngredient = (e: React.FormEvent) => {
@@ -573,7 +586,7 @@ export default function FreshDateApp() {
     setAddedOtherIngredients((prev) => [...prev, newIng]);
     setCustomOtherIngName("");
     setShowOtherIngredientModal(false);
-    notify(`Added "${newIng.name}" to ingredients used`);
+    notify(`Added "${newIng.name}"`);
   };
 
   const handleTouchEndIngredient = (
@@ -669,12 +682,10 @@ export default function FreshDateApp() {
     setSuggestedDeltaMap({});
     setManualCategoryCollapse({});
     setActiveTab("fridge");
-    notify(
-      `Added ${checked.length} items to My Fridge — Suggested List recalculated!`
-    );
+    notify(`Added ${checked.length} items to My Fridge`);
   };
 
-  // Freshness Progress Bar & Clean Flat Semantic Badge
+  // Freshness Progress Bar & Semantic Status Indicator (Non-button status tag)
   const getFreshnessVisuals = (item: FridgeItem) => {
     const maxLife =
       item.zone === "frozen"
@@ -687,27 +698,27 @@ export default function FreshDateApp() {
 
     if (item.daysLeft <= 1) {
       return {
-        badgeClass: "bg-red-500 text-white shadow-2xs",
+        badgeClass: "bg-red-500 text-white",
         barColor: "bg-red-500",
         pct,
       };
     }
     if (item.daysLeft <= 2) {
       return {
-        badgeClass: "bg-[#FFC45A] text-[#04453F]",
-        barColor: "bg-[#FFC45A]",
+        badgeClass: "bg-amber-100 text-amber-900",
+        barColor: "bg-amber-500",
         pct,
       };
     }
     if (item.zone === "frozen") {
       return {
-        badgeClass: "bg-sky-100 text-sky-900 border border-sky-200/70",
+        badgeClass: "bg-sky-100 text-sky-900",
         barColor: "bg-sky-400",
         pct,
       };
     }
     return {
-      badgeClass: "bg-[#94C060]/45 text-[#04453F]",
+      badgeClass: "bg-[#94C060]/30 text-[#04453F]",
       barColor: "bg-[#94C060]",
       pct,
     };
@@ -717,21 +728,15 @@ export default function FreshDateApp() {
   const renderVernierWeightCard = (readOnly?: boolean) => {
     const ticks = Array.from({ length: 41 }, (_, i) => 50 + i);
     return (
-      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-2.5">
+      <div className={`${CARD_CLS} space-y-2.5`}>
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-[#0F2926]">
-            Current Weight
+          <span className={T_CARD_TITLE}>Current Weight</span>
+          <span className="text-[16px] font-extrabold text-[#04453F]">
+            {weightKg} KG
           </span>
         </div>
 
-        <div className="text-center">
-          <div className="text-3xl font-extrabold text-[#04453F] tracking-tight inline-flex items-baseline gap-1 transition-all">
-            <span>{weightKg}</span>
-            <span className="text-sm font-bold text-[#658C38]">KG</span>
-          </div>
-        </div>
-
-        <div className="relative bg-[#F4F6EE]/90 rounded-2xl px-3 pt-3 pb-2 border border-[#04453F]/8 overflow-hidden">
+        <div className={`${TILE_CLS} px-3 pt-3 pb-2 overflow-hidden`}>
           <div className="flex items-end justify-between h-6 px-1">
             {ticks.map((val) => {
               const isMajor = val % 5 === 0;
@@ -790,7 +795,7 @@ export default function FreshDateApp() {
     );
   };
 
-  // Custom iOS Sans-Serif Dropdown Helper (100% Pure English!)
+  // Unified Interactive Dropdown Button
   const renderCustomSansDropdown = (
     key: "avoid" | "allergens" | "flavor" | "reminder",
     currentValue: string,
@@ -806,7 +811,7 @@ export default function FreshDateApp() {
         <button
           type="button"
           onClick={() => setOpenDropdownKey(isOpen ? null : key)}
-          className="bg-[#FFC45A]/45 hover:bg-[#FFC45A]/65 active:scale-95 text-[#04453F] font-sans font-semibold px-3.5 py-1.5 rounded-full text-xs flex items-center gap-1.5 transition"
+          className={BTN_PILL_ACTIVE}
         >
           <span>{currentLabel}</span>
           <ChevronDown
@@ -823,7 +828,7 @@ export default function FreshDateApp() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -4, scale: 0.97 }}
               transition={{ duration: 0.18, ease: IOS_EASE }}
-              className="absolute right-0 mt-1.5 w-44 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_14px_34px_rgba(4,69,63,0.16)] border border-[#04453F]/15 py-1.5 z-50 font-sans"
+              className="absolute right-0 mt-1.5 w-44 bg-white rounded-[16px] shadow-[0_14px_34px_rgba(4,69,63,0.16)] border border-[#04453F]/12 py-1.5 z-50 font-sans"
             >
               {options.map((opt) => {
                 const isSelected = currentValue === opt.value;
@@ -835,13 +840,13 @@ export default function FreshDateApp() {
                       onSelect(opt.value);
                       setOpenDropdownKey(null);
                     }}
-                    className={`w-full px-3.5 py-2 text-left text-xs font-sans font-semibold flex items-center justify-between transition ${
+                    className={`w-full px-3.5 py-2 text-left text-[12px] font-sans font-semibold flex items-center justify-between transition ${
                       isSelected
-                        ? "bg-[#94C060]/25 text-[#04453F] font-bold"
+                        ? "bg-[#94C060]/20 text-[#04453F] font-bold"
                         : "text-[#0F2926] hover:bg-[#F4F6EE]"
                     }`}
                   >
-                    <span className="font-sans">{opt.label}</span>
+                    <span>{opt.label}</span>
                     {isSelected && (
                       <span className="text-[#04453F] font-bold">✓</span>
                     )}
@@ -855,22 +860,17 @@ export default function FreshDateApp() {
     );
   };
 
-  // Calendar Card with Smooth [Week | Month] Switcher
-  const renderCalendarCard = (compact?: boolean) => (
-    <div
-      className={`bg-white/95 backdrop-blur-xl rounded-3xl ${
-        compact ? "p-3" : "p-3.5"
-      } pro-card-shadow border border-white/80 space-y-2.5`}
-    >
-      <div className="flex items-center justify-between px-1">
+  // Calendar Card with Unified Typography & Button Styles
+  const renderCalendarCard = () => (
+    <div className={`${CARD_CLS} space-y-3`}>
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-[#04453F]" />
-          <span className="text-xs font-bold text-[#0F2926]">
-            December, 2025
-          </span>
+          <span className={T_CARD_TITLE}>December, 2025</span>
         </div>
 
-        <div className="bg-[#F4F6EE] p-0.5 rounded-full flex items-center text-[10px] font-bold border border-[#04453F]/10">
+        {/* Unified Interactive Segmented Buttons */}
+        <div className="bg-[#F4F6EE] p-1 rounded-full flex items-center gap-1">
           {(["week", "month"] as const).map((mode) => {
             const active = calendarRange === mode;
             return (
@@ -878,9 +878,9 @@ export default function FreshDateApp() {
                 key={mode}
                 type="button"
                 onClick={() => setCalendarRange(mode)}
-                className={`px-2.5 py-0.5 rounded-full capitalize transition-all duration-200 ${
+                className={`px-3 py-1 rounded-full text-[11px] font-bold capitalize transition-all duration-200 cursor-pointer ${
                   active
-                    ? "bg-[#94C060] text-white shadow-2xs"
+                    ? "bg-[#FFC45A] text-[#04453F] shadow-2xs"
                     : "text-slate-500 hover:text-[#04453F]"
                 }`}
               >
@@ -892,7 +892,7 @@ export default function FreshDateApp() {
       </div>
 
       {calendarRange === "month" && (
-        <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold text-slate-400 pt-0.5">
+        <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-semibold text-slate-400">
           <span>Sun</span>
           <span>Mon</span>
           <span>Tue</span>
@@ -917,7 +917,7 @@ export default function FreshDateApp() {
               onClick={() => setSelectedDate(d.date)}
               className={`flex flex-col items-center ${
                 calendarRange === "month" ? "py-1.5" : "py-2"
-              } rounded-2xl transition-all duration-200 active:scale-95 ${
+              } rounded-[12px] transition-all duration-200 active:scale-95 cursor-pointer ${
                 isSelected
                   ? "bg-[#FFC45A] text-[#04453F] shadow-2xs"
                   : "hover:bg-[#F4F6EE] text-[#0F2926]"
@@ -928,13 +928,7 @@ export default function FreshDateApp() {
                   {d.dayName}
                 </span>
               )}
-              <span
-                className={`${
-                  calendarRange === "month" ? "text-xs" : "text-sm"
-                } font-bold mt-0.5`}
-              >
-                {d.date}
-              </span>
+              <span className="text-[13px] font-bold mt-0.5">{d.date}</span>
               <div className="mt-1 flex items-center gap-[3px]">
                 {slots.map((s, idx) => (
                   <span
@@ -954,12 +948,12 @@ export default function FreshDateApp() {
     </div>
   );
 
-  // Pure English Dropdowns with "Other..." Custom Input
+  // Dietary Preferences Card with Unified Typography & Buttons
   const renderDietaryDropdownsWithOther = () => (
-    <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3 text-xs font-sans">
+    <div className={`${CARD_CLS} space-y-3`}>
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <span className="font-bold text-[#0F2926]">Foods to Avoid</span>
+          <span className={T_ITEM_NAME}>Foods to Avoid</span>
           {renderCustomSansDropdown(
             "avoid",
             avoidFoods,
@@ -978,14 +972,14 @@ export default function FreshDateApp() {
             value={customAvoidFoods}
             onChange={(e) => setCustomAvoidFoods(e.target.value)}
             placeholder="Please specify foods to avoid..."
-            className="w-full px-3 py-2 rounded-xl bg-[#F4F6EE] border border-[#04453F]/15 text-xs font-sans text-[#0F2926] outline-none focus:border-[#04453F]"
+            className={`w-full px-3 py-2 ${TILE_CLS} border border-[#04453F]/15 text-[12px] text-[#0F2926] outline-none focus:border-[#04453F]`}
           />
         )}
       </div>
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <span className="font-bold text-[#0F2926]">Allergens</span>
+          <span className={T_ITEM_NAME}>Allergens</span>
           {renderCustomSansDropdown(
             "allergens",
             allergens,
@@ -1005,14 +999,14 @@ export default function FreshDateApp() {
             value={customAllergens}
             onChange={(e) => setCustomAllergens(e.target.value)}
             placeholder="Please specify your allergens..."
-            className="w-full px-3 py-2 rounded-xl bg-[#F4F6EE] border border-[#04453F]/15 text-xs font-sans text-[#0F2926] outline-none focus:border-[#04453F]"
+            className={`w-full px-3 py-2 ${TILE_CLS} border border-[#04453F]/15 text-[12px] text-[#0F2926] outline-none focus:border-[#04453F]`}
           />
         )}
       </div>
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <span className="font-bold text-[#0F2926]">Flavor Preferences</span>
+          <span className={T_ITEM_NAME}>Flavor Preferences</span>
           {renderCustomSansDropdown(
             "flavor",
             flavorPref,
@@ -1031,32 +1025,32 @@ export default function FreshDateApp() {
             value={customFlavorPref}
             onChange={(e) => setCustomFlavorPref(e.target.value)}
             placeholder="Please specify your flavor preference..."
-            className="w-full px-3 py-2 rounded-xl bg-[#F4F6EE] border border-[#04453F]/15 text-xs font-sans text-[#0F2926] outline-none focus:border-[#04453F]"
+            className={`w-full px-3 py-2 ${TILE_CLS} border border-[#04453F]/15 text-[12px] text-[#0F2926] outline-none focus:border-[#04453F]`}
           />
         )}
       </div>
     </div>
   );
 
-  // Render Fridge Item Row
+  // Render Fridge Item Row (Uniform 12px inner radius, 13px item name, unified stepper buttons)
   const renderEnhancedFridgeRow = (item: FridgeItem, isFrozen?: boolean) => {
     const vis = getFreshnessVisuals(item);
     return (
       <div
         key={item.id}
         onClick={() => setEditingFridgeItem(item)}
-        className={`grid grid-cols-12 items-center rounded-2xl px-2.5 py-2.5 cursor-pointer transition-colors duration-150 border ${
+        className={`grid grid-cols-12 items-center rounded-[12px] px-2.5 py-2.5 cursor-pointer transition-colors duration-150 ${
           isFrozen
-            ? "bg-sky-50/45 hover:bg-sky-50/75 border-sky-100/80"
-            : "bg-[#F4F6EE]/85 hover:bg-[#F4F6EE] border-white/60"
+            ? "bg-sky-50/60 hover:bg-sky-100/60"
+            : "bg-[#F4F6EE] hover:bg-[#EAEFDE]"
         }`}
       >
         <div className="col-span-6 flex items-center gap-2.5 min-w-0 pr-1">
-          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-xl shrink-0 shadow-2xs">
+          <div className="w-10 h-10 rounded-[10px] bg-white flex items-center justify-center text-xl shrink-0 shadow-2xs">
             <span>{item.emoji}</span>
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold text-[#0F2926] leading-tight truncate">
+            <div className={`${T_ITEM_NAME} leading-tight truncate`}>
               {item.name}
             </div>
             <div className="text-[10px] text-slate-400 mt-0.5">
@@ -1071,27 +1065,29 @@ export default function FreshDateApp() {
           </div>
         </div>
 
-        <div className="col-span-4 flex items-center justify-center gap-1">
+        {/* Unified Stepper Buttons */}
+        <div className="col-span-4 flex items-center justify-center gap-1.5">
           <button
             onClick={(e) => adjustFridgeServings(item.id, -1, e)}
-            className="w-6 h-6 rounded-lg bg-white hover:bg-[#FFC45A]/40 active:scale-90 text-[#04453F] font-bold text-xs flex items-center justify-center shadow-2xs transition"
+            className={BTN_STEPPER}
           >
             -
           </button>
-          <span className="w-5 text-center text-xs font-bold text-[#0F2926]">
+          <span className="w-5 text-center text-[13px] font-bold text-[#0F2926]">
             {item.servings}
           </span>
           <button
             onClick={(e) => adjustFridgeServings(item.id, 1, e)}
-            className="w-6 h-6 rounded-lg bg-white hover:bg-[#94C060]/40 active:scale-90 text-[#04453F] font-bold text-xs flex items-center justify-center shadow-2xs transition"
+            className={BTN_STEPPER}
           >
             +
           </button>
         </div>
 
+        {/* Non-clickable Status Badge */}
         <div className="col-span-2 flex justify-end">
           <span
-            className={`min-w-[34px] h-7 px-1.5 rounded-xl text-xs font-extrabold flex items-center justify-center ${vis.badgeClass}`}
+            className={`min-w-[34px] h-7 px-1.5 rounded-[10px] text-[12px] font-extrabold flex items-center justify-center ${vis.badgeClass}`}
           >
             {item.daysLeft}
           </span>
@@ -1139,51 +1135,45 @@ export default function FreshDateApp() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-6 pt-5 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 px-5 pt-4 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
           >
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div className="flex justify-center">
-                <div className="px-7 py-2 rounded-full bg-[#94C060] text-white font-bold text-sm tracking-wide shadow-xs">
-                  FRESHDATE
-                </div>
+                <div className={T_HEADER_PILL}>FRESHDATE</div>
               </div>
 
-              <div className="bg-white/95 rounded-2xl p-3.5 flex items-center gap-3 pro-card-shadow border border-white/80">
-                <div className="w-10 h-10 rounded-xl bg-[#FFC45A]/30 flex items-center justify-center text-xl shrink-0">
+              <div className={`${CARD_CLS} flex items-center gap-3`}>
+                <div className="w-10 h-10 rounded-[12px] bg-[#F4F6EE] flex items-center justify-center text-xl shrink-0">
                   🧊
                 </div>
-                <p className="text-[11px] text-[#0F2926] leading-relaxed font-medium">
+                <p className="text-[12px] text-[#0F2926] leading-relaxed font-medium">
                   Track what you have, beat expiration dates, and shop smarter—so every ingredient counts.
                 </p>
               </div>
 
-              <div className="bg-white/95 rounded-3xl p-6 pro-card-shadow border border-white/80 space-y-5">
+              <div className={`${CARD_CLS} space-y-5`}>
                 <div>
-                  <label className="text-xs font-bold text-[#0F2926]">
-                    Email
-                  </label>
+                  <label className={T_ITEM_NAME}>Email</label>
                   <input
                     type="email"
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
-                    className="w-full mt-1.5 pb-2 border-b border-slate-200 text-sm text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
+                    className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-[#0F2926]">
-                    Password
-                  </label>
+                  <label className={T_ITEM_NAME}>Password</label>
                   <input
                     type="password"
                     defaultValue="••••••••••••"
-                    className="w-full mt-1.5 pb-2 border-b border-slate-200 text-sm text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
+                    className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
                   />
                   <div className="text-center mt-3">
                     <button
                       type="button"
                       onClick={() => notify("Password reset link sent")}
-                      className="text-[11px] text-slate-400 underline"
+                      className="text-[11px] text-slate-400 underline cursor-pointer"
                     >
                       Forgot your password?
                     </button>
@@ -1193,7 +1183,7 @@ export default function FreshDateApp() {
                 <div className="pt-1 flex justify-center">
                   <button
                     onClick={() => setAppStage("intro")}
-                    className="w-44 bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold py-2.5 rounded-full text-xs shadow-xs transition"
+                    className={`w-44 ${BTN_PRIMARY}`}
                   >
                     Let&apos;s Start
                   </button>
@@ -1203,7 +1193,7 @@ export default function FreshDateApp() {
               <div className="flex justify-center">
                 <button
                   onClick={() => setAppStage("intro")}
-                  className="px-6 py-2.5 rounded-full bg-white/85 hover:bg-white active:scale-95 text-slate-500 font-semibold text-xs border border-white/80 pro-card-shadow transition"
+                  className={BTN_PILL_SUBTLE}
                 >
                   I don&apos;t have an account
                 </button>
@@ -1217,99 +1207,43 @@ export default function FreshDateApp() {
         )}
 
         {/* ===================================================================
-            SCREEN 1.5: POST-LOGIN CONCISE APP INTRODUCTION
+            SCREEN 1.5: MINIMAL WELCOME & ONE-SENTENCE INTRO (Image 1 Critique)
            =================================================================== */}
         {appStage === "intro" && (
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-5 pt-2 pb-8 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 px-6 pt-3 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
           >
-            <div className="space-y-4">
-              {/* Top Bar */}
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={() => setAppStage("login")}
-                  className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow active:scale-90 transition"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div className="px-7 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                  FRESHDATE
-                </div>
-                <button
-                  onClick={() => setAppStage("onboarding")}
-                  className="text-xs font-bold text-slate-400 hover:text-[#04453F] px-1"
-                >
-                  Skip
-                </button>
-              </div>
-
-              {/* Hero Value Summary Card */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#065A52] via-[#04453F] to-[#022C28] rounded-3xl p-5 text-white pro-card-shadow space-y-2">
-                <div className="absolute -right-6 -top-6 w-28 h-28 rounded-full blur-2xl bg-[#94C060]/30 pointer-events-none" />
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#FFC45A] text-[#04453F] text-[10px] font-bold uppercase tracking-wider">
-                  What is FRESHDATE?
-                </span>
-                <h1 className="text-lg font-extrabold leading-snug text-white">
-                  Stop Food Waste Before You Shop
-                </h1>
-                <p className="text-xs text-[#F0E98F]/90 leading-relaxed">
-                  A fridge-centered shopping intervention app that links your live fridge inventory with your weekly dining plans—so you only buy what you will actually eat.
-                </p>
-              </div>
-
-              {/* 3 Concise Core Pillars */}
-              <div className="space-y-2.5">
-                <div className="bg-white/95 rounded-2xl p-3.5 pro-card-shadow border border-white/80 flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#94C060]/20 flex items-center justify-center text-xl shrink-0">
-                    🧊
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-[#0F2926]">
-                      1. Track Fridge &amp; Freezer Freshness
-                    </h3>
-                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                      Scan or log groceries in seconds, monitor remaining days, and get storage tips for every item.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-white/95 rounded-2xl p-3.5 pro-card-shadow border border-white/80 flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFC45A]/30 flex items-center justify-center text-xl shrink-0">
-                    🗓️
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-[#0F2926]">
-                      2. Sync Plans &amp; Rescue Expiring Food
-                    </h3>
-                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                      Mark meals when you dine out and get recipe recommendations prioritized by expiring ingredients.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-white/95 rounded-2xl p-3.5 pro-card-shadow border border-white/80 flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#F0E98F]/70 flex items-center justify-center text-xl shrink-0">
-                    🛒
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-[#0F2926]">
-                      3. Smart Pre-Shopping Intervention
-                    </h3>
-                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                      Your suggested grocery list automatically deducts existing fridge stock and meals out to prevent overbuying.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setAppStage("login")}
+                className={BTN_ICON_CIRCLE}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <div className={T_HEADER_PILL}>FRESHDATE</div>
+              <div className="w-9" />
             </div>
 
-            <div className="pt-4 flex justify-center">
+            {/* Minimal Centered Welcome & One-Sentence Value Proposition */}
+            <div className={`${CARD_CLS} py-10 px-6 text-center space-y-4`}>
+              <div className="w-16 h-16 rounded-[16px] bg-[#F4F6EE] mx-auto flex items-center justify-center text-3xl">
+                🧊
+              </div>
+              <h1 className="text-[24px] font-extrabold text-[#04453F] tracking-tight">
+                Welcome
+              </h1>
+              <p className="text-[13px] text-slate-600 leading-relaxed max-w-[260px] mx-auto">
+                FRESHDATE links your fridge inventory with your weekly dining plans so you only buy what you will actually eat.
+              </p>
+            </div>
+
+            <div className="flex justify-center">
               <button
                 onClick={() => setAppStage("onboarding")}
-                className="w-44 bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold py-2.5 rounded-full text-xs shadow-sm transition"
+                className={`w-44 ${BTN_PRIMARY}`}
               >
                 Continue
               </button>
@@ -1325,47 +1259,37 @@ export default function FreshDateApp() {
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 overflow-y-auto no-scrollbar px-5 pt-2 pb-8 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 overflow-y-auto no-scrollbar px-5 pt-3 pb-8 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
           >
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <div className="flex items-center justify-between">
                 <button
                   onClick={() => setAppStage("intro")}
-                  className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow active:scale-90 transition"
+                  className={BTN_ICON_CIRCLE}
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-                <div className="px-8 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                  Welcome
-                </div>
-                <div className="w-8" />
-              </div>
-
-              <div className="bg-white/95 rounded-2xl p-3 text-center border border-white/80 pro-card-shadow">
-                <p className="text-[11px] text-slate-600 leading-relaxed">
-                  The app will recommend recipes and a grocery list based on your personal data and preferences.
-                </p>
+                <div className={T_HEADER_PILL}>Basic Settings</div>
+                <div className="w-9" />
               </div>
 
               {renderVernierWeightCard(false)}
 
-              <div className="bg-white/95 rounded-2xl px-4 py-3 pro-card-shadow border border-white/80 flex items-center justify-between">
-                <span className="text-xs font-bold text-[#0F2926]">
-                  Number of Diners:
-                </span>
+              <div className={`${CARD_CLS} flex items-center justify-between`}>
+                <span className={T_CARD_TITLE}>Number of Diners</span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setDinersCount(Math.max(1, dinersCount - 1))}
-                    className="w-7 h-7 rounded-lg bg-[#FFC45A]/35 active:scale-90 text-[#04453F] font-bold text-sm flex items-center justify-center transition"
+                    className={BTN_STEPPER}
                   >
                     -
                   </button>
-                  <span className="w-7 text-center font-bold text-xs text-[#04453F]">
+                  <span className="w-6 text-center font-bold text-[14px] text-[#04453F]">
                     {dinersCount}
                   </span>
                   <button
                     onClick={() => setDinersCount(dinersCount + 1)}
-                    className="w-7 h-7 rounded-lg bg-[#FFC45A]/35 active:scale-90 text-[#04453F] font-bold text-sm flex items-center justify-center transition"
+                    className={BTN_STEPPER}
                   >
                     +
                   </button>
@@ -1383,7 +1307,7 @@ export default function FreshDateApp() {
                   setActiveTab("fridge");
                   notify("Welcome to FRESHDATE!");
                 }}
-                className="w-36 bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold py-2.5 rounded-full text-xs shadow-sm transition"
+                className={`w-44 ${BTN_PRIMARY}`}
               >
                 Done
               </button>
@@ -1406,18 +1330,16 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3.5"
+                  className="px-4 pt-2 space-y-3"
                 >
                   {weekSubScreen === "overview" && (
                     <>
                       <div className="flex items-center justify-between">
-                        <div className="w-8" />
-                        <div className="px-7 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          My Week
-                        </div>
+                        <div className="w-9" />
+                        <div className={T_HEADER_PILL}>My Week</div>
                         <button
                           onClick={() => setImportScreen("hub")}
-                          className="w-8 h-8 rounded-full bg-[#94C060] active:scale-90 text-white flex items-center justify-center shadow-2xs transition"
+                          className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
                         >
                           <Plus className="w-5 h-5" />
                         </button>
@@ -1425,18 +1347,21 @@ export default function FreshDateApp() {
 
                       {renderCalendarCard()}
 
-                      {/* Read-only Total Absences Summary Badge (No - / + buttons!) */}
-                      <div className="bg-white/95 rounded-2xl px-4 py-2.5 pro-card-shadow border border-white/80 flex items-center justify-between">
-                        <span className="text-xs font-bold text-[#0F2926]">
-                          Total absences this {calendarRange}:
+                      {/* Unified Card Hierarchy: Same rounded-[20px] p-4 & text-[14px] font-bold as Breakfast below!
+                          And "2 meals" is static data text, NOT a fake button! */}
+                      <div
+                        className={`${CARD_CLS} flex items-center justify-between`}
+                      >
+                        <span className={T_CARD_TITLE}>
+                          Total absences this {calendarRange}
                         </span>
-                        <span className="px-3.5 py-1 rounded-full bg-[#FFC45A] text-[#04453F] font-bold text-xs">
+                        <span className="text-[14px] font-extrabold text-[#04453F]">
                           {totalAbsencesCount}{" "}
                           {totalAbsencesCount === 1 ? "meal" : "meals"}
                         </span>
                       </div>
 
-                      <div className="space-y-2.5">
+                      <div className="space-y-3">
                         {(["Breakfast", "Lunch", "Dinner"] as const).map(
                           (mealType) => {
                             const slot = currentDaySchedule.meals[mealType];
@@ -1444,10 +1369,7 @@ export default function FreshDateApp() {
                             const isOut = slot.status === "dining_out";
 
                             return (
-                              <div
-                                key={mealType}
-                                className="bg-white/95 rounded-3xl p-3.5 pro-card-shadow border border-white/80"
-                              >
+                              <div key={mealType} className={CARD_CLS}>
                                 <div
                                   onClick={() =>
                                     setExpandedMeal((prev) =>
@@ -1457,7 +1379,7 @@ export default function FreshDateApp() {
                                   className="flex items-center justify-between cursor-pointer"
                                 >
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-bold text-[#0F2926]">
+                                    <span className={T_CARD_TITLE}>
                                       {mealType}
                                     </span>
                                     <ChevronDown
@@ -1467,6 +1389,7 @@ export default function FreshDateApp() {
                                     />
                                   </div>
 
+                                  {/* Unified Interactive Button Style for Both States */}
                                   <button
                                     onClick={(e) =>
                                       toggleMealAbsence(
@@ -1475,11 +1398,9 @@ export default function FreshDateApp() {
                                         e
                                       )
                                     }
-                                    className={`px-3 py-1 rounded-full text-[11px] font-bold transition ${
-                                      isOut
-                                        ? "bg-[#FFC45A] text-[#04453F]"
-                                        : "bg-[#F4F6EE] text-slate-500 hover:bg-[#94C060]/20 hover:text-[#04453F]"
-                                    }`}
+                                    className={
+                                      isOut ? BTN_PILL_ACTIVE : BTN_PILL_SUBTLE
+                                    }
                                   >
                                     {isOut ? "Out (Absence)" : "Eat at Home"}
                                   </button>
@@ -1497,9 +1418,11 @@ export default function FreshDateApp() {
                                       }}
                                       className="overflow-hidden"
                                     >
-                                      <div className="pt-3 mt-2.5 border-t border-slate-100">
+                                      <div className="pt-3 mt-3 border-t border-slate-100">
                                         {isOut ? (
-                                          <div className="py-3 text-center text-xs text-amber-800 bg-[#FFC45A]/15 rounded-2xl font-medium">
+                                          <div
+                                            className={`py-3 text-center text-[12px] text-amber-800 ${TILE_CLS} font-medium`}
+                                          >
                                             Marked as Dining Out — Excluded from grocery quota
                                           </div>
                                         ) : (
@@ -1514,12 +1437,14 @@ export default function FreshDateApp() {
                                                     );
                                                     setWeekSubScreen("recipes");
                                                   }}
-                                                  className="bg-[#F4F6EE] hover:bg-[#94C060]/15 active:scale-95 rounded-2xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"
+                                                  className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-2.5 flex flex-col items-center text-center cursor-pointer transition`}
                                                 >
                                                   <span className="text-3xl mb-1">
                                                     {item.emoji}
                                                   </span>
-                                                  <span className="text-[11px] font-semibold text-[#0F2926] line-clamp-1">
+                                                  <span
+                                                    className={`${T_ITEM_NAME} line-clamp-1`}
+                                                  >
                                                     {item.name}
                                                   </span>
                                                 </div>
@@ -1537,21 +1462,22 @@ export default function FreshDateApp() {
                         )}
                       </div>
 
+                      {/* Unified Interactive Buttons */}
                       <div className="grid grid-cols-2 gap-3 pt-1">
                         <button
                           onClick={() => {
                             if (expandedMeal) setRecipeMealFilter(expandedMeal);
                             setWeekSubScreen("recipes");
                           }}
-                          className="bg-[#F0E98F] hover:brightness-98 active:scale-97 text-[#04453F] font-bold py-2.5 px-3 rounded-2xl text-xs shadow-2xs border border-[#04453F]/15 transition"
+                          className={`${BTN_PRIMARY} w-full px-3`}
                         >
-                          Recipe Recommendations
+                          Recipe Matches
                         </button>
                         <button
                           onClick={handleImportSchedule}
-                          className="bg-[#F0E98F] hover:brightness-98 active:scale-97 text-[#04453F] font-bold py-2.5 px-3 rounded-2xl text-xs shadow-2xs border border-[#04453F]/15 transition"
+                          className={`${BTN_PRIMARY} w-full px-3`}
                         >
-                          Import the Schedule
+                          Import Schedule
                         </button>
                       </div>
                     </>
@@ -1563,24 +1489,22 @@ export default function FreshDateApp() {
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => setWeekSubScreen("overview")}
-                          className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow active:scale-90 transition"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <div className="px-7 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          Recipes
-                        </div>
+                        <div className={T_HEADER_PILL}>Recipes</div>
                         <button
                           onClick={() => setImportScreen("hub")}
-                          className="w-8 h-8 rounded-full bg-[#94C060] active:scale-90 text-white flex items-center justify-center shadow-2xs transition"
+                          className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
                         >
                           <Plus className="w-5 h-5" />
                         </button>
                       </div>
 
-                      {renderCalendarCard(true)}
+                      {renderCalendarCard()}
 
-                      <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3 relative">
+                      <div className={`${CARD_CLS} space-y-3 relative`}>
                         <div className="flex items-center justify-between">
                           <div className="relative">
                             <button
@@ -1588,7 +1512,7 @@ export default function FreshDateApp() {
                               onClick={() =>
                                 setShowRecipeMealMenu(!showRecipeMealMenu)
                               }
-                              className="px-3.5 py-1.5 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] text-xs font-bold flex items-center gap-1 shadow-2xs transition"
+                              className={BTN_PILL_ACTIVE}
                             >
                               <span>{recipeMealFilter}</span>
                               <ChevronDown
@@ -1605,7 +1529,7 @@ export default function FreshDateApp() {
                                   animate={{ opacity: 1, y: 0, scale: 1 }}
                                   exit={{ opacity: 0, y: -4, scale: 0.97 }}
                                   transition={{ duration: 0.16, ease: IOS_EASE }}
-                                  className="absolute left-0 mt-1.5 w-32 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-[#04453F]/15 py-1 z-30"
+                                  className="absolute left-0 mt-1.5 w-32 bg-white rounded-[16px] shadow-xl border border-[#04453F]/12 py-1 z-30"
                                 >
                                   {(
                                     ["Breakfast", "Lunch", "Dinner"] as const
@@ -1623,7 +1547,7 @@ export default function FreshDateApp() {
                                         if (firstMatch)
                                           setActiveRecipe(firstMatch);
                                       }}
-                                      className={`w-full px-3.5 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-[#F4F6EE] ${
+                                      className={`w-full px-3.5 py-2 text-left text-[12px] font-bold flex items-center justify-between hover:bg-[#F4F6EE] ${
                                         recipeMealFilter === m
                                           ? "text-[#04453F] bg-[#FFC45A]/20"
                                           : "text-slate-600"
@@ -1638,8 +1562,8 @@ export default function FreshDateApp() {
                             </AnimatePresence>
                           </div>
 
-                          <span className="text-[10px] text-slate-400 text-right max-w-[185px] leading-tight">
-                            Recommended based on the expiring ingredients in your fridge
+                          <span className={`${T_META} text-right max-w-[180px]`}>
+                            Matched to expiring fridge items
                           </span>
                         </div>
 
@@ -1651,10 +1575,12 @@ export default function FreshDateApp() {
                                 setActiveRecipe(r);
                                 setWeekSubScreen("details");
                               }}
-                              className="bg-[#F4F6EE] hover:ring-2 hover:ring-[#04453F] active:scale-95 rounded-2xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"
+                              className={`${TILE_CLS} hover:ring-2 hover:ring-[#04453F] active:scale-95 p-2.5 flex flex-col items-center text-center cursor-pointer transition`}
                             >
                               <span className="text-3xl mb-1">{r.emoji}</span>
-                              <span className="text-[11px] font-bold text-[#0F2926] line-clamp-2 leading-tight">
+                              <span
+                                className={`${T_ITEM_NAME} line-clamp-2 leading-tight`}
+                              >
                                 {r.title}
                               </span>
                             </div>
@@ -1668,25 +1594,24 @@ export default function FreshDateApp() {
                             }
                             setWeekSubScreen("details");
                           }}
-                          className="w-full py-2 rounded-full bg-[#F4F6EE] hover:bg-[#94C060]/15 text-slate-500 text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+                          className={`w-full ${BTN_PILL_SUBTLE} py-2`}
                         >
-                          <Sparkles className="w-3.5 h-3.5 text-[#FFC45A]" />
+                          <Sparkles className="w-3.5 h-3.5 text-[#04453F]" />
                           <span>
-                            Pick a dish to make for{" "}
-                            {recipeMealFilter.toLowerCase()}
+                            Pick a dish for {recipeMealFilter.toLowerCase()}
                           </span>
                         </button>
                       </div>
 
-                      {/* Used Ingredients Card with Drag-to-Delete & "+ Other" */}
-                      <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3">
+                      {/* Used Ingredients Card */}
+                      <div className={`${CARD_CLS} space-y-3`}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-bold text-[#0F2926]">
+                            <span className={T_CARD_TITLE}>
                               Ingredients Used
                             </span>
-                            <span className="text-[10px] text-slate-400">
-                              (Drag unwanted down to remove)
+                            <span className={T_META}>
+                              (Drag down to remove)
                             </span>
                           </div>
                           {(excludedIngredientIds.length > 0 ||
@@ -1698,7 +1623,7 @@ export default function FreshDateApp() {
                                 setAddedOtherIngredients([]);
                                 notify("Reset ingredients");
                               }}
-                              className="inline-flex items-center gap-1 text-[10px] font-bold text-[#658C38] hover:underline"
+                              className={BTN_PILL_SUBTLE}
                             >
                               <RotateCcw className="w-3 h-3" />
                               <span>Reset</span>
@@ -1728,7 +1653,7 @@ export default function FreshDateApp() {
                                 onTouchEnd={(e) =>
                                   handleTouchEndIngredient(e, ing.id)
                                 }
-                                className={`bg-[#F4F6EE] rounded-2xl p-2 flex flex-col items-center text-center cursor-grab active:cursor-grabbing transition ${
+                                className={`${TILE_CLS} p-2 flex flex-col items-center text-center cursor-grab active:cursor-grabbing transition ${
                                   isDragging
                                     ? "opacity-40 scale-95 ring-2 ring-red-400"
                                     : "hover:bg-[#94C060]/15"
@@ -1737,29 +1662,27 @@ export default function FreshDateApp() {
                                 <span className="text-2xl mb-1">
                                   {ing.emoji}
                                 </span>
-                                <span className="text-[10px] font-semibold text-[#0F2926] leading-tight">
+                                <span className="text-[11px] font-semibold text-[#0F2926] leading-tight">
                                   {ing.name}
                                 </span>
                               </div>
                             );
                           })}
 
-                          {/* "+ Other" Card */}
                           <button
                             type="button"
                             onClick={() => setShowOtherIngredientModal(true)}
-                            className="bg-[#FFC45A]/25 hover:bg-[#FFC45A]/45 active:scale-95 border border-dashed border-[#04453F]/25 rounded-2xl p-2 flex flex-col items-center justify-center text-center transition"
+                            className="bg-[#FFC45A]/25 hover:bg-[#FFC45A]/45 active:scale-95 border border-[#FFC45A] rounded-[12px] p-2 flex flex-col items-center justify-center text-center transition cursor-pointer"
                           >
-                            <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-[#04453F] mb-1 shadow-2xs">
+                            <div className="w-7 h-7 rounded-full bg-[#FFC45A] flex items-center justify-center text-[#04453F] mb-1">
                               <Plus className="w-4 h-4" />
                             </div>
-                            <span className="text-[10px] font-bold text-[#04453F] leading-tight">
+                            <span className="text-[11px] font-bold text-[#04453F] leading-tight">
                               Other
                             </span>
                           </button>
                         </div>
 
-                        {/* Drag-to-Delete Drop Zone */}
                         <div
                           ref={trashZoneRef}
                           onDragOver={(e) => {
@@ -1776,7 +1699,7 @@ export default function FreshDateApp() {
                               excludeIngredientById(droppedId);
                             }
                           }}
-                          className={`mt-2 py-2.5 px-3 rounded-2xl border-2 border-dashed flex items-center justify-center gap-2 text-xs font-bold transition ${
+                          className={`mt-2 py-2.5 px-3 rounded-[12px] border-2 border-dashed flex items-center justify-center gap-2 text-[12px] font-bold transition ${
                             isOverTrashZone
                               ? "border-red-500 bg-red-50 text-red-600"
                               : draggingIngredientId
@@ -1801,51 +1724,44 @@ export default function FreshDateApp() {
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => setWeekSubScreen("recipes")}
-                          className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow active:scale-90 transition"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <div className="px-8 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          Details
-                        </div>
-                        <div className="w-8" />
+                        <div className={T_HEADER_PILL}>Details</div>
+                        <div className="w-9" />
                       </div>
 
-                      <div className="relative overflow-hidden bg-gradient-to-br from-[#065A52] via-[#04453F] to-[#022C28] rounded-3xl p-4 pro-card-shadow flex items-center gap-4 text-white">
-                        <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full blur-2xl bg-[#94C060]/25 pointer-events-none" />
-                        <div className="w-24 h-20 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-5xl flex items-center justify-center shrink-0">
+                      <div className={`${CARD_CLS} flex items-center gap-4`}>
+                        <div className="w-20 h-20 rounded-[12px] bg-[#F4F6EE] text-4xl flex items-center justify-center shrink-0">
                           {activeRecipe.emoji}
                         </div>
-                        <div className="space-y-1 relative z-10">
-                          <h2 className="text-base font-bold text-white">
+                        <div className="space-y-1.5">
+                          <h2 className="text-[16px] font-bold text-[#0F2926]">
                             {activeRecipe.title}
                           </h2>
-                          <div className="inline-flex items-center gap-1.5">
-                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFC45A] text-[#04453F]">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F4F6EE] text-[#04453F]">
                               {activeRecipe.time}
                             </span>
-                            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/15 text-[#F0E98F]">
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#94C060]/25 text-[#04453F]">
                               {activeRecipe.difficulty}
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3">
-                        <h3 className="text-xs font-bold text-[#0F2926]">
-                          Instructions
-                        </h3>
+                      <div className={`${CARD_CLS} space-y-3`}>
+                        <h3 className={T_CARD_TITLE}>Instructions</h3>
                         <div className="space-y-2.5">
                           {activeRecipe.steps.map((s, idx) => (
                             <div key={idx} className="flex items-start gap-2.5">
-                              <div className="w-5 h-5 rounded-md bg-[#FFC45A]/45 text-[#04453F] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                              <div className="w-5 h-5 rounded-[6px] bg-[#F4F6EE] text-[#04453F] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                                 {idx + 1}
                               </div>
                               <div>
-                                <div className="text-xs font-bold text-[#0F2926]">
-                                  {s.title}
-                                </div>
-                                <p className="text-[11px] text-slate-500 leading-relaxed">
+                                <div className={T_ITEM_NAME}>{s.title}</div>
+                                <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
                                   {s.description}
                                 </p>
                               </div>
@@ -1853,15 +1769,17 @@ export default function FreshDateApp() {
                           ))}
                         </div>
 
-                        <button
-                          onClick={() => {
-                            notify(`Cooked ${activeRecipe.title}!`);
-                            setWeekSubScreen("overview");
-                          }}
-                          className="w-full mt-2 bg-[#04453F] active:scale-98 text-[#F0E98F] font-bold py-3 rounded-2xl text-xs shadow-sm transition"
-                        >
-                          Complete Cooking
-                        </button>
+                        <div className="pt-2">
+                          <button
+                            onClick={() => {
+                              notify(`Cooked ${activeRecipe.title}!`);
+                              setWeekSubScreen("overview");
+                            }}
+                            className={`w-full ${BTN_PRIMARY}`}
+                          >
+                            Complete Cooking
+                          </button>
+                        </div>
                       </div>
                     </>
                   )}
@@ -1869,7 +1787,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 2: MY FRIDGE (Screens #11 & #12 — Collapsible Refrigerated & Frozen)
+                  TAB 2: MY FRIDGE (Unified Card Hierarchy & Stepper Buttons)
                  ------------------------------------------------------------- */}
               {activeTab === "fridge" && (
                 <motion.div
@@ -1877,23 +1795,21 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3.5"
+                  className="px-4 pt-2 space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="w-8" />
-                    <div className="px-7 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                      My Fridge
-                    </div>
+                    <div className="w-9" />
+                    <div className={T_HEADER_PILL}>My Fridge</div>
                     <button
                       onClick={() => setImportScreen("hub")}
-                      className="w-8 h-8 rounded-full bg-[#94C060] active:scale-90 text-white flex items-center justify-center shadow-2xs transition"
+                      className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
                     >
                       <Plus className="w-5 h-5" />
                     </button>
                   </div>
 
                   {/* CARD 1: COLLAPSIBLE REFRIGERATED */}
-                  <div className="bg-white/95 rounded-3xl p-3.5 pro-card-shadow border border-white/80">
+                  <div className={CARD_CLS}>
                     <div
                       onClick={() =>
                         setCollapsedFridgeZones((prev) => ({
@@ -1901,22 +1817,20 @@ export default function FreshDateApp() {
                           refrigerated: !prev.refrigerated,
                         }))
                       }
-                      className="flex items-center justify-between px-1 cursor-pointer"
+                      className="flex items-center justify-between cursor-pointer"
                     >
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F4F6EE] text-[#04453F]">
-                        ALL ({refrigeratedItems.length})
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-0.5 rounded-full bg-[#FFC45A] text-[#04453F]">
-                        <Thermometer className="w-3 h-3" />
-                        <span>Refrigerated</span>
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                            collapsedFridgeZones.refrigerated
-                              ? "-rotate-90"
-                              : ""
-                          }`}
-                        />
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <Thermometer className="w-4 h-4 text-[#658C38]" />
+                        <span className={T_CARD_TITLE}>Refrigerated</span>
+                        <span className={T_META}>
+                          ({refrigeratedItems.length})
+                        </span>
+                      </div>
+                      <ChevronDown
+                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                          collapsedFridgeZones.refrigerated ? "-rotate-90" : ""
+                        }`}
+                      />
                     </div>
 
                     <AnimatePresence initial={false}>
@@ -1928,8 +1842,8 @@ export default function FreshDateApp() {
                           transition={{ duration: 0.24, ease: IOS_EASE }}
                           className="overflow-hidden"
                         >
-                          <div className="pt-2 space-y-2">
-                            <div className="grid grid-cols-12 text-[10px] font-bold text-slate-400 px-2 pt-1">
+                          <div className="pt-2.5 space-y-2">
+                            <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
                               <div className="col-span-6">Item</div>
                               <div className="col-span-4 text-center">
                                 Servings Left
@@ -1951,8 +1865,7 @@ export default function FreshDateApp() {
                   </div>
 
                   {/* CARD 2: COLLAPSIBLE FROZEN */}
-                  <div className="relative overflow-hidden bg-gradient-to-br from-white/95 via-sky-50/45 to-cyan-50/30 rounded-3xl p-3.5 pro-card-shadow border border-sky-200/60">
-                    <Snowflake className="w-24 h-24 text-sky-400/10 absolute -right-4 -top-4 pointer-events-none" />
+                  <div className={CARD_CLS}>
                     <div
                       onClick={() =>
                         setCollapsedFridgeZones((prev) => ({
@@ -1960,20 +1873,18 @@ export default function FreshDateApp() {
                           frozen: !prev.frozen,
                         }))
                       }
-                      className="flex items-center justify-between px-1 relative z-10 cursor-pointer"
+                      className="flex items-center justify-between cursor-pointer"
                     >
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-100/80 text-sky-900">
-                        ALL ({frozenItems.length})
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-3.5 py-0.5 rounded-full bg-[#FFC45A] text-[#04453F]">
-                        <Snowflake className="w-3 h-3 text-sky-700" />
-                        <span>Frozen</span>
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                            collapsedFridgeZones.frozen ? "-rotate-90" : ""
-                          }`}
-                        />
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <Snowflake className="w-4 h-4 text-sky-600" />
+                        <span className={T_CARD_TITLE}>Frozen</span>
+                        <span className={T_META}>({frozenItems.length})</span>
+                      </div>
+                      <ChevronDown
+                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                          collapsedFridgeZones.frozen ? "-rotate-90" : ""
+                        }`}
+                      />
                     </div>
 
                     <AnimatePresence initial={false}>
@@ -1983,10 +1894,10 @@ export default function FreshDateApp() {
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.24, ease: IOS_EASE }}
-                          className="overflow-hidden relative z-10"
+                          className="overflow-hidden"
                         >
-                          <div className="pt-2 space-y-2">
-                            <div className="grid grid-cols-12 text-[10px] font-bold text-slate-400 px-2 pt-1">
+                          <div className="pt-2.5 space-y-2">
+                            <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
                               <div className="col-span-6">Item</div>
                               <div className="col-span-4 text-center">
                                 Servings Left
@@ -2010,7 +1921,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 3: SUGGESTED LIST (Auto-Collapses 0-need categories & removes "0 servings" text!)
+                  TAB 3: SUGGESTED LIST (Unified Card & Typography Hierarchy)
                  ------------------------------------------------------------- */}
               {activeTab === "list" && (
                 <motion.div
@@ -2018,29 +1929,27 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3.5"
+                  className="px-4 pt-2 space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="w-8" />
-                    <div className="px-6 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                      Suggested List
-                    </div>
+                    <div className="w-9" />
+                    <div className={T_HEADER_PILL}>Suggested List</div>
                     <button
                       onClick={() => setImportScreen("hub")}
-                      className="w-8 h-8 rounded-full bg-[#94C060] active:scale-90 text-white flex items-center justify-center shadow-2xs transition"
+                      className="w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer"
                     >
                       <Plus className="w-5 h-5" />
                     </button>
                   </div>
 
-                  <div className="bg-white/95 rounded-2xl p-3 text-center border border-white/80 pro-card-shadow">
-                    <p className="text-[11px] text-slate-600 font-medium">
+                  <div className={`${CARD_CLS} text-center py-3`}>
+                    <p className="text-[12px] text-slate-600 font-medium">
                       Auto-adjusted from{" "}
                       <strong className="text-[#04453F]">
                         {fridgeItems.reduce((s, i) => s + i.servings, 0)}{" "}
-                        servings in your fridge
+                        servings in fridge
                       </strong>{" "}
-                      &{" "}
+                      &amp;{" "}
                       <strong className="text-[#04453F]">
                         {weeklyAbsencesCount} meals out
                       </strong>
@@ -2059,17 +1968,13 @@ export default function FreshDateApp() {
                       (i) => i.category === catKey
                     );
                     const quotaInfo = getCategoryDynamicQuota(catKey);
-                    // Auto-collapse when netToBuy === 0 (or no items needed), unless user manually toggled it
                     const isCollapsed =
                       manualCategoryCollapse[catKey] !== undefined
                         ? manualCategoryCollapse[catKey]
                         : quotaInfo.netToBuy === 0 || items.length === 0;
 
                     return (
-                      <div
-                        key={catKey}
-                        className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80"
-                      >
+                      <div key={catKey} className={CARD_CLS}>
                         <div
                           onClick={() =>
                             setManualCategoryCollapse((prev) => ({
@@ -2080,17 +1985,16 @@ export default function FreshDateApp() {
                           className="flex items-center justify-between cursor-pointer"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="px-3.5 py-1 rounded-full bg-[#FFC45A] text-[#04453F] text-xs font-bold">
-                              {catKey}
-                            </span>
-                            <span className="text-[10px] text-[#658C38] font-semibold">
+                            <span className={T_CARD_TITLE}>{catKey}</span>
+                            <span className={T_META}>
                               ({quotaInfo.inFridgeText})
                             </span>
                           </div>
-                          <div className="flex items-center gap-1 text-xs font-bold text-[#0F2926]">
-                            {/* Only display quotaText when netToBuy > 0 (never show "0 servings (Fridge full)") */}
+                          <div className="flex items-center gap-1.5">
                             {quotaInfo.quotaText && (
-                              <span>{quotaInfo.quotaText}</span>
+                              <span className="text-[13px] font-extrabold text-[#04453F]">
+                                {quotaInfo.quotaText}
+                              </span>
                             )}
                             <ChevronDown
                               className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
@@ -2109,11 +2013,11 @@ export default function FreshDateApp() {
                               transition={{ duration: 0.24, ease: IOS_EASE }}
                               className="overflow-hidden"
                             >
-                              <div className="pt-3 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
+                              <div className="pt-3 mt-3 border-t border-slate-100 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
                                 {items.map((item) => (
                                   <div
                                     key={item.id}
-                                    className={`w-[104px] shrink-0 snap-start rounded-2xl p-2.5 flex flex-col items-center text-center border transition ${
+                                    className={`w-[104px] shrink-0 snap-start rounded-[12px] p-2.5 flex flex-col items-center text-center border transition ${
                                       item.checked
                                         ? "bg-[#94C060]/15 border-[#94C060]"
                                         : "bg-[#F4F6EE] border-transparent"
@@ -2121,7 +2025,7 @@ export default function FreshDateApp() {
                                   >
                                     <div className="w-full flex items-center justify-between">
                                       {item.inFridgeServings > 0 ? (
-                                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#FFC45A]/45 text-[#04453F]">
+                                        <span className="text-[10px] font-semibold text-slate-500">
                                           Have {item.inFridgeServings}
                                         </span>
                                       ) : (
@@ -2135,9 +2039,9 @@ export default function FreshDateApp() {
                                             item.checked
                                           )
                                         }
-                                        className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] ${
+                                        className={`w-5 h-5 rounded-[6px] flex items-center justify-center text-[11px] font-bold cursor-pointer ${
                                           item.checked
-                                            ? "bg-[#04453F] text-white"
+                                            ? "bg-[#FFC45A] text-[#04453F]"
                                             : "bg-white border border-slate-300"
                                         }`}
                                       >
@@ -2156,10 +2060,12 @@ export default function FreshDateApp() {
                                     >
                                       {item.emoji}
                                     </span>
-                                    <span className="text-xs font-bold text-[#0F2926] line-clamp-1">
+                                    <span
+                                      className={`${T_ITEM_NAME} line-clamp-1`}
+                                    >
                                       {item.name}
                                     </span>
-                                    <span className="text-[10px] font-semibold text-[#04453F] mt-0.5">
+                                    <span className={T_META}>
                                       {item.servings}{" "}
                                       {item.servings === 1
                                         ? item.unit
@@ -2171,7 +2077,7 @@ export default function FreshDateApp() {
                                         onClick={() =>
                                           adjustSuggestedServings(item.id, -1)
                                         }
-                                        className="w-6 h-6 rounded-lg bg-white active:scale-90 text-[#04453F] font-bold text-xs shadow-2xs transition"
+                                        className={BTN_STEPPER}
                                       >
                                         -
                                       </button>
@@ -2179,7 +2085,7 @@ export default function FreshDateApp() {
                                         onClick={() =>
                                           adjustSuggestedServings(item.id, 1)
                                         }
-                                        className="w-6 h-6 rounded-lg bg-white active:scale-90 text-[#04453F] font-bold text-xs shadow-2xs transition"
+                                        className={BTN_STEPPER}
                                       >
                                         +
                                       </button>
@@ -2196,7 +2102,7 @@ export default function FreshDateApp() {
 
                   <button
                     onClick={importCheckedToFridge}
-                    className="w-full bg-[#04453F] active:scale-98 text-[#F0E98F] font-bold py-3.5 rounded-2xl text-xs shadow-sm transition"
+                    className={`w-full ${BTN_PRIMARY} py-3`}
                   >
                     Import Selected Items to My Fridge
                   </button>
@@ -2204,7 +2110,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 4: ME -> PROFILE -> EDIT PROFILE (Screens #14, #15, #16)
+                  TAB 4: ME -> PROFILE -> EDIT PROFILE
                  ------------------------------------------------------------- */}
               {activeTab === "me" && (
                 <motion.div
@@ -2212,36 +2118,34 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3.5"
+                  className="px-4 pt-2 space-y-3"
                 >
                   {meSubScreen === "menu" && (
                     <>
                       <div className="flex justify-center">
-                        <div className="px-9 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          Me
-                        </div>
+                        <div className={T_HEADER_PILL}>Me</div>
                       </div>
 
                       <div
                         onClick={() => setMeSubScreen("profile_view")}
-                        className="relative overflow-hidden bg-gradient-to-br from-[#065A52] via-[#04453F] to-[#022C28] rounded-3xl p-4 text-white flex items-center gap-4 shadow-md cursor-pointer"
+                        className={`${CARD_CLS} flex items-center justify-between cursor-pointer`}
                       >
-                        <div className="absolute -right-6 -top-6 w-28 h-28 rounded-full blur-2xl bg-[#94C060]/25 pointer-events-none" />
-                        <div className="w-14 h-14 rounded-2xl bg-[#FFC45A] text-[#04453F] flex items-center justify-center text-3xl font-bold relative z-10">
-                          🙂
+                        <div className="flex items-center gap-3.5">
+                          <div className="w-12 h-12 rounded-[12px] bg-[#F4F6EE] flex items-center justify-center text-2xl">
+                            🙂
+                          </div>
+                          <div>
+                            <h2 className={T_CARD_TITLE}>Freshie</h2>
+                            <p className={`${T_META} mt-0.5`}>
+                              {weightKg} KG · {dinersCount} Diner(s) ·{" "}
+                              {effectiveFlavorPref}
+                            </p>
+                          </div>
                         </div>
-                        <div className="relative z-10">
-                          <h2 className="font-bold text-base text-white">
-                            Freshie
-                          </h2>
-                          <p className="text-xs text-[#F0E98F]/85 mt-0.5">
-                            {weightKg}KG · {dinersCount} Diner(s) ·{" "}
-                            {effectiveFlavorPref}
-                          </p>
-                        </div>
+                        <ChevronRight className="w-4 h-4 text-slate-400" />
                       </div>
 
-                      <div className="space-y-2">
+                      <div className={`${CARD_CLS} divide-y divide-slate-100 p-0 overflow-hidden`}>
                         {[
                           {
                             label: "Profile",
@@ -2268,10 +2172,7 @@ export default function FreshDateApp() {
                           },
                           {
                             label: "About",
-                            action: () =>
-                              notify(
-                                "FRESHDATE v1.0 · Fridge Intervention App"
-                              ),
+                            action: () => setAppStage("intro"),
                           },
                           {
                             label: "Settings",
@@ -2281,10 +2182,10 @@ export default function FreshDateApp() {
                           <button
                             key={idx}
                             onClick={row.action}
-                            className="w-full bg-white/95 hover:bg-white active:scale-99 px-4 py-3 rounded-2xl pro-card-shadow border border-white/80 flex items-center justify-between text-xs font-bold text-[#0F2926] transition"
+                            className={`w-full px-4 py-3.5 hover:bg-[#F4F6EE] flex items-center justify-between ${T_ITEM_NAME} transition cursor-pointer`}
                           >
                             <span>{row.label}</span>
-                            <ChevronRight className="w-4 h-4 text-[#658C38]" />
+                            <ChevronRight className="w-4 h-4 text-slate-400" />
                           </button>
                         ))}
                       </div>
@@ -2296,53 +2197,46 @@ export default function FreshDateApp() {
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => setMeSubScreen("menu")}
-                          className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow active:scale-90 transition"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <div className="px-8 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          Profile
-                        </div>
-                        <button
-                          onClick={() => setImportScreen("hub")}
-                          className="w-8 h-8 rounded-full bg-[#94C060] active:scale-90 text-white flex items-center justify-center shadow-2xs transition"
-                        >
-                          <Plus className="w-5 h-5" />
-                        </button>
+                        <div className={T_HEADER_PILL}>Profile</div>
+                        <div className="w-9" />
                       </div>
 
                       {renderVernierWeightCard(true)}
 
-                      <div className="bg-white/95 rounded-2xl px-4 py-3 pro-card-shadow border border-white/80 flex items-center justify-between text-xs font-bold">
-                        <span>Number of Diners:</span>
-                        <span>{dinersCount}</span>
+                      <div
+                        className={`${CARD_CLS} flex items-center justify-between`}
+                      >
+                        <span className={T_CARD_TITLE}>Number of Diners</span>
+                        <span className="text-[14px] font-extrabold text-[#04453F]">
+                          {dinersCount}
+                        </span>
                       </div>
 
-                      <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3 text-xs">
-                        <div className="flex justify-between">
-                          <span className="font-bold">Foods to Avoid</span>
-                          <span className="text-slate-500">
-                            {effectiveAvoidFoods}
-                          </span>
+                      <div className={`${CARD_CLS} space-y-3`}>
+                        <div className="flex justify-between items-center">
+                          <span className={T_ITEM_NAME}>Foods to Avoid</span>
+                          <span className={T_META}>{effectiveAvoidFoods}</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="font-bold">Allergens</span>
-                          <span className="text-slate-500">
-                            {effectiveAllergens}
-                          </span>
+                        <div className="flex justify-between items-center">
+                          <span className={T_ITEM_NAME}>Allergens</span>
+                          <span className={T_META}>{effectiveAllergens}</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="font-bold">Flavor Preferences</span>
-                          <span className="text-slate-500">
-                            {effectiveFlavorPref}
+                        <div className="flex justify-between items-center">
+                          <span className={T_ITEM_NAME}>
+                            Flavor Preferences
                           </span>
+                          <span className={T_META}>{effectiveFlavorPref}</span>
                         </div>
                       </div>
 
-                      <div className="pt-6 flex justify-center">
+                      <div className="pt-4 flex justify-center">
                         <button
                           onClick={() => setMeSubScreen("profile_edit")}
-                          className="w-36 bg-[#FFC45A] active:scale-95 text-[#04453F] font-bold py-2.5 rounded-full text-xs shadow-xs transition"
+                          className={`w-44 ${BTN_PRIMARY}`}
                         >
                           Edit
                         </button>
@@ -2358,40 +2252,35 @@ export default function FreshDateApp() {
                             setOpenDropdownKey(null);
                             setMeSubScreen("profile_view");
                           }}
-                          className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow active:scale-90 transition"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <div className="px-8 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          Profile
-                        </div>
-                        <button
-                          onClick={() => setImportScreen("hub")}
-                          className="w-8 h-8 rounded-full bg-[#94C060] active:scale-90 text-white flex items-center justify-center shadow-2xs transition"
-                        >
-                          <Plus className="w-5 h-5" />
-                        </button>
+                        <div className={T_HEADER_PILL}>Profile</div>
+                        <div className="w-9" />
                       </div>
 
                       {renderVernierWeightCard(false)}
 
-                      <div className="bg-white/95 rounded-2xl px-4 py-3 pro-card-shadow border border-white/80 flex items-center justify-between text-xs">
-                        <span className="font-bold">Number of Diners:</span>
+                      <div
+                        className={`${CARD_CLS} flex items-center justify-between`}
+                      >
+                        <span className={T_CARD_TITLE}>Number of Diners</span>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() =>
                               setDinersCount(Math.max(1, dinersCount - 1))
                             }
-                            className="w-6 h-6 rounded-lg bg-[#FFC45A]/30 active:scale-90 text-[#04453F] font-bold transition"
+                            className={BTN_STEPPER}
                           >
                             -
                           </button>
-                          <span className="w-5 text-center font-bold">
+                          <span className="w-6 text-center font-bold text-[14px] text-[#04453F]">
                             {dinersCount}
                           </span>
                           <button
                             onClick={() => setDinersCount(dinersCount + 1)}
-                            className="w-6 h-6 rounded-lg bg-[#FFC45A]/30 active:scale-90 text-[#04453F] font-bold transition"
+                            className={BTN_STEPPER}
                           >
                             +
                           </button>
@@ -2400,26 +2289,26 @@ export default function FreshDateApp() {
 
                       {renderDietaryDropdownsWithOther()}
 
-                      <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3 text-xs font-sans">
-                        <div className="font-bold text-[#0F2926]">
+                      <div className={`${CARD_CLS} space-y-3`}>
+                        <div className={T_CARD_TITLE}>
                           Notification Settings
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">
+                          <span className={T_ITEM_NAME}>
                             Enable Expiration Reminder
                           </span>
                           <button
                             onClick={() =>
                               setReminderEnabled(!reminderEnabled)
                             }
-                            className={`w-10 h-5 rounded-full p-0.5 transition ${
+                            className={`w-11 h-6 rounded-full p-0.5 transition cursor-pointer ${
                               reminderEnabled
                                 ? "bg-[#FFC45A]"
                                 : "bg-slate-300"
                             }`}
                           >
                             <div
-                              className={`w-4 h-4 rounded-full bg-white transition transform ${
+                              className={`w-5 h-5 rounded-full bg-white transition transform ${
                                 reminderEnabled
                                   ? "translate-x-5"
                                   : "translate-x-0"
@@ -2430,7 +2319,7 @@ export default function FreshDateApp() {
 
                         <div className="space-y-1.5">
                           <div className="flex items-center justify-between">
-                            <span className="text-slate-600">
+                            <span className={T_ITEM_NAME}>
                               Reminder Interval
                             </span>
                             {renderCustomSansDropdown(
@@ -2457,11 +2346,9 @@ export default function FreshDateApp() {
                                   setCustomReminderDays(e.target.value)
                                 }
                                 placeholder="Custom days..."
-                                className="flex-1 px-3 py-1.5 rounded-xl bg-[#F4F6EE] border border-[#04453F]/15 text-xs font-sans text-[#0F2926] outline-none"
+                                className={`flex-1 px-3 py-1.5 ${TILE_CLS} border border-[#04453F]/15 text-[12px] text-[#0F2926] outline-none`}
                               />
-                              <span className="text-slate-500 font-semibold">
-                                days before
-                              </span>
+                              <span className={T_META}>days before</span>
                             </div>
                           )}
                         </div>
@@ -2474,7 +2361,7 @@ export default function FreshDateApp() {
                             setMeSubScreen("profile_view");
                             notify("Profile saved");
                           }}
-                          className="w-36 bg-[#FFC45A] active:scale-95 text-[#04453F] font-bold py-2.5 rounded-full text-xs shadow-xs transition"
+                          className={`w-44 ${BTN_PRIMARY}`}
                         >
                           Done
                         </button>
@@ -2486,7 +2373,7 @@ export default function FreshDateApp() {
             </main>
 
             {/* ===============================================================
-                MODAL: "+ OTHER" INGREDIENT PICKER IN RECIPES (Pure English!)
+                MODAL: "+ OTHER" INGREDIENT PICKER IN RECIPES
                =============================================================== */}
             <AnimatePresence>
               {showOtherIngredientModal && (
@@ -2502,20 +2389,20 @@ export default function FreshDateApp() {
                     animate={{ y: 0 }}
                     exit={{ y: "100%" }}
                     transition={{ duration: 0.28, ease: IOS_EASE }}
-                    className="w-full bg-white rounded-t-[34px] p-5 space-y-4 shadow-2xl"
+                    className="w-full bg-white rounded-t-[28px] p-5 space-y-4 shadow-2xl"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-sm font-bold text-[#04453F]">
+                        <h3 className={T_CARD_TITLE}>
                           Choose Another Ingredient
                         </h3>
-                        <p className="text-[11px] text-slate-400">
+                        <p className={T_META}>
                           Replace unwanted ingredients or add your own
                         </p>
                       </div>
                       <button
                         onClick={() => setShowOtherIngredientModal(false)}
-                        className="w-8 h-8 rounded-full bg-[#F4F6EE] flex items-center justify-center text-slate-500"
+                        className={BTN_ICON_CIRCLE}
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -2527,10 +2414,10 @@ export default function FreshDateApp() {
                           key={alt.id}
                           type="button"
                           onClick={() => handleSelectOtherIngredient(alt)}
-                          className="bg-[#F4F6EE] hover:bg-[#94C060]/20 active:scale-95 rounded-2xl p-2.5 flex flex-col items-center text-center transition"
+                          className={`${TILE_CLS} hover:bg-[#94C060]/20 active:scale-95 p-2.5 flex flex-col items-center text-center transition cursor-pointer`}
                         >
                           <span className="text-2xl mb-1">{alt.emoji}</span>
-                          <span className="text-[10px] font-bold text-[#0F2926]">
+                          <span className="text-[11px] font-bold text-[#0F2926]">
                             {alt.name}
                           </span>
                         </button>
@@ -2546,12 +2433,9 @@ export default function FreshDateApp() {
                         value={customOtherIngName}
                         onChange={(e) => setCustomOtherIngName(e.target.value)}
                         placeholder="Or type any other ingredient..."
-                        className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#F4F6EE] text-xs font-medium outline-none border border-[#04453F]/10 focus:border-[#04453F]"
+                        className={`flex-1 px-3.5 py-2.5 ${TILE_CLS} text-[12px] font-medium outline-none border border-[#04453F]/10 focus:border-[#04453F]`}
                       />
-                      <button
-                        type="submit"
-                        className="px-4 py-2.5 rounded-xl bg-[#04453F] text-[#F0E98F] text-xs font-bold"
-                      >
+                      <button type="submit" className={BTN_PRIMARY}>
                         Add
                       </button>
                     </form>
@@ -2585,20 +2469,22 @@ export default function FreshDateApp() {
                         setEditingFridgeItem(null);
                       }
                     }}
-                    className="w-full bg-white rounded-t-[34px] p-5 space-y-4 shadow-2xl"
+                    className="w-full bg-white rounded-t-[28px] p-5 space-y-4 shadow-2xl"
                   >
                     <div className="w-10 h-1.5 rounded-full bg-slate-200 mx-auto cursor-grab" />
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-[#F4F6EE] flex items-center justify-center text-3xl">
+                        <div
+                          className={`w-12 h-12 ${TILE_CLS} flex items-center justify-center text-3xl`}
+                        >
                           {editingFridgeItem.emoji}
                         </div>
                         <div>
-                          <h3 className="text-base font-bold text-[#04453F]">
+                          <h3 className={T_CARD_TITLE}>
                             {editingFridgeItem.name}
                           </h3>
-                          <span className="text-[11px] text-slate-400">
+                          <span className={T_META}>
                             Added {editingFridgeItem.dateAdded} · Expires{" "}
                             {editingFridgeItem.expirationDate}
                           </span>
@@ -2606,26 +2492,26 @@ export default function FreshDateApp() {
                       </div>
                       <button
                         onClick={() => setEditingFridgeItem(null)}
-                        className="w-8 h-8 rounded-full bg-[#F4F6EE] flex items-center justify-center text-slate-500"
+                        className={BTN_ICON_CIRCLE}
                       >
                         <X className="w-4 h-4" />
                       </button>
                     </div>
 
-                    <p className="text-xs text-slate-600 bg-[#F4F6EE] p-3 rounded-2xl leading-relaxed">
+                    <p
+                      className={`text-[12px] text-slate-600 ${TILE_CLS} p-3 leading-relaxed`}
+                    >
                       <strong className="text-[#04453F]">Storage Guide:</strong>{" "}
                       {editingFridgeItem.storageTip}
                     </p>
 
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-slate-600">
-                        Storage Location
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <span className={T_ITEM_NAME}>Storage Location</span>
                       <button
                         onClick={() =>
                           toggleFridgeItemZone(editingFridgeItem.id)
                         }
-                        className="px-3.5 py-1.5 rounded-full bg-[#FFC45A] active:scale-95 text-[#04453F] font-bold transition"
+                        className={BTN_PILL_ACTIVE}
                       >
                         Switch to{" "}
                         {editingFridgeItem.zone === "refrigerated"
@@ -2636,7 +2522,7 @@ export default function FreshDateApp() {
 
                     <button
                       onClick={() => setEditingFridgeItem(null)}
-                      className="w-full bg-[#04453F] text-[#F0E98F] font-bold py-3 rounded-2xl text-xs"
+                      className={`w-full ${BTN_PRIMARY}`}
                     >
                       Done
                     </button>
@@ -2658,18 +2544,16 @@ export default function FreshDateApp() {
                   className="absolute inset-0 z-40 bg-[#F4F6EE] flex flex-col"
                 >
                   {importScreen === "hub" && (
-                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-8 space-y-3.5 no-scrollbar">
+                    <div className="flex-1 overflow-y-auto px-4 pt-3 pb-8 space-y-3 no-scrollbar">
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => setImportScreen("closed")}
-                          className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow"
+                          className={BTN_ICON_CIRCLE}
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <div className="px-8 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                          Import
-                        </div>
-                        <div className="w-8" />
+                        <div className={T_HEADER_PILL}>Import</div>
+                        <div className="w-9" />
                       </div>
 
                       <button
@@ -2677,44 +2561,40 @@ export default function FreshDateApp() {
                           setCameraMode("scan");
                           setImportScreen("scan");
                         }}
-                        className="w-full bg-white/95 rounded-2xl p-4 pro-card-shadow border border-white/80 flex items-center justify-between text-left hover:bg-[#94C060]/10 transition"
+                        className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
                       >
                         <div>
-                          <div className="text-xs font-bold text-[#0F2926]">
+                          <div className={T_CARD_TITLE}>
                             Take Photo / Scan / Gallery
                           </div>
-                          <p className="text-[10px] text-slate-400 mt-0.5">
-                            Take a photo of the product or barcode—the system will identify it automatically
+                          <p className={`${T_META} mt-0.5`}>
+                            Take a photo of the product or barcode—auto identified
                           </p>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-[#658C38] shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
                       </button>
 
                       <button
                         onClick={() => setImportScreen("manual")}
-                        className="w-full bg-white/95 rounded-2xl p-4 pro-card-shadow border border-white/80 flex items-center justify-between text-left hover:bg-[#94C060]/10 transition"
+                        className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
                       >
-                        <span className="text-xs font-bold text-[#0F2926]">
-                          Manual Entry
-                        </span>
-                        <ChevronRight className="w-4 h-4 text-[#658C38] shrink-0" />
+                        <span className={T_CARD_TITLE}>Manual Entry</span>
+                        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
                       </button>
 
-                      <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3">
-                        <div className="text-xs font-bold text-[#0F2926]">
-                          Recent Entries
-                        </div>
+                      <div className={`${CARD_CLS} space-y-3`}>
+                        <div className={T_CARD_TITLE}>Recent Entries</div>
                         <div className="grid grid-cols-3 gap-2.5">
                           {RECENT_ENTRIES.map((item) => (
                             <button
                               key={item.id}
                               onClick={() => openFoodInfoSheet(item)}
-                              className="bg-[#F4F6EE] hover:bg-[#94C060]/20 active:scale-95 rounded-2xl p-3 flex flex-col items-center text-center transition"
+                              className={`${TILE_CLS} hover:bg-[#94C060]/20 active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
                             >
                               <span className="text-3xl mb-1">
                                 {item.emoji}
                               </span>
-                              <span className="text-[11px] font-semibold text-[#0F2926] line-clamp-1">
+                              <span className={`${T_ITEM_NAME} line-clamp-1`}>
                                 {item.name}
                               </span>
                             </button>
@@ -2737,13 +2617,13 @@ export default function FreshDateApp() {
                       <div className="pt-4 px-5 flex items-center justify-between z-20">
                         <button
                           onClick={() => setImportScreen("hub")}
-                          className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-[#94C060]"
+                          className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white cursor-pointer"
                         >
                           <ChevronLeft className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => fileInputRef.current?.click()}
-                          className="px-3 py-1 rounded-full bg-white/15 text-xs font-semibold flex items-center gap-1"
+                          className={BTN_PILL_ACTIVE}
                         >
                           <Upload className="w-3.5 h-3.5" />
                           <span>Upload</span>
@@ -2766,7 +2646,7 @@ export default function FreshDateApp() {
                               <img
                                 src={uploadedPhotoUrl}
                                 alt="Uploaded"
-                                className="w-full h-full object-cover rounded-2xl"
+                                className="w-full h-full object-cover rounded-[16px]"
                               />
                             ) : (
                               <span className="text-6xl">🌽</span>
@@ -2774,7 +2654,7 @@ export default function FreshDateApp() {
                           </div>
                         )}
 
-                        <div className="mt-5 px-4 py-1.5 rounded-full bg-[#F0E98F] text-[#04453F] text-[11px] font-bold">
+                        <div className="mt-5 px-4 py-1.5 rounded-full bg-white/15 text-white text-[12px] font-medium">
                           Align the product — auto recognition
                         </div>
 
@@ -2786,16 +2666,16 @@ export default function FreshDateApp() {
                                 : CATALOG_ITEMS[1]
                             )
                           }
-                          className="mt-4 w-14 h-14 rounded-full bg-[#94C060] border-4 border-white/80 shadow-lg active:scale-95 transition"
+                          className="mt-4 w-14 h-14 rounded-full bg-[#FFC45A] border-4 border-white/80 shadow-lg active:scale-95 transition cursor-pointer"
                         />
 
-                        <div className="flex items-center gap-8 mt-3 text-xs font-bold">
+                        <div className="flex items-center gap-4 mt-4">
                           <button
                             onClick={() => setCameraMode("scan")}
                             className={
                               cameraMode === "scan"
-                                ? "text-white underline underline-offset-4"
-                                : "text-white/40"
+                                ? BTN_PILL_ACTIVE
+                                : "text-white/50 text-[12px] font-bold px-3 py-1 cursor-pointer"
                             }
                           >
                             Scan
@@ -2804,8 +2684,8 @@ export default function FreshDateApp() {
                             onClick={() => setCameraMode("photo")}
                             className={
                               cameraMode === "photo"
-                                ? "text-white underline underline-offset-4"
-                                : "text-white/40"
+                                ? BTN_PILL_ACTIVE
+                                : "text-white/50 text-[12px] font-bold px-3 py-1 cursor-pointer"
                             }
                           >
                             Photo
@@ -2813,8 +2693,8 @@ export default function FreshDateApp() {
                         </div>
                       </div>
 
-                      <div className="bg-[#04453F] p-3.5 rounded-t-3xl space-y-2">
-                        <div className="flex items-center justify-between text-xs text-white/80 px-1">
+                      <div className="bg-[#04453F] p-4 rounded-t-[20px] space-y-2">
+                        <div className="flex items-center justify-between text-[12px] text-white/80 px-1">
                           <span>Photos</span>
                           <span className="font-bold text-white">
                             My Photos
@@ -2832,7 +2712,7 @@ export default function FreshDateApp() {
                             <button
                               key={it.id}
                               onClick={() => openFoodInfoSheet(it)}
-                              className="aspect-square rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-2xl"
+                              className="aspect-square rounded-[12px] bg-white/10 hover:bg-white/20 flex items-center justify-center text-2xl cursor-pointer"
                             >
                               {it.emoji}
                             </button>
@@ -2843,19 +2723,17 @@ export default function FreshDateApp() {
                   )}
 
                   {importScreen === "manual" && (
-                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-8 flex flex-col justify-between no-scrollbar">
-                      <div className="space-y-3.5">
+                    <div className="flex-1 overflow-y-auto px-4 pt-3 pb-8 flex flex-col justify-between no-scrollbar">
+                      <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <button
                             onClick={() => setImportScreen("hub")}
-                            className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#658C38] pro-card-shadow"
+                            className={BTN_ICON_CIRCLE}
                           >
                             <ChevronLeft className="w-5 h-5" />
                           </button>
-                          <div className="px-8 py-1.5 rounded-full bg-[#94C060] text-white font-bold text-sm shadow-2xs">
-                            Import
-                          </div>
-                          <div className="w-8" />
+                          <div className={T_HEADER_PILL}>Import</div>
+                          <div className="w-9" />
                         </div>
 
                         <div className="relative">
@@ -2864,24 +2742,24 @@ export default function FreshDateApp() {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search for food"
-                            className="w-full pl-4 pr-10 py-2.5 bg-white/95 rounded-full text-xs font-medium outline-none border border-white/80 pro-card-shadow"
+                            className="w-full pl-4 pr-10 py-2.5 bg-white rounded-full text-[13px] font-medium outline-none border border-[#04453F]/10 pro-card-shadow"
                           />
                           <Search className="w-4 h-4 text-[#658C38] absolute right-3.5 top-1/2 -translate-y-1/2" />
                         </div>
 
-                        <div className="bg-white/95 rounded-3xl p-4 pro-card-shadow border border-white/80 space-y-3">
-                          <div className="flex items-center justify-between text-xs font-bold border-b border-slate-100 pb-2">
+                        <div className={`${CARD_CLS} space-y-3`}>
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                             {(
                               ["All", "Staples", "Produce", "Protein"] as const
                             ).map((cat) => (
                               <button
                                 key={cat}
                                 onClick={() => setManualCategory(cat)}
-                                className={`px-3 py-1 rounded-full transition ${
+                                className={
                                   manualCategory === cat
-                                    ? "bg-[#FFC45A] text-[#04453F]"
-                                    : "text-slate-500"
-                                }`}
+                                    ? BTN_PILL_ACTIVE
+                                    : "px-3 py-1 text-[12px] font-bold text-slate-500 cursor-pointer"
+                                }
                               >
                                 {cat}
                               </button>
@@ -2895,14 +2773,12 @@ export default function FreshDateApp() {
                                 onClick={() =>
                                   openFoodInfoSheet(item, defaultZoneFilter)
                                 }
-                                className="bg-[#F4F6EE] hover:ring-2 hover:ring-[#04453F] active:scale-95 rounded-2xl p-3 flex flex-col items-center text-center transition"
+                                className={`${TILE_CLS} hover:ring-2 hover:ring-[#04453F] active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
                               >
                                 <span className="text-3xl mb-1">
                                   {item.emoji}
                                 </span>
-                                <span className="text-[11px] font-semibold text-[#0F2926]">
-                                  {item.name}
-                                </span>
+                                <span className={T_ITEM_NAME}>{item.name}</span>
                               </button>
                             ))}
                           </div>
@@ -2912,21 +2788,21 @@ export default function FreshDateApp() {
                       <div className="grid grid-cols-2 gap-3 pt-4">
                         <button
                           onClick={() => setDefaultZoneFilter("refrigerated")}
-                          className={`py-2.5 rounded-full text-xs font-bold border transition ${
+                          className={
                             defaultZoneFilter === "refrigerated"
-                              ? "bg-[#F0E98F] text-[#04453F] border-[#04453F]/30 shadow-2xs"
-                              : "bg-white text-slate-500 border-slate-200"
-                          }`}
+                              ? BTN_PRIMARY
+                              : BTN_PILL_SUBTLE
+                          }
                         >
                           Refrigerated
                         </button>
                         <button
                           onClick={() => setDefaultZoneFilter("frozen")}
-                          className={`py-2.5 rounded-full text-xs font-bold border transition ${
+                          className={
                             defaultZoneFilter === "frozen"
-                              ? "bg-[#F0E98F] text-[#04453F] border-[#04453F]/30 shadow-2xs"
-                              : "bg-white text-slate-500 border-slate-200"
-                          }`}
+                              ? BTN_PRIMARY
+                              : BTN_PILL_SUBTLE
+                          }
                         >
                           Frozen
                         </button>
@@ -2934,7 +2810,7 @@ export default function FreshDateApp() {
                     </div>
                   )}
 
-                  {/* SCREEN #7: SMOOTH DRAGGABLE BOTTOM SHEET FOR FOOD INFORMATION */}
+                  {/* SCREEN #7: FOOD INFORMATION BOTTOM SHEET */}
                   <AnimatePresence>
                     {selectedCatalogItem && (
                       <motion.div
@@ -2957,27 +2833,27 @@ export default function FreshDateApp() {
                               setSelectedCatalogItem(null);
                             }
                           }}
-                          className="w-full bg-[#F4F6EE] rounded-t-[34px] p-5 space-y-3 shadow-2xl border-t-2 border-[#94C060]"
+                          className="w-full bg-[#F4F6EE] rounded-t-[28px] p-5 space-y-3 shadow-2xl border-t-2 border-[#94C060]"
                         >
                           <div className="w-10 h-1.5 rounded-full bg-slate-300 mx-auto cursor-grab" />
 
                           <div className="flex items-center justify-between px-1">
-                            <h3 className="text-lg font-extrabold text-[#0F2926] flex items-center gap-2">
+                            <h3 className="text-[16px] font-extrabold text-[#0F2926] flex items-center gap-2">
                               <span>{selectedCatalogItem.emoji}</span>
                               <span>{selectedCatalogItem.name}</span>
                             </h3>
                             <button
                               onClick={() => setSelectedCatalogItem(null)}
-                              className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-slate-500"
+                              className={BTN_ICON_CIRCLE}
                             >
                               <X className="w-4 h-4" />
                             </button>
                           </div>
 
-                          <div className="bg-white rounded-2xl px-4 py-2.5 flex items-center justify-between text-xs border border-[#04453F]/10">
-                            <span className="font-bold text-[#0F2926]">
-                              🍴 Servings
-                            </span>
+                          <div
+                            className={`${CARD_CLS} py-2.5 flex items-center justify-between`}
+                          >
+                            <span className={T_ITEM_NAME}>Servings</span>
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() =>
@@ -2985,29 +2861,31 @@ export default function FreshDateApp() {
                                     Math.max(1, draftServings - 1)
                                   )
                                 }
-                                className="w-6 h-6 rounded-lg bg-[#FFC45A]/35 text-[#04453F] font-bold"
+                                className={BTN_STEPPER}
                               >
                                 -
                               </button>
-                              <span className="w-6 text-center font-bold">
+                              <span className="w-6 text-center font-bold text-[13px]">
                                 {draftServings}
                               </span>
                               <button
                                 onClick={() =>
                                   setDraftServings(draftServings + 1)
                                 }
-                                className="w-6 h-6 rounded-lg bg-[#FFC45A]/35 text-[#04453F] font-bold"
+                                className={BTN_STEPPER}
                               >
                                 +
                               </button>
                             </div>
                           </div>
 
-                          <div className="bg-white rounded-2xl px-4 py-2.5 flex items-center justify-between text-xs border border-[#04453F]/10">
-                            <span className="font-bold text-[#0F2926]">
-                              🧊 Storage Location
+                          <div
+                            className={`${CARD_CLS} py-2.5 flex items-center justify-between`}
+                          >
+                            <span className={T_ITEM_NAME}>
+                              Storage Location
                             </span>
-                            <div className="flex gap-1 bg-[#F4F6EE] p-1 rounded-xl">
+                            <div className="flex gap-1.5">
                               <button
                                 onClick={() => {
                                   setDraftZone("refrigerated");
@@ -3015,11 +2893,11 @@ export default function FreshDateApp() {
                                     selectedCatalogItem.defaultShelfLifeRefrigerated
                                   );
                                 }}
-                                className={`px-2.5 py-1 rounded-lg font-bold transition ${
+                                className={
                                   draftZone === "refrigerated"
-                                    ? "bg-[#FFC45A] text-[#04453F]"
-                                    : "text-slate-500"
-                                }`}
+                                    ? BTN_PILL_ACTIVE
+                                    : BTN_PILL_SUBTLE
+                                }
                               >
                                 Refrigerated
                               </button>
@@ -3030,39 +2908,35 @@ export default function FreshDateApp() {
                                     selectedCatalogItem.defaultShelfLifeFrozen
                                   );
                                 }}
-                                className={`px-2.5 py-1 rounded-lg font-bold transition ${
+                                className={
                                   draftZone === "frozen"
-                                    ? "bg-[#FFC45A] text-[#04453F]"
-                                    : "text-slate-500"
-                                }`}
+                                    ? BTN_PILL_ACTIVE
+                                    : BTN_PILL_SUBTLE
+                                }
                               >
                                 Frozen
                               </button>
                             </div>
                           </div>
 
-                          <div className="bg-white rounded-2xl p-3.5 space-y-2 text-xs border border-[#04453F]/10">
+                          <div className={`${CARD_CLS} space-y-2`}>
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-[#0F2926]">
-                                ⏳ Shelf Life
-                              </span>
-                              <span className="px-2.5 py-0.5 rounded-md bg-[#F4F6EE] font-semibold">
+                              <span className={T_ITEM_NAME}>Shelf Life</span>
+                              <span className={T_META}>
                                 {draftShelfLife} days
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-[#0F2926]">
-                                📅 Date Added
-                              </span>
-                              <span className="px-2.5 py-0.5 rounded-md bg-[#F4F6EE] font-sans text-[11px]">
+                              <span className={T_ITEM_NAME}>Date Added</span>
+                              <span className={T_META}>
                                 {selectedCatalogItem.dateAdded}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-[#0F2926]">
-                                🔔 Expiration Date
+                              <span className={T_ITEM_NAME}>
+                                Expiration Date
                               </span>
-                              <span className="px-2.5 py-0.5 rounded-md bg-[#F4F6EE] font-sans text-[11px]">
+                              <span className={T_META}>
                                 {selectedCatalogItem.expirationDate}
                               </span>
                             </div>
@@ -3070,9 +2944,9 @@ export default function FreshDateApp() {
 
                           <button
                             onClick={confirmAddCatalogItem}
-                            className="w-full bg-[#04453F] text-[#F0E98F] font-bold py-3 rounded-2xl text-xs shadow-md"
+                            className={`w-full ${BTN_PRIMARY} py-3`}
                           >
-                            Confirm & Add to My Fridge
+                            Confirm &amp; Add to My Fridge
                           </button>
                         </motion.div>
                       </motion.div>
@@ -3113,12 +2987,12 @@ export default function FreshDateApp() {
                       setMeSubScreen("menu");
                       setActiveTab(tab.id as ActiveTab);
                     }}
-                    className="flex flex-col items-center gap-1 relative active:scale-92 transition-transform"
+                    className="flex flex-col items-center gap-1 relative active:scale-92 transition-transform cursor-pointer"
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-200 ${
+                      className={`w-10 h-10 rounded-[12px] flex items-center justify-center transition-colors duration-200 ${
                         isActive
-                          ? "bg-[#F0E98F] text-[#04453F] shadow-xs"
+                          ? "bg-[#FFC45A] text-[#04453F] shadow-xs"
                           : "bg-white/10 text-[#F0E98F] hover:bg-white/20"
                       }`}
                     >
