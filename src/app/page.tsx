@@ -46,36 +46,31 @@ type MeSubScreen = "menu" | "profile_view" | "profile_edit";
 const IOS_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
 // ============================================================================
-// UNIFIED GRAPHIC DESIGN TOKENS (Original Gradients + Refrigerator Outer Frame)
+// UNIFIED GRAPHIC DESIGN TOKENS (Original Gradients + Clean Outer Frame)
 // ============================================================================
-// 1. Containers:
-// - FRIDGE_FRAME_CLS: Original design's Green-to-Butter-Yellow gradient refrigerator outer frame
-// - CONTEXT_BAR_CLS: Level 0 context summary strip inside the refrigerator frame
-// - CARD_CLS: Level 1 white inner refrigerator compartment card (rounded-[20px] p-4)
-// - TILE_CLS: Level 2 inner item tile (rounded-[14px])
-const FRIDGE_FRAME_CLS = "fridge-outer-frame p-3 space-y-3 relative";
+const FRIDGE_FRAME_CLS = "fridge-outer-frame p-3.5 space-y-3";
 const CONTEXT_BAR_CLS =
-  "bg-white/80 backdrop-blur-xs border-[1.5px] border-[#04453F]/14 rounded-[16px] px-3.5 py-2.5 shadow-2xs";
+  "bg-[#F4F5F0] border-[1.2px] border-[#04453F] rounded-[18px] px-4 py-3";
 const CARD_CLS =
-  "bg-white/96 rounded-[20px] p-4 pro-card-shadow border-[1.5px] border-[#04453F]/16 relative";
-const TILE_CLS = "bg-[#F4F6EE] rounded-[14px]";
+  "bg-[#F4F5F0] rounded-[18px] p-4 border-[1.2px] border-[#04453F] relative";
+const TILE_CLS = "bg-white rounded-[12px] border border-[#04453F]/65";
 
 // 2. Typography: 4 strict levels
 const T_HEADER_PILL =
-  "h-9 px-7 rounded-full sage-gradient-pill text-white font-bold text-[15px] tracking-tight flex items-center justify-center";
+  "h-9 px-8 rounded-full sage-gradient-pill text-white font-bold text-[15px] tracking-tight flex items-center justify-center";
 const T_CARD_TITLE = "text-[14px] font-bold text-[#0F2926] tracking-tight";
 const T_ITEM_NAME = "text-[13px] font-semibold text-[#0F2926]";
-const T_META = "text-[11px] font-medium text-slate-400";
+const T_META = "text-[11px] font-medium text-slate-500";
 
-// 3. Unified Clickable Button System (Original Warm Amber Gradient Family)
+// 3. Unified Clickable Button System
 const BTN_PRIMARY =
-  "amber-gradient-btn hover:brightness-105 active:scale-96 text-[#04453F] font-bold text-[13px] rounded-full px-6 py-2.5 transition cursor-pointer inline-flex items-center justify-center gap-1.5";
+  "amber-gradient-btn hover:brightness-105 active:scale-96 text-[#0F2926] font-bold text-[13px] rounded-[12px] px-6 py-2 transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_PILL_ACTIVE =
-  "amber-gradient-btn hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 transition cursor-pointer inline-flex items-center justify-center gap-1.5";
+  "amber-gradient-btn hover:brightness-105 active:scale-95 text-[#0F2926] font-bold text-[12px] rounded-[10px] px-3 py-1 transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_STEPPER =
-  "w-5 h-5 rounded-full bg-[#F4F6EE] hover:bg-[#FFC45A] active:scale-90 text-[#04453F] font-bold text-[12px] flex items-center justify-center transition cursor-pointer";
+  "w-5 h-5 rounded-[6px] amber-gradient-btn hover:brightness-105 active:scale-90 text-[#0F2926] font-bold text-[12px] flex items-center justify-center transition cursor-pointer";
 const BTN_ICON_CIRCLE =
-  "w-9 h-9 rounded-full amber-gradient-btn hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center transition cursor-pointer";
+  "w-9 h-9 rounded-full sage-gradient-pill hover:brightness-105 active:scale-90 text-white flex items-center justify-center transition cursor-pointer";
 
 export default function FreshDateApp() {
   // =========================================================================
@@ -729,38 +724,33 @@ export default function FreshDateApp() {
     };
   };
 
-  // Precision Vernier Caliper Weight Scale
+  // Precision Vernier Caliper Weight Scale (Matching Clear Original Design Screenshot)
   const renderVernierWeightCard = (readOnly?: boolean) => {
     const ticks = Array.from({ length: 41 }, (_, i) => 50 + i);
     return (
-      <div className={`${CARD_CLS} space-y-2.5`}>
-        <div className="flex items-center justify-between">
-          <span className={T_CARD_TITLE}>Current Weight</span>
-          <span className="text-[16px] font-extrabold text-[#04453F]">
-            {weightKg} KG
-          </span>
+      <div className={`${CARD_CLS} space-y-2 relative pb-5`}>
+        <div className={T_CARD_TITLE}>Current Weight</div>
+        <div className="text-center text-[20px] font-extrabold text-[#0F2926] tracking-tight">
+          {weightKg}KG
         </div>
 
-        <div className={`${TILE_CLS} px-3 pt-3 pb-2 overflow-hidden`}>
-          <div className="flex items-end justify-between h-6 px-1">
+        <div className="px-1 pt-1">
+          <div className="flex items-center justify-between h-5">
             {ticks.map((val) => {
               const isMajor = val % 5 === 0;
               const isSelected = val === weightKg;
-              const isNear = Math.abs(val - weightKg) <= 2;
               return (
                 <div
                   key={val}
-                  className="flex flex-col items-center justify-end h-full"
+                  className="flex flex-col items-center justify-center h-full"
                 >
                   <div
                     className={`rounded-full transition-all duration-150 ${
                       isSelected
-                        ? "w-[2.5px] h-5 bg-[#04453F]"
+                        ? "w-[2px] h-5 bg-[#0F2926]"
                         : isMajor
-                        ? "w-[1.5px] h-3.5 bg-[#04453F]/50"
-                        : isNear
-                        ? "w-[1.5px] h-2.5 bg-[#94C060]"
-                        : "w-[1px] h-2 bg-slate-300"
+                        ? "w-[1.5px] h-4 bg-[#0F2926]/80"
+                        : "w-[1px] h-2.5 bg-[#0F2926]/45"
                     }`}
                   />
                 </div>
@@ -768,14 +758,12 @@ export default function FreshDateApp() {
             })}
           </div>
 
-          <div className="flex justify-between text-[10px] text-slate-400 font-sans font-semibold pt-1.5 px-0.5">
-            {[50, 55, 60, 65, 70, 75, 80, 85, 90].map((num) => (
+          <div className="flex justify-between text-[11px] text-[#0F2926] font-sans font-semibold pt-1.5 px-2">
+            {[55, 60, 65, 70, 75].map((num) => (
               <span
                 key={num}
                 className={
-                  Math.abs(weightKg - num) <= 2
-                    ? "text-[#04453F] font-extrabold"
-                    : ""
+                  Math.abs(weightKg - num) <= 2 ? "font-extrabold" : "opacity-80"
                 }
               >
                 {num}
@@ -795,6 +783,18 @@ export default function FreshDateApp() {
               />
             </div>
           )}
+        </div>
+
+        {/* Original Amber Triangle Pointer at Bottom Center */}
+        <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 pointer-events-none">
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+            <path
+              d="M10 1L18.6603 15H1.33975L10 1Z"
+              fill="#FFC45A"
+              stroke="#04453F"
+              strokeWidth="1.5"
+            />
+          </svg>
         </div>
       </div>
     );
@@ -1117,111 +1117,110 @@ export default function FreshDateApp() {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-[#F4F6EE] select-none font-sans">
+    <div className="min-h-[100dvh] w-full bg-[#ECEEE6] select-none font-sans">
       <Toaster position="top-center" />
 
       {/* =====================================================================
           CLEAN MOBILE WEB APP CONTAINER (NO FAKE PHONE FRAME OR STATUS BAR)
          ===================================================================== */}
-      <div className="relative w-full max-w-[480px] min-h-[100dvh] mx-auto bg-[#F4F6EE] flex flex-col font-sans">
+      <div className="relative w-full max-w-[480px] min-h-[100dvh] mx-auto bg-[#ECEEE6] flex flex-col font-sans">
         {/* ===================================================================
-            SCREEN 1: LOGIN PAGE (Inside Gradient Refrigerator Outer Frame)
+            SCREEN 1: LOGIN PAGE (Clean Gradient Outer Frame, Zero Extra Decor)
            =================================================================== */}
         {appStage === "login" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-4 pt-5 pb-8 flex flex-col justify-between bg-[#F4F6EE]"
+            className="flex-1 px-3.5 pt-4 pb-6 flex flex-col bg-[#ECEEE6] space-y-3"
           >
-            <div className="space-y-3.5 flex-1 flex flex-col">
-              <div className="flex justify-center">
-                <div className={T_HEADER_PILL}>FRESHDATE</div>
-              </div>
+            <div className="flex items-center justify-between px-0.5">
+              <div className="w-9" />
+              <div className={T_HEADER_PILL}>FRESHDATE</div>
+              <button
+                onClick={() => setAppStage("intro")}
+                className={BTN_ICON_CIRCLE}
+              >
+                <Plus className="w-5 h-5" />
+              </button>
+            </div>
 
-              <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-4`}>
-                {/* Fridge Top Hinge & Side Door Handle Accents */}
-                <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-                <span className="w-1.5 h-12 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-1/3 pointer-events-none" />
+            <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-4`}>
+              <div className="space-y-3.5">
+                <div className={`${CARD_CLS} flex items-center gap-3 py-3`}>
+                  <div className="w-10 h-10 rounded-[10px] amber-gradient-btn flex items-center justify-center text-xl shrink-0">
+                    🧊
+                  </div>
+                  <p className="text-[12px] text-[#0F2926] leading-relaxed font-medium">
+                    Track what you have, beat expiration dates, and shop smarter—so every ingredient counts.
+                  </p>
+                </div>
 
-                <div className="space-y-4">
-                  <div className={`${CARD_CLS} flex items-center gap-3`}>
-                    <div className="w-10 h-10 rounded-[12px] bg-[#F4F6EE] flex items-center justify-center text-xl shrink-0">
-                      🧊
-                    </div>
-                    <p className="text-[12px] text-[#0F2926] leading-relaxed font-medium">
-                      Track what you have, beat expiration dates, and shop smarter—so every ingredient counts.
-                    </p>
+                <div className={`${CARD_CLS} space-y-5`}>
+                  <div>
+                    <label className={T_ITEM_NAME}>Email</label>
+                    <input
+                      type="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      className="w-full mt-1.5 pb-1.5 border-b border-[#04453F]/40 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
+                    />
                   </div>
 
-                  <div className={`${CARD_CLS} space-y-5`}>
-                    <div>
-                      <label className={T_ITEM_NAME}>Email</label>
-                      <input
-                        type="email"
-                        value={userEmail}
-                        onChange={(e) => setUserEmail(e.target.value)}
-                        className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className={T_ITEM_NAME}>Password</label>
-                      <input
-                        type="password"
-                        defaultValue="••••••••••••"
-                        className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
-                      />
-                      <div className="text-center mt-3">
-                        <button
-                          type="button"
-                          onClick={() => notify("Password reset link sent")}
-                          className="text-[11px] text-slate-400 underline cursor-pointer"
-                        >
-                          Forgot your password?
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="pt-1 flex justify-center">
+                  <div>
+                    <label className={T_ITEM_NAME}>Password</label>
+                    <input
+                      type="password"
+                      defaultValue="••••••••••••"
+                      className="w-full mt-1.5 pb-1.5 border-b border-[#04453F]/40 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
+                    />
+                    <div className="mt-2">
                       <button
-                        onClick={() => setAppStage("intro")}
-                        className={`w-44 ${BTN_PRIMARY}`}
+                        type="button"
+                        onClick={() => notify("Password reset link sent")}
+                        className="text-[11px] font-semibold text-[#3B6E38] cursor-pointer"
                       >
-                        Let&apos;s Start
+                        Forgot your password?
                       </button>
                     </div>
                   </div>
 
-                  <div className="flex justify-center pt-1">
+                  <div className="pt-1 flex justify-center">
                     <button
                       onClick={() => setAppStage("intro")}
-                      className={BTN_PILL_ACTIVE}
+                      className={`w-36 ${BTN_PRIMARY}`}
                     >
-                      I don&apos;t have an account
+                      Let&apos;s Start
                     </button>
                   </div>
                 </div>
 
-                <div className="text-center text-[11px] font-semibold text-[#04453F]/65 pt-4">
-                  FRESHDATE · Smart Fridge Intervention
-                </div>
+                <button
+                  onClick={() => setAppStage("intro")}
+                  className={`w-full ${CARD_CLS} py-3 text-center text-[13px] font-bold text-[#3B6E38] hover:bg-white transition cursor-pointer`}
+                >
+                  I don&apos;t have any account
+                </button>
+              </div>
+
+              <div className="text-center text-[11px] font-semibold text-[#04453F]/60 pt-4">
+                FRESHDATE · Smart Fridge Intervention
               </div>
             </div>
           </motion.div>
         )}
 
         {/* ===================================================================
-            SCREEN 1.5: MINIMAL WELCOME (Inside Gradient Refrigerator Frame)
+            SCREEN 1.5: MINIMAL WELCOME (Clean Gradient Outer Frame)
            =================================================================== */}
         {appStage === "intro" && (
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-4 pt-5 pb-8 flex flex-col bg-[#F4F6EE] space-y-3.5"
+            className="flex-1 px-3.5 pt-4 pb-6 flex flex-col bg-[#ECEEE6] space-y-3"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between px-0.5">
               <button
                 onClick={() => setAppStage("login")}
                 className={BTN_ICON_CIRCLE}
@@ -1233,18 +1232,15 @@ export default function FreshDateApp() {
             </div>
 
             <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-5`}>
-              <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-              <span className="w-1.5 h-12 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-1/3 pointer-events-none" />
-
               <div className="flex-1 flex items-center">
                 <div className={`${CARD_CLS} w-full py-10 px-6 text-center space-y-4`}>
-                  <div className="w-16 h-16 rounded-[16px] bg-gradient-to-b from-[#EFF5E6] to-[#F9F7DF] border border-[#04453F]/10 mx-auto flex items-center justify-center text-3xl shadow-2xs">
+                  <div className="w-14 h-14 rounded-[14px] amber-gradient-btn mx-auto flex items-center justify-center text-2xl">
                     🧊
                   </div>
-                  <h1 className="text-[24px] font-extrabold text-[#04453F] tracking-tight">
+                  <h1 className="text-[22px] font-extrabold text-[#04453F] tracking-tight">
                     Welcome
                   </h1>
-                  <p className="text-[13px] text-slate-600 leading-relaxed max-w-[260px] mx-auto">
+                  <p className="text-[13px] text-[#0F2926] leading-relaxed max-w-[260px] mx-auto">
                     FRESHDATE links your fridge inventory with your weekly dining plans so you only buy what you will actually eat.
                   </p>
                 </div>
@@ -1253,7 +1249,7 @@ export default function FreshDateApp() {
               <div className="flex justify-center pt-4">
                 <button
                   onClick={() => setAppStage("onboarding")}
-                  className={`w-44 ${BTN_PRIMARY}`}
+                  className={`w-36 ${BTN_PRIMARY}`}
                 >
                   Continue
                 </button>
@@ -1263,34 +1259,46 @@ export default function FreshDateApp() {
         )}
 
         {/* ===================================================================
-            SCREEN 2: BASIC SETTINGS (Inside Gradient Refrigerator Outer Frame)
+            SCREEN 2: BASIC SETTINGS (Clean Gradient Outer Frame)
            =================================================================== */}
         {appStage === "onboarding" && (
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 overflow-y-auto no-scrollbar px-4 pt-5 pb-8 flex flex-col bg-[#F4F6EE] space-y-3.5"
+            className="flex-1 overflow-y-auto no-scrollbar px-3.5 pt-4 pb-6 flex flex-col bg-[#ECEEE6] space-y-3"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between px-0.5">
               <button
                 onClick={() => setAppStage("intro")}
                 className={BTN_ICON_CIRCLE}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <div className={T_HEADER_PILL}>Basic Settings</div>
-              <div className="w-9" />
+              <div className={T_HEADER_PILL}>Welcome</div>
+              <button
+                onClick={() => {
+                  setOpenDropdownKey(null);
+                  setAppStage("main");
+                  setActiveTab("fridge");
+                }}
+                className={BTN_ICON_CIRCLE}
+              >
+                <Plus className="w-5 h-5" />
+              </button>
             </div>
 
             <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-3.5`}>
-              <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-              <span className="w-1.5 h-12 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-1/3 pointer-events-none" />
-
               <div className="space-y-3">
+                <div className={`${CARD_CLS} py-3`}>
+                  <p className="text-[12px] text-[#0F2926] leading-relaxed font-medium">
+                    The app will recommend recipes and a grocery list based on your personal data and preferences.
+                  </p>
+                </div>
+
                 {renderVernierWeightCard(false)}
 
-                <div className={`${CARD_CLS} flex items-center justify-between`}>
+                <div className={`${CARD_CLS} py-3 flex items-center justify-between`}>
                   <span className={T_CARD_TITLE}>Number of Diners</span>
                   {renderStepperCapsule(
                     dinersCount,
@@ -1310,7 +1318,7 @@ export default function FreshDateApp() {
                     setActiveTab("fridge");
                     notify("Welcome to FRESHDATE!");
                   }}
-                  className={`w-44 ${BTN_PRIMARY}`}
+                  className={`w-32 ${BTN_PRIMARY}`}
                 >
                   Done
                 </button>
@@ -1326,7 +1334,7 @@ export default function FreshDateApp() {
           <>
             <main className="flex-1 overflow-y-auto no-scrollbar pt-2 pb-28">
               {/* -------------------------------------------------------------
-                  TAB 1: MY WEEK (Screens #8, #9, #10 inside Fridge Outer Frame)
+                  TAB 1: MY WEEK (Screens #8, #9, #10 inside Clean Outer Frame)
                  ------------------------------------------------------------- */}
               {activeTab === "week" && (
                 <motion.div
@@ -1350,18 +1358,15 @@ export default function FreshDateApp() {
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-                        <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
-
                         {renderCalendarCard()}
 
                         <div
                           className={`${CONTEXT_BAR_CLS} flex items-center justify-between`}
                         >
-                          <span className="text-[12px] font-bold text-[#0F2926]">
+                          <span className={T_CARD_TITLE}>
                             Total absences this {calendarRange}
                           </span>
-                          <span className="text-[12px] font-extrabold text-[#04453F] amber-gradient-btn px-3 py-0.5 rounded-full">
+                          <span className="text-[12px] font-extrabold text-[#0F2926] amber-gradient-btn px-3 py-0.5 rounded-[10px]">
                             {totalAbsencesCount}{" "}
                             {totalAbsencesCount === 1 ? "meal" : "meals"}
                           </span>
@@ -1389,7 +1394,7 @@ export default function FreshDateApp() {
                                         {mealType}
                                       </span>
                                       <ChevronDown
-                                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                                        className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
                                           isExpanded ? "rotate-180" : ""
                                         }`}
                                       />
@@ -1407,7 +1412,7 @@ export default function FreshDateApp() {
                                     >
                                       <span
                                         className={`w-2 h-2 rounded-full ${
-                                          isOut ? "bg-amber-700" : "bg-[#658C38]"
+                                          isOut ? "bg-amber-800" : "bg-[#658C38]"
                                         }`}
                                       />
                                       <span>
@@ -1428,10 +1433,10 @@ export default function FreshDateApp() {
                                         }}
                                         className="overflow-hidden"
                                       >
-                                        <div className="pt-3 mt-3 border-t border-slate-100">
+                                        <div className="pt-3 mt-3 border-t border-[#04453F]/15">
                                           {isOut ? (
                                             <div
-                                              className={`py-3 text-center text-[12px] text-amber-800 ${TILE_CLS} font-medium`}
+                                              className={`py-3 text-center text-[12px] text-amber-900 ${TILE_CLS} font-medium`}
                                             >
                                               Marked as Dining Out — Excluded from grocery quota
                                             </div>
@@ -1514,8 +1519,6 @@ export default function FreshDateApp() {
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-
                         {renderCalendarCard()}
 
                         <div className={`${CARD_CLS} space-y-3 relative`}>
@@ -1546,7 +1549,7 @@ export default function FreshDateApp() {
                                       duration: 0.16,
                                       ease: IOS_EASE,
                                     }}
-                                    className="absolute left-0 mt-1.5 w-32 bg-white rounded-[16px] shadow-xl border border-[#04453F]/12 py-1 z-30"
+                                    className="absolute left-0 mt-1.5 w-32 bg-white rounded-[14px] shadow-xl border border-[#04453F] py-1 z-30"
                                   >
                                     {(
                                       ["Breakfast", "Lunch", "Dinner"] as const
@@ -1566,7 +1569,7 @@ export default function FreshDateApp() {
                                         }}
                                         className={`w-full px-3.5 py-2 text-left text-[12px] font-bold flex items-center justify-between hover:bg-[#F4F6EE] ${
                                           recipeMealFilter === m
-                                            ? "text-[#04453F] bg-[#FFC45A]/20"
+                                            ? "text-[#04453F] bg-[#FFC45A]/25"
                                             : "text-slate-600"
                                         }`}
                                       >
@@ -1726,8 +1729,8 @@ export default function FreshDateApp() {
                               isOverTrashZone
                                 ? "border-red-500 bg-red-50 text-red-600"
                                 : draggingIngredientId
-                                ? "border-amber-400 bg-amber-50/70 text-amber-800"
-                                : "border-slate-200 bg-[#F4F6EE]/60 text-slate-400"
+                                ? "border-amber-500 bg-amber-50/70 text-amber-900"
+                                : "border-[#04453F]/25 bg-white/60 text-slate-500"
                             }`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1757,10 +1760,8 @@ export default function FreshDateApp() {
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-
                         <div className={`${CARD_CLS} flex items-center gap-4`}>
-                          <div className="w-20 h-20 rounded-[14px] bg-[#F4F6EE] text-4xl flex items-center justify-center shrink-0">
+                          <div className={`w-20 h-20 ${TILE_CLS} text-4xl flex items-center justify-center shrink-0`}>
                             {activeRecipe.emoji}
                           </div>
                           <div className="space-y-1.5">
@@ -1768,10 +1769,10 @@ export default function FreshDateApp() {
                               {activeRecipe.title}
                             </h2>
                             <div className="flex items-center gap-2">
-                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F4F6EE] text-[#04453F]">
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white border border-[#04453F]/30 text-[#04453F]">
                                 {activeRecipe.time}
                               </span>
-                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#94C060]/25 text-[#04453F]">
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full amber-gradient-btn text-[#0F2926]">
                                 {activeRecipe.difficulty}
                               </span>
                             </div>
@@ -1786,12 +1787,12 @@ export default function FreshDateApp() {
                                 key={idx}
                                 className="flex items-start gap-2.5"
                               >
-                                <div className="w-5 h-5 rounded-[6px] bg-[#F4F6EE] text-[#04453F] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                <div className="w-5 h-5 rounded-[6px] amber-gradient-btn text-[#0F2926] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                                   {idx + 1}
                                 </div>
                                 <div>
                                   <div className={T_ITEM_NAME}>{s.title}</div>
-                                  <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
+                                  <p className="text-[11px] text-slate-600 leading-relaxed mt-0.5">
                                     {s.description}
                                   </p>
                                 </div>
@@ -1818,7 +1819,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 2: MY FRIDGE (Original Two-Door Refrigerator Outer Frame & Gradients)
+                  TAB 2: MY FRIDGE (Clean Gradient Outer Frame, Zero Extra Decor)
                  ------------------------------------------------------------- */}
               {activeTab === "fridge" && (
                 <motion.div
@@ -1839,16 +1840,9 @@ export default function FreshDateApp() {
                     </button>
                   </div>
 
-                  {/* DOUBLE-DOOR REFRIGERATOR OUTER CABINET WITH GREEN-TO-BUTTER-YELLOW GRADIENT */}
-                  <div className="fridge-outer-frame p-3 relative">
-                    {/* Top Fridge Hinge Cap */}
-                    <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-
-                    {/* UPPER DOOR COMPARTMENT: REFRIGERATED */}
-                    <div className={`${CARD_CLS} relative`}>
-                      {/* Upper Door Recessed Handle Accent */}
-                      <span className="w-1.5 h-10 rounded-full bg-[#F4F6EE] border border-[#04453F]/20 shadow-inner absolute -right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-
+                  <div className={FRIDGE_FRAME_CLS}>
+                    {/* CARD 1: COLLAPSIBLE REFRIGERATED */}
+                    <div className={CARD_CLS}>
                       <div
                         onClick={() =>
                           setCollapsedFridgeZones((prev) => ({
@@ -1858,17 +1852,16 @@ export default function FreshDateApp() {
                         }
                         className="flex items-center justify-between cursor-pointer"
                       >
-                        <span className="px-3 py-1 rounded-full bg-[#EFF3E8] border border-[#04453F]/12 text-[11px] font-extrabold text-[#04453F]">
+                        <span className="px-3 py-1 rounded-[10px] bg-white border border-[#04453F]/50 text-[11px] font-extrabold text-[#0F2926]">
                           ALL ({refrigeratedItems.length})
                         </span>
 
                         <div className="flex items-center gap-1.5">
                           <span className={BTN_PILL_ACTIVE}>
-                            <Thermometer className="w-3.5 h-3.5 text-[#04453F]" />
                             <span>Refrigerated</span>
                           </span>
                           <ChevronDown
-                            className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                            className={`w-4 h-4 text-[#0F2926] transition-transform duration-200 ${
                               !collapsedFridgeZones.refrigerated
                                 ? "rotate-180"
                                 : ""
@@ -1887,7 +1880,7 @@ export default function FreshDateApp() {
                             className="overflow-hidden"
                           >
                             <div className="pt-2.5 space-y-2">
-                              <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
+                              <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-500 px-2">
                                 <div className="col-span-6">Item</div>
                                 <div className="col-span-4 text-center">
                                   Servings Left
@@ -1908,19 +1901,8 @@ export default function FreshDateApp() {
                       </AnimatePresence>
                     </div>
 
-                    {/* REFRIGERATOR DOOR SEAM / GASKET DIVIDER */}
-                    <div className="relative py-2 flex items-center justify-center">
-                      <span className="w-2.5 h-2 rounded-r-full bg-[#04453F]/20 absolute -left-3" />
-                      <div className="w-full h-[2px] bg-[#04453F]/15 rounded-full shadow-[0_1px_0_rgba(255,255,255,0.7)]" />
-                      <span className="w-5 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute right-4" />
-                      <span className="w-2.5 h-2 rounded-l-full bg-[#04453F]/20 absolute -right-3" />
-                    </div>
-
-                    {/* LOWER DOOR COMPARTMENT: FROZEN */}
-                    <div className={`${CARD_CLS} relative`}>
-                      {/* Lower Freezer Door Recessed Handle Accent */}
-                      <span className="w-1.5 h-10 rounded-full bg-[#F4F6EE] border border-[#04453F]/20 shadow-inner absolute -right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-
+                    {/* CARD 2: COLLAPSIBLE FROZEN */}
+                    <div className={CARD_CLS}>
                       <div
                         onClick={() =>
                           setCollapsedFridgeZones((prev) => ({
@@ -1930,17 +1912,16 @@ export default function FreshDateApp() {
                         }
                         className="flex items-center justify-between cursor-pointer"
                       >
-                        <span className="px-3 py-1 rounded-full bg-[#EFF3E8] border border-[#04453F]/12 text-[11px] font-extrabold text-[#04453F]">
+                        <span className="px-3 py-1 rounded-[10px] bg-white border border-[#04453F]/50 text-[11px] font-extrabold text-[#0F2926]">
                           ALL ({frozenItems.length})
                         </span>
 
                         <div className="flex items-center gap-1.5">
                           <span className={BTN_PILL_ACTIVE}>
-                            <Snowflake className="w-3.5 h-3.5 text-[#04453F]" />
                             <span>Frozen</span>
                           </span>
                           <ChevronDown
-                            className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                            className={`w-4 h-4 text-[#0F2926] transition-transform duration-200 ${
                               !collapsedFridgeZones.frozen ? "rotate-180" : ""
                             }`}
                           />
@@ -1957,7 +1938,7 @@ export default function FreshDateApp() {
                             className="overflow-hidden"
                           >
                             <div className="pt-2.5 space-y-2">
-                              <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
+                              <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-500 px-2">
                                 <div className="col-span-6">Item</div>
                                 <div className="col-span-4 text-center">
                                   Servings Left
@@ -1982,7 +1963,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 3: SUGGESTED LIST (Inside Gradient Refrigerator Frame)
+                  TAB 3: SUGGESTED LIST (Matching Clear Original Design Image 2)
                  ------------------------------------------------------------- */}
               {activeTab === "list" && (
                 <motion.div
@@ -2004,25 +1985,17 @@ export default function FreshDateApp() {
                   </div>
 
                   <div className={FRIDGE_FRAME_CLS}>
-                    <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-                    <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
-
-                    {/* Level 0 Context Summary Bar inside Fridge Frame */}
-                    <div
-                      className={`${CONTEXT_BAR_CLS} flex items-center justify-between text-[12px]`}
-                    >
-                      <span className="font-semibold text-[#0F2926]">
-                        Auto-adjusted quota
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-[#04453F] bg-[#EFF3E8] px-2.5 py-0.5 rounded-full text-[11px]">
-                          {fridgeItems.reduce((s, i) => s + i.servings, 0)} in
-                          fridge
-                        </span>
-                        <span className="font-bold text-[#04453F] bg-[#EFF3E8] px-2.5 py-0.5 rounded-full text-[11px]">
-                          {weeklyAbsencesCount} meals out
-                        </span>
-                      </div>
+                    {/* Top Recommendation Info Card from Clear Image 2 */}
+                    <div className={CONTEXT_BAR_CLS}>
+                      <p className="text-[12px] text-[#0F2926] font-medium leading-relaxed">
+                        Recommendations based on your fridge inventory (
+                        <strong>
+                          {fridgeItems.reduce((s, i) => s + i.servings, 0)}{" "}
+                          servings
+                        </strong>
+                        ) and preferences (
+                        <strong>{weeklyAbsencesCount} meals out</strong>).
+                      </p>
                     </div>
 
                     {(
@@ -2054,23 +2027,19 @@ export default function FreshDateApp() {
                             className="flex items-center justify-between cursor-pointer"
                           >
                             <div className="flex items-center gap-2">
-                              <span className={T_CARD_TITLE}>{catKey}</span>
+                              <span className={BTN_PILL_ACTIVE}>{catKey}</span>
                               <span className={T_META}>
-                                · {quotaInfo.inFridgeText}
+                                ({quotaInfo.inFridgeText})
                               </span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              {quotaInfo.quotaText ? (
-                                <span className="text-[11px] font-extrabold text-[#04453F] bg-[#F4F6EE] px-2.5 py-0.5 rounded-full">
-                                  Buy {quotaInfo.quotaText}
-                                </span>
-                              ) : (
-                                <span className="text-[11px] font-bold text-[#658C38] bg-[#94C060]/18 px-2.5 py-0.5 rounded-full">
-                                  Stocked ✓
+                            <div className="flex items-center gap-1.5">
+                              {quotaInfo.quotaText && (
+                                <span className="text-[13px] font-bold text-[#0F2926]">
+                                  {quotaInfo.quotaText}
                                 </span>
                               )}
                               <ChevronDown
-                                className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                                className={`w-4 h-4 text-[#0F2926] transition-transform duration-200 ${
                                   !isCollapsed ? "rotate-180" : ""
                                 }`}
                               />
@@ -2086,73 +2055,80 @@ export default function FreshDateApp() {
                                 transition={{ duration: 0.24, ease: IOS_EASE }}
                                 className="overflow-hidden"
                               >
-                                <div className="pt-3 mt-3 border-t border-slate-100 -mx-4 px-4 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
+                                <div className="pt-3 mt-2.5 -mx-4 px-4 flex overflow-x-auto gap-3 pb-1 no-scrollbar snap-x snap-mandatory">
                                   {items.map((item) => (
                                     <div
                                       key={item.id}
-                                      onClick={() =>
-                                        toggleSuggestedCheck(
-                                          item.id,
-                                          item.checked
-                                        )
-                                      }
-                                      className={`w-[112px] shrink-0 snap-start rounded-[16px] p-2.5 flex flex-col justify-between border-[1.5px] transition-all duration-150 cursor-pointer ${
-                                        item.checked
-                                          ? "bg-gradient-to-b from-[#FFFDF4] to-[#FFF6DC] border-[#FFC45A] shadow-2xs"
-                                          : "bg-[#F5F7F0] border-transparent opacity-80 hover:opacity-100"
-                                      }`}
+                                      className="w-[102px] shrink-0 snap-start flex flex-col items-center text-center"
                                     >
-                                      {/* Tier 1: Fridge Status Tag + Circular Selection Check */}
-                                      <div className="w-full flex items-center justify-between">
-                                        <span className="text-[10px] font-semibold text-slate-400">
-                                          {item.inFridgeServings > 0
-                                            ? `Have ${item.inFridgeServings}`
-                                            : "Suggested"}
-                                        </span>
-                                        <button
-                                          type="button"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            toggleSuggestedCheck(
-                                              item.id,
-                                              item.checked
-                                            );
-                                          }}
-                                          className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold transition cursor-pointer ${
+                                      {/* Clean Square Food Box from Clear Original Image 2 */}
+                                      <div
+                                        onClick={() =>
+                                          toggleSuggestedCheck(
+                                            item.id,
                                             item.checked
-                                              ? "amber-gradient-btn text-[#04453F]"
-                                              : "bg-white border-[1.5px] border-slate-300 text-transparent"
-                                          }`}
-                                        >
-                                          ✓
-                                        </button>
-                                      </div>
-
-                                      {/* Tier 2: Crisp White Icon Stage with Soft Radial Halo + Item Name */}
-                                      <div className="my-2 flex flex-col items-center text-center">
-                                        <div className="w-11 h-11 rounded-[12px] bg-white shadow-2xs flex items-center justify-center text-2xl mb-1.5 bg-[radial-gradient(circle,rgba(148,192,96,0.2)_0%,transparent_72%)]">
+                                          )
+                                        }
+                                        className={`w-full aspect-square rounded-[14px] bg-white border-[1.2px] p-2 flex flex-col items-center justify-center cursor-pointer transition ${
+                                          item.checked
+                                            ? "border-[#04453F] shadow-2xs"
+                                            : "border-[#04453F]/45 opacity-75"
+                                        }`}
+                                      >
+                                        <span className="text-4xl mb-1">
                                           {item.emoji}
-                                        </div>
+                                        </span>
                                         <span
-                                          className={`${T_ITEM_NAME} line-clamp-1 w-full`}
+                                          className={`${T_ITEM_NAME} line-clamp-1`}
                                         >
                                           {item.name}
                                         </span>
                                       </div>
 
-                                      {/* Tier 3: Integrated Stepper Capsule [ -  1  + ] */}
-                                      {renderStepperCapsule(
-                                        item.servings,
-                                        (e) => {
-                                          e.stopPropagation();
-                                          adjustSuggestedServings(item.id, -1);
-                                        },
-                                        (e) => {
-                                          e.stopPropagation();
-                                          adjustSuggestedServings(item.id, 1);
-                                        },
-                                        true
-                                      )}
+                                      {/* Serving Stepper & Amber Checkbox Below Square Box */}
+                                      <div className="mt-1.5 flex items-center gap-1.5">
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            adjustSuggestedServings(item.id, -1)
+                                          }
+                                          className="w-4 h-4 rounded-[4px] bg-white border border-[#04453F]/50 text-[11px] font-bold flex items-center justify-center cursor-pointer"
+                                        >
+                                          -
+                                        </button>
+                                        <span className="text-[11px] font-semibold text-[#0F2926]">
+                                          {item.servings}{" "}
+                                          {item.servings === 1
+                                            ? item.unit
+                                            : `${item.unit}s`}
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            adjustSuggestedServings(item.id, 1)
+                                          }
+                                          className="w-4 h-4 rounded-[4px] bg-white border border-[#04453F]/50 text-[11px] font-bold flex items-center justify-center cursor-pointer"
+                                        >
+                                          +
+                                        </button>
+                                      </div>
+
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          toggleSuggestedCheck(
+                                            item.id,
+                                            item.checked
+                                          )
+                                        }
+                                        className={`mt-1.5 w-5 h-5 rounded-[5px] border-[1.2px] border-[#04453F] flex items-center justify-center text-[11px] font-extrabold cursor-pointer transition ${
+                                          item.checked
+                                            ? "bg-[#FFC45A] text-white"
+                                            : "bg-white text-transparent"
+                                        }`}
+                                      >
+                                        ✓
+                                      </button>
                                     </div>
                                   ))}
                                 </div>
@@ -2165,7 +2141,7 @@ export default function FreshDateApp() {
 
                     <button
                       onClick={importCheckedToFridge}
-                      className={`w-full ${BTN_PRIMARY} py-3`}
+                      className={`w-full ${BTN_PRIMARY} py-2.5`}
                     >
                       Import Selected Items to My Fridge
                     </button>
@@ -2174,7 +2150,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 4: ME -> PROFILE -> EDIT PROFILE (Inside Fridge Frame)
+                  TAB 4: ME -> PROFILE -> EDIT PROFILE (Matching Clear Image 2)
                  ------------------------------------------------------------- */}
               {activeTab === "me" && (
                 <motion.div
@@ -2186,39 +2162,61 @@ export default function FreshDateApp() {
                 >
                   {meSubScreen === "menu" && (
                     <>
-                      <div className="flex justify-center">
+                      <div className="flex items-center justify-between px-0.5">
+                        <div className="w-9" />
                         <div className={T_HEADER_PILL}>Me</div>
+                        <button
+                          onClick={() => setImportScreen("hub")}
+                          className={BTN_ICON_CIRCLE}
+                        >
+                          <Plus className="w-5 h-5" />
+                        </button>
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-                        <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
-
-                        {/* Original Design Dark Forest-Green Gradient Profile Header Card */}
+                        {/* Dark Forest-Green Freshie Card from Clear Original Image 2 */}
                         <div
                           onClick={() => setMeSubScreen("profile_view")}
-                          className="bg-gradient-to-br from-[#065A52] via-[#04453F] to-[#022C28] text-white rounded-[20px] p-4 border-[1.5px] border-[#04453F]/40 shadow-md flex items-center justify-between cursor-pointer"
+                          className="bg-[#04453F] text-white rounded-[20px] p-4 border-[1.5px] border-[#04453F] flex items-start justify-between cursor-pointer"
                         >
                           <div className="flex items-center gap-3.5">
-                            <div className="w-12 h-12 rounded-[14px] amber-gradient-btn flex items-center justify-center text-2xl">
-                              🙂
+                            <div className="w-16 h-16 rounded-[14px] bg-[#F4F5F0] border border-[#04453F] flex items-center justify-center shrink-0">
+                              <div className="w-11 h-11 rounded-[8px] amber-gradient-btn flex flex-col items-center justify-center text-[#04453F] font-extrabold">
+                                <span className="text-[10px] leading-none">
+                                  • •
+                                </span>
+                                <span className="text-[12px] leading-none mt-1">
+                                  ◡
+                                </span>
+                              </div>
                             </div>
-                            <div>
-                              <h2 className="text-[15px] font-bold text-white">
+                            <div className="space-y-0.5">
+                              <h2 className="text-[16px] font-bold text-white">
                                 Freshie
                               </h2>
-                              <p className="text-[11px] font-medium text-[#F0E98F]/85 mt-0.5">
-                                {weightKg} KG · {dinersCount} Diner(s) ·{" "}
-                                {effectiveFlavorPref}
+                              <p className="text-[11px] font-medium text-white/85">
+                                Fridge Brand:{" "}
+                                <strong className="text-white">
+                                  FreshDate
+                                </strong>
+                              </p>
+                              <p className="text-[11px] font-medium text-white/85">
+                                Expiry Risk:{" "}
+                                <strong className="text-white">Low</strong>
+                              </p>
+                              <p className="text-[11px] font-medium text-white/85">
+                                Expiry Share:{" "}
+                                <strong className="text-white">25%</strong>
                               </p>
                             </div>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-[#F0E98F]" />
+                          <span className="w-7 h-7 rounded-[8px] amber-gradient-btn flex items-center justify-center text-[#0F2926] text-[12px] font-bold">
+                            ✎
+                          </span>
                         </div>
 
-                        <div
-                          className={`${CARD_CLS} divide-y divide-slate-100 p-0 overflow-hidden`}
-                        >
+                        {/* Individual Rounded Pill Menu Rows from Clear Original Image 2 */}
+                        <div className="space-y-2.5">
                           {[
                             {
                               label: "Profile",
@@ -2255,10 +2253,10 @@ export default function FreshDateApp() {
                             <button
                               key={idx}
                               onClick={row.action}
-                              className={`w-full px-4 py-3.5 hover:bg-[#F4F6EE] flex items-center justify-between ${T_ITEM_NAME} transition cursor-pointer`}
+                              className="w-full px-4 py-3 bg-[#F4F5F0] hover:bg-white rounded-[16px] border-[1.2px] border-[#04453F] flex items-center justify-between text-[14px] font-bold text-[#0F2926] transition cursor-pointer"
                             >
                               <span>{row.label}</span>
-                              <ChevronRight className="w-4 h-4 text-slate-400" />
+                              <ChevronRight className="w-4 h-4 text-[#658C38] stroke-[2.5]" />
                             </button>
                           ))}
                         </div>
@@ -2280,8 +2278,6 @@ export default function FreshDateApp() {
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-
                         {renderVernierWeightCard(true)}
 
                         <div
@@ -2317,7 +2313,7 @@ export default function FreshDateApp() {
                         <div className="pt-4 pb-1 flex justify-center">
                           <button
                             onClick={() => setMeSubScreen("profile_edit")}
-                            className={`w-44 ${BTN_PRIMARY}`}
+                            className={`w-36 ${BTN_PRIMARY}`}
                           >
                             Edit
                           </button>
@@ -2343,8 +2339,6 @@ export default function FreshDateApp() {
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-
                         {renderVernierWeightCard(false)}
 
                         <div
@@ -2432,7 +2426,7 @@ export default function FreshDateApp() {
                               setMeSubScreen("profile_view");
                               notify("Profile saved");
                             }}
-                            className={`w-44 ${BTN_PRIMARY}`}
+                            className={`w-36 ${BTN_PRIMARY}`}
                           >
                             Done
                           </button>
@@ -2611,7 +2605,7 @@ export default function FreshDateApp() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 16 }}
                   transition={{ duration: 0.24, ease: IOS_EASE }}
-                  className="fixed inset-0 max-w-[480px] mx-auto z-40 bg-[#F4F6EE] flex flex-col"
+                  className="fixed inset-0 max-w-[480px] mx-auto z-40 bg-[#ECEEE6] flex flex-col"
                 >
                   {importScreen === "hub" && (
                     <div className="flex-1 overflow-y-auto px-3.5 pt-4 pb-8 space-y-3 no-scrollbar">
@@ -2623,37 +2617,39 @@ export default function FreshDateApp() {
                           <ChevronLeft className="w-5 h-5" />
                         </button>
                         <div className={T_HEADER_PILL}>Import</div>
-                        <div className="w-9" />
+                        <button
+                          onClick={() => setImportScreen("manual")}
+                          className={BTN_ICON_CIRCLE}
+                        >
+                          <Plus className="w-5 h-5" />
+                        </button>
                       </div>
 
                       <div className={FRIDGE_FRAME_CLS}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-                        <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
-
                         <button
                           onClick={() => {
                             setCameraMode("scan");
                             setImportScreen("scan");
                           }}
-                          className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
+                          className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-white transition cursor-pointer`}
                         >
                           <div>
                             <div className={T_CARD_TITLE}>
                               Take Photo / Scan / Gallery
                             </div>
                             <p className={`${T_META} mt-0.5`}>
-                              Take a photo of the product or barcode—auto identified
+                              Take a photo of the product or barcode—the system will identify it automatically
                             </p>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                          <ChevronRight className="w-4 h-4 text-[#658C38] stroke-[2.5] shrink-0" />
                         </button>
 
                         <button
                           onClick={() => setImportScreen("manual")}
-                          className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
+                          className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-white transition cursor-pointer`}
                         >
                           <span className={T_CARD_TITLE}>Manual Entry</span>
-                          <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                          <ChevronRight className="w-4 h-4 text-[#658C38] stroke-[2.5] shrink-0" />
                         </button>
 
                         <div className={`${CARD_CLS} space-y-3`}>
@@ -2663,7 +2659,7 @@ export default function FreshDateApp() {
                               <button
                                 key={item.id}
                                 onClick={() => openFoodInfoSheet(item)}
-                                className={`${TILE_CLS} hover:bg-[#94C060]/20 active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
+                                className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
                               >
                                 <span className="text-3xl mb-1">
                                   {item.emoji}
@@ -2804,8 +2800,6 @@ export default function FreshDateApp() {
                       </div>
 
                       <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between`}>
-                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
-
                         <div className="space-y-3">
                           <div className="relative">
                             <input
@@ -2813,13 +2807,13 @@ export default function FreshDateApp() {
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
                               placeholder="Search for food"
-                              className="w-full pl-4 pr-10 py-2.5 bg-white/95 rounded-full text-[13px] font-medium outline-none border-[1.5px] border-[#04453F]/16 pro-card-shadow"
+                              className="w-full pl-4 pr-10 py-2.5 bg-[#F4F5F0] rounded-full text-[13px] font-medium outline-none border-[1.2px] border-[#04453F]"
                             />
                             <Search className="w-4 h-4 text-[#658C38] absolute right-3.5 top-1/2 -translate-y-1/2" />
                           </div>
 
                           <div className={`${CARD_CLS} space-y-3`}>
-                            <div className="bg-[#F4F6EE] p-1 rounded-full grid grid-cols-4 gap-1">
+                            <div className="flex items-center justify-between pb-1">
                               {(
                                 [
                                   "All",
@@ -2833,8 +2827,8 @@ export default function FreshDateApp() {
                                   onClick={() => setManualCategory(cat)}
                                   className={
                                     manualCategory === cat
-                                      ? `${BTN_PILL_ACTIVE} w-full`
-                                      : "py-1.5 text-[12px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
+                                      ? BTN_PILL_ACTIVE
+                                      : "px-2.5 py-1 text-[12px] font-bold text-[#0F2926] cursor-pointer"
                                   }
                                 >
                                   {cat}
@@ -2863,13 +2857,13 @@ export default function FreshDateApp() {
                           </div>
                         </div>
 
-                        <div className="bg-white/95 p-1.5 rounded-full pro-card-shadow border-[1.5px] border-[#04453F]/14 grid grid-cols-2 gap-1.5 mt-4">
+                        <div className="grid grid-cols-2 gap-3 mt-4">
                           <button
                             onClick={() => setDefaultZoneFilter("refrigerated")}
                             className={
                               defaultZoneFilter === "refrigerated"
                                 ? `${BTN_PRIMARY} w-full`
-                                : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
+                                : "py-2 rounded-[12px] bg-[#F4F5F0] border-[1.2px] border-[#04453F] text-[13px] font-bold text-[#0F2926] cursor-pointer"
                             }
                           >
                             Refrigerated
@@ -2879,7 +2873,7 @@ export default function FreshDateApp() {
                             className={
                               defaultZoneFilter === "frozen"
                                 ? `${BTN_PRIMARY} w-full`
-                                : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
+                                : "py-2 rounded-[12px] bg-[#F4F5F0] border-[1.2px] border-[#04453F] text-[13px] font-bold text-[#0F2926] cursor-pointer"
                             }
                           >
                             Frozen

@@ -29,7 +29,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #F4F6EE;
+  background-color: #ECEEE6;
   color: #0F2926;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
@@ -46,39 +46,26 @@ body {
 
 /* Soft Multi-Layer Brand Shadows */
 .pro-card-shadow {
-  box-shadow:
-    0 8px 22px -6px rgba(4, 69, 63, 0.09),
-    0 2px 6px -1px rgba(4, 69, 63, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 3px 10px rgba(4, 69, 63, 0.06);
 }
 
-/* Original Design: Signature Green-to-Butter-Yellow Refrigerator Outer Frame */
+/* Original Design: Clean Green-to-Butter-Yellow Outer Frame (Zero Fake Hinges/Handles) */
 .fridge-outer-frame {
-  background: linear-gradient(180deg, #9BC563 0%, #D2E17B 46%, #F0E98F 100%);
-  border: 1.5px solid rgba(4, 69, 63, 0.32);
-  border-radius: 28px;
-  box-shadow:
-    inset 0 2px 4px rgba(255, 255, 255, 0.78),
-    inset 0 -2px 5px rgba(4, 69, 63, 0.08),
-    0 14px 32px -8px rgba(4, 69, 63, 0.14);
+  background: linear-gradient(180deg, #7BB443 0%, #B8D45E 32%, #E5E27E 68%, #EDE685 100%);
+  border: 1.5px solid #04453F;
+  border-radius: 26px;
 }
 
-/* Original Design: Warm Amber Gradient for Interactive Buttons & Section Badges */
+/* Original Design: Warm Amber Button & Badge Style */
 .amber-gradient-btn {
-  background: linear-gradient(90deg, #FFE180 0%, #FFC45A 100%);
-  border: 1px solid rgba(4, 69, 63, 0.2);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    0 2px 6px rgba(4, 69, 63, 0.07);
+  background: #FFC45A;
+  border: 1.2px solid #04453F;
 }
 
-/* Original Design: Sage Green Header Pill Gradient */
+/* Original Design: Green-to-Lime Header Pill & Top Circle Button Gradient */
 .sage-gradient-pill {
-  background: linear-gradient(180deg, #A3CB6C 0%, #8BB755 100%);
-  border: 1.5px solid rgba(4, 69, 63, 0.28);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.55),
-    0 3px 8px rgba(4, 69, 63, 0.1);
+  background: linear-gradient(90deg, #82B649 0%, #9CC65A 70%, #C7DC6E 100%);
+  border: 1.5px solid #04453F;
 }
 
 .pro-glass-header {
