@@ -46,36 +46,36 @@ type MeSubScreen = "menu" | "profile_view" | "profile_edit";
 const IOS_EASE: [number, number, number, number] = [0.32, 0.72, 0, 1];
 
 // ============================================================================
-// UNIFIED GRAPHIC DESIGN TOKENS (Strict Radii, Typography & Button Hierarchy)
+// UNIFIED GRAPHIC DESIGN TOKENS (Original Gradients + Refrigerator Outer Frame)
 // ============================================================================
 // 1. Containers:
-// - Level 0 Context Strip: flat sage-tinted summary bar (no shadow, distinct from interactive white cards)
-// - Level 1 Primary Interactive Card: white rounded-[20px] p-4 with soft elevation
-// - Level 2 Inner Item Tile: soft surface rounded-[14px]
+// - FRIDGE_FRAME_CLS: Original design's Green-to-Butter-Yellow gradient refrigerator outer frame
+// - CONTEXT_BAR_CLS: Level 0 context summary strip inside the refrigerator frame
+// - CARD_CLS: Level 1 white inner refrigerator compartment card (rounded-[20px] p-4)
+// - TILE_CLS: Level 2 inner item tile (rounded-[14px])
+const FRIDGE_FRAME_CLS = "fridge-outer-frame p-3 space-y-3 relative";
 const CONTEXT_BAR_CLS =
-  "bg-[#E6ECDC] border border-[#04453F]/8 rounded-[14px] px-4 py-2.5";
+  "bg-white/80 backdrop-blur-xs border-[1.5px] border-[#04453F]/14 rounded-[16px] px-3.5 py-2.5 shadow-2xs";
 const CARD_CLS =
-  "bg-white rounded-[20px] p-4 pro-card-shadow border border-[#04453F]/8";
+  "bg-white/96 rounded-[20px] p-4 pro-card-shadow border-[1.5px] border-[#04453F]/16 relative";
 const TILE_CLS = "bg-[#F4F6EE] rounded-[14px]";
 
 // 2. Typography: 4 strict levels
 const T_HEADER_PILL =
-  "h-9 px-7 rounded-full bg-[#94C060] text-white font-bold text-[15px] tracking-tight flex items-center justify-center shadow-2xs";
+  "h-9 px-7 rounded-full sage-gradient-pill text-white font-bold text-[15px] tracking-tight flex items-center justify-center";
 const T_CARD_TITLE = "text-[14px] font-bold text-[#0F2926] tracking-tight";
 const T_ITEM_NAME = "text-[13px] font-semibold text-[#0F2926]";
 const T_META = "text-[11px] font-medium text-slate-400";
 
-// 3. Unified Clickable Button System
-// - Primary / Pill Action Buttons: solid #FFC45A capsules
-// - Quantity Steppers: integrated capsule [ -  1  + ] so secondary counters never drown out primary CTAs
+// 3. Unified Clickable Button System (Original Warm Amber Gradient Family)
 const BTN_PRIMARY =
-  "bg-[#FFC45A] hover:brightness-105 active:scale-96 text-[#04453F] font-bold text-[13px] rounded-full px-6 py-2.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
+  "amber-gradient-btn hover:brightness-105 active:scale-96 text-[#04453F] font-bold text-[13px] rounded-full px-6 py-2.5 transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_PILL_ACTIVE =
-  "bg-[#FFC45A] hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 shadow-2xs transition cursor-pointer inline-flex items-center justify-center gap-1.5";
+  "amber-gradient-btn hover:brightness-105 active:scale-95 text-[#04453F] font-bold text-[12px] rounded-full px-3.5 py-1.5 transition cursor-pointer inline-flex items-center justify-center gap-1.5";
 const BTN_STEPPER =
   "w-5 h-5 rounded-full bg-[#F4F6EE] hover:bg-[#FFC45A] active:scale-90 text-[#04453F] font-bold text-[12px] flex items-center justify-center transition cursor-pointer";
 const BTN_ICON_CIRCLE =
-  "w-9 h-9 rounded-full bg-[#FFC45A] hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center shadow-2xs transition cursor-pointer";
+  "w-9 h-9 rounded-full amber-gradient-btn hover:brightness-105 active:scale-90 text-[#04453F] flex items-center justify-center transition cursor-pointer";
 
 export default function FreshDateApp() {
   // =========================================================================
@@ -1125,93 +1125,101 @@ export default function FreshDateApp() {
          ===================================================================== */}
       <div className="relative w-full max-w-[480px] min-h-[100dvh] mx-auto bg-[#F4F6EE] flex flex-col font-sans">
         {/* ===================================================================
-            SCREEN 1: LOGIN PAGE
+            SCREEN 1: LOGIN PAGE (Inside Gradient Refrigerator Outer Frame)
            =================================================================== */}
         {appStage === "login" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-5 pt-6 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 px-4 pt-5 pb-8 flex flex-col justify-between bg-[#F4F6EE]"
           >
-            <div className="space-y-5">
+            <div className="space-y-3.5 flex-1 flex flex-col">
               <div className="flex justify-center">
                 <div className={T_HEADER_PILL}>FRESHDATE</div>
               </div>
 
-              <div className={`${CARD_CLS} flex items-center gap-3`}>
-                <div className="w-10 h-10 rounded-[12px] bg-[#F4F6EE] flex items-center justify-center text-xl shrink-0">
-                  🧊
-                </div>
-                <p className="text-[12px] text-[#0F2926] leading-relaxed font-medium">
-                  Track what you have, beat expiration dates, and shop smarter—so every ingredient counts.
-                </p>
-              </div>
+              <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-4`}>
+                {/* Fridge Top Hinge & Side Door Handle Accents */}
+                <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+                <span className="w-1.5 h-12 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-1/3 pointer-events-none" />
 
-              <div className={`${CARD_CLS} space-y-5`}>
-                <div>
-                  <label className={T_ITEM_NAME}>Email</label>
-                  <input
-                    type="email"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                    className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
-                  />
-                </div>
+                <div className="space-y-4">
+                  <div className={`${CARD_CLS} flex items-center gap-3`}>
+                    <div className="w-10 h-10 rounded-[12px] bg-[#F4F6EE] flex items-center justify-center text-xl shrink-0">
+                      🧊
+                    </div>
+                    <p className="text-[12px] text-[#0F2926] leading-relaxed font-medium">
+                      Track what you have, beat expiration dates, and shop smarter—so every ingredient counts.
+                    </p>
+                  </div>
 
-                <div>
-                  <label className={T_ITEM_NAME}>Password</label>
-                  <input
-                    type="password"
-                    defaultValue="••••••••••••"
-                    className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
-                  />
-                  <div className="text-center mt-3">
+                  <div className={`${CARD_CLS} space-y-5`}>
+                    <div>
+                      <label className={T_ITEM_NAME}>Email</label>
+                      <input
+                        type="email"
+                        value={userEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                        className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className={T_ITEM_NAME}>Password</label>
+                      <input
+                        type="password"
+                        defaultValue="••••••••••••"
+                        className="w-full mt-1.5 pb-2 border-b border-slate-200 text-[13px] text-[#0F2926] bg-transparent outline-none focus:border-[#04453F]"
+                      />
+                      <div className="text-center mt-3">
+                        <button
+                          type="button"
+                          onClick={() => notify("Password reset link sent")}
+                          className="text-[11px] text-slate-400 underline cursor-pointer"
+                        >
+                          Forgot your password?
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="pt-1 flex justify-center">
+                      <button
+                        onClick={() => setAppStage("intro")}
+                        className={`w-44 ${BTN_PRIMARY}`}
+                      >
+                        Let&apos;s Start
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center pt-1">
                     <button
-                      type="button"
-                      onClick={() => notify("Password reset link sent")}
-                      className="text-[11px] text-slate-400 underline cursor-pointer"
+                      onClick={() => setAppStage("intro")}
+                      className={BTN_PILL_ACTIVE}
                     >
-                      Forgot your password?
+                      I don&apos;t have an account
                     </button>
                   </div>
                 </div>
 
-                <div className="pt-1 flex justify-center">
-                  <button
-                    onClick={() => setAppStage("intro")}
-                    className={`w-44 ${BTN_PRIMARY}`}
-                  >
-                    Let&apos;s Start
-                  </button>
+                <div className="text-center text-[11px] font-semibold text-[#04453F]/65 pt-4">
+                  FRESHDATE · Smart Fridge Intervention
                 </div>
               </div>
-
-              <div className="flex justify-center">
-                <button
-                  onClick={() => setAppStage("intro")}
-                  className={BTN_PILL_ACTIVE}
-                >
-                  I don&apos;t have an account
-                </button>
-              </div>
-            </div>
-
-            <div className="text-center text-[11px] text-slate-400">
-              FRESHDATE · Smart Fridge Intervention
             </div>
           </motion.div>
         )}
 
         {/* ===================================================================
-            SCREEN 1.5: MINIMAL WELCOME & ONE-SENTENCE INTRO
+            SCREEN 1.5: MINIMAL WELCOME (Inside Gradient Refrigerator Frame)
            =================================================================== */}
         {appStage === "intro" && (
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 px-6 pt-5 pb-10 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 px-4 pt-5 pb-8 flex flex-col bg-[#F4F6EE] space-y-3.5"
           >
             <div className="flex items-center justify-between">
               <button
@@ -1220,82 +1228,93 @@ export default function FreshDateApp() {
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <div className={T_HEADER_PILL}>FRESHDATE</div>
+              <div className={T_HEADER_PILL}>Welcome</div>
               <div className="w-9" />
             </div>
 
-            {/* Minimal Centered Welcome & One-Sentence Value Proposition */}
-            <div className={`${CARD_CLS} py-10 px-6 text-center space-y-4`}>
-              <div className="w-16 h-16 rounded-[16px] bg-[#F4F6EE] mx-auto flex items-center justify-center text-3xl">
-                🧊
-              </div>
-              <h1 className="text-[24px] font-extrabold text-[#04453F] tracking-tight">
-                Welcome
-              </h1>
-              <p className="text-[13px] text-slate-600 leading-relaxed max-w-[260px] mx-auto">
-                FRESHDATE links your fridge inventory with your weekly dining plans so you only buy what you will actually eat.
-              </p>
-            </div>
+            <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-5`}>
+              <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+              <span className="w-1.5 h-12 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-1/3 pointer-events-none" />
 
-            <div className="flex justify-center">
-              <button
-                onClick={() => setAppStage("onboarding")}
-                className={`w-44 ${BTN_PRIMARY}`}
-              >
-                Continue
-              </button>
+              <div className="flex-1 flex items-center">
+                <div className={`${CARD_CLS} w-full py-10 px-6 text-center space-y-4`}>
+                  <div className="w-16 h-16 rounded-[16px] bg-gradient-to-b from-[#EFF5E6] to-[#F9F7DF] border border-[#04453F]/10 mx-auto flex items-center justify-center text-3xl shadow-2xs">
+                    🧊
+                  </div>
+                  <h1 className="text-[24px] font-extrabold text-[#04453F] tracking-tight">
+                    Welcome
+                  </h1>
+                  <p className="text-[13px] text-slate-600 leading-relaxed max-w-[260px] mx-auto">
+                    FRESHDATE links your fridge inventory with your weekly dining plans so you only buy what you will actually eat.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-center pt-4">
+                <button
+                  onClick={() => setAppStage("onboarding")}
+                  className={`w-44 ${BTN_PRIMARY}`}
+                >
+                  Continue
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
 
         {/* ===================================================================
-            SCREEN 2: (FIRST-TIME SIGN-IN) BASIC SETTINGS
+            SCREEN 2: BASIC SETTINGS (Inside Gradient Refrigerator Outer Frame)
            =================================================================== */}
         {appStage === "onboarding" && (
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, ease: IOS_EASE }}
-            className="flex-1 overflow-y-auto no-scrollbar px-5 pt-5 pb-8 flex flex-col justify-between bg-gradient-to-b from-[#F4F6EE] to-[#E9EEDB]"
+            className="flex-1 overflow-y-auto no-scrollbar px-4 pt-5 pb-8 flex flex-col bg-[#F4F6EE] space-y-3.5"
           >
-            <div className="space-y-3.5">
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={() => setAppStage("intro")}
-                  className={BTN_ICON_CIRCLE}
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div className={T_HEADER_PILL}>Basic Settings</div>
-                <div className="w-9" />
-              </div>
-
-              {renderVernierWeightCard(false)}
-
-              <div className={`${CARD_CLS} flex items-center justify-between`}>
-                <span className={T_CARD_TITLE}>Number of Diners</span>
-                {renderStepperCapsule(
-                  dinersCount,
-                  () => setDinersCount(Math.max(1, dinersCount - 1)),
-                  () => setDinersCount(dinersCount + 1)
-                )}
-              </div>
-
-              {renderDietaryDropdownsWithOther()}
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setAppStage("intro")}
+                className={BTN_ICON_CIRCLE}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <div className={T_HEADER_PILL}>Basic Settings</div>
+              <div className="w-9" />
             </div>
 
-            <div className="pt-4 flex justify-center">
-              <button
-                onClick={() => {
-                  setOpenDropdownKey(null);
-                  setAppStage("main");
-                  setActiveTab("fridge");
-                  notify("Welcome to FRESHDATE!");
-                }}
-                className={`w-44 ${BTN_PRIMARY}`}
-              >
-                Done
-              </button>
+            <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between p-3.5`}>
+              <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+              <span className="w-1.5 h-12 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-1/3 pointer-events-none" />
+
+              <div className="space-y-3">
+                {renderVernierWeightCard(false)}
+
+                <div className={`${CARD_CLS} flex items-center justify-between`}>
+                  <span className={T_CARD_TITLE}>Number of Diners</span>
+                  {renderStepperCapsule(
+                    dinersCount,
+                    () => setDinersCount(Math.max(1, dinersCount - 1)),
+                    () => setDinersCount(dinersCount + 1)
+                  )}
+                </div>
+
+                {renderDietaryDropdownsWithOther()}
+              </div>
+
+              <div className="pt-5 pb-1 flex justify-center">
+                <button
+                  onClick={() => {
+                    setOpenDropdownKey(null);
+                    setAppStage("main");
+                    setActiveTab("fridge");
+                    notify("Welcome to FRESHDATE!");
+                  }}
+                  className={`w-44 ${BTN_PRIMARY}`}
+                >
+                  Done
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
@@ -1307,7 +1326,7 @@ export default function FreshDateApp() {
           <>
             <main className="flex-1 overflow-y-auto no-scrollbar pt-2 pb-28">
               {/* -------------------------------------------------------------
-                  TAB 1: MY WEEK (Screens #8, #9, #10)
+                  TAB 1: MY WEEK (Screens #8, #9, #10 inside Fridge Outer Frame)
                  ------------------------------------------------------------- */}
               {activeTab === "week" && (
                 <motion.div
@@ -1315,11 +1334,11 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3"
+                  className="px-3.5 pt-2 space-y-3"
                 >
                   {weekSubScreen === "overview" && (
                     <>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between px-0.5">
                         <div className="w-9" />
                         <div className={T_HEADER_PILL}>My Week</div>
                         <button
@@ -1330,144 +1349,147 @@ export default function FreshDateApp() {
                         </button>
                       </div>
 
-                      {renderCalendarCard()}
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+                        <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
 
-                      {/* Level 0 Contextual Summary Bar (flat sage tint so it doesn't compete with primary white cards) */}
-                      <div
-                        className={`${CONTEXT_BAR_CLS} flex items-center justify-between`}
-                      >
-                        <span className="text-[12px] font-bold text-[#0F2926]">
-                          Total absences this {calendarRange}
-                        </span>
-                        <span className="text-[12px] font-extrabold text-[#04453F] bg-white/80 px-2.5 py-0.5 rounded-full">
-                          {totalAbsencesCount}{" "}
-                          {totalAbsencesCount === 1 ? "meal" : "meals"}
-                        </span>
-                      </div>
+                        {renderCalendarCard()}
 
-                      <div className="space-y-3">
-                        {(["Breakfast", "Lunch", "Dinner"] as const).map(
-                          (mealType) => {
-                            const slot = currentDaySchedule.meals[mealType];
-                            const isExpanded = expandedMeal === mealType;
-                            const isOut = slot.status === "dining_out";
+                        <div
+                          className={`${CONTEXT_BAR_CLS} flex items-center justify-between`}
+                        >
+                          <span className="text-[12px] font-bold text-[#0F2926]">
+                            Total absences this {calendarRange}
+                          </span>
+                          <span className="text-[12px] font-extrabold text-[#04453F] amber-gradient-btn px-3 py-0.5 rounded-full">
+                            {totalAbsencesCount}{" "}
+                            {totalAbsencesCount === 1 ? "meal" : "meals"}
+                          </span>
+                        </div>
 
-                            return (
-                              <div key={mealType} className={CARD_CLS}>
-                                <div
-                                  onClick={() =>
-                                    setExpandedMeal((prev) =>
-                                      prev === mealType ? null : mealType
-                                    )
-                                  }
-                                  className="flex items-center justify-between cursor-pointer"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <span className={T_CARD_TITLE}>
-                                      {mealType}
-                                    </span>
-                                    <ChevronDown
-                                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                                        isExpanded ? "rotate-180" : ""
-                                      }`}
-                                    />
-                                  </div>
+                        <div className="space-y-2.5">
+                          {(["Breakfast", "Lunch", "Dinner"] as const).map(
+                            (mealType) => {
+                              const slot = currentDaySchedule.meals[mealType];
+                              const isExpanded = expandedMeal === mealType;
+                              const isOut = slot.status === "dining_out";
 
-                                  {/* 100% Unified Solid #FFC45A Pill Button System */}
-                                  <button
-                                    onClick={(e) =>
-                                      toggleMealAbsence(
-                                        currentDaySchedule.date,
-                                        mealType,
-                                        e
+                              return (
+                                <div key={mealType} className={CARD_CLS}>
+                                  <div
+                                    onClick={() =>
+                                      setExpandedMeal((prev) =>
+                                        prev === mealType ? null : mealType
                                       )
                                     }
-                                    className={BTN_PILL_ACTIVE}
+                                    className="flex items-center justify-between cursor-pointer"
                                   >
-                                    <span
-                                      className={`w-2 h-2 rounded-full ${
-                                        isOut ? "bg-amber-700" : "bg-[#658C38]"
-                                      }`}
-                                    />
-                                    <span>
-                                      {isOut ? "Out (Absence)" : "Eat at Home"}
-                                    </span>
-                                  </button>
-                                </div>
+                                    <div className="flex items-center gap-2">
+                                      <span className={T_CARD_TITLE}>
+                                        {mealType}
+                                      </span>
+                                      <ChevronDown
+                                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                                          isExpanded ? "rotate-180" : ""
+                                        }`}
+                                      />
+                                    </div>
 
-                                <AnimatePresence initial={false}>
-                                  {isExpanded && (
-                                    <motion.div
-                                      initial={{ height: 0, opacity: 0 }}
-                                      animate={{ height: "auto", opacity: 1 }}
-                                      exit={{ height: 0, opacity: 0 }}
-                                      transition={{
-                                        duration: 0.24,
-                                        ease: IOS_EASE,
-                                      }}
-                                      className="overflow-hidden"
+                                    <button
+                                      onClick={(e) =>
+                                        toggleMealAbsence(
+                                          currentDaySchedule.date,
+                                          mealType,
+                                          e
+                                        )
+                                      }
+                                      className={BTN_PILL_ACTIVE}
                                     >
-                                      <div className="pt-3 mt-3 border-t border-slate-100">
-                                        {isOut ? (
-                                          <div
-                                            className={`py-3 text-center text-[12px] text-amber-800 ${TILE_CLS} font-medium`}
-                                          >
-                                            Marked as Dining Out — Excluded from grocery quota
-                                          </div>
-                                        ) : (
-                                          <div className="grid grid-cols-3 gap-2.5">
-                                            {slot.itemsPreview.map(
-                                              (item, idx) => (
-                                                <div
-                                                  key={idx}
-                                                  onClick={() => {
-                                                    setRecipeMealFilter(
-                                                      mealType
-                                                    );
-                                                    setWeekSubScreen("recipes");
-                                                  }}
-                                                  className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-2.5 flex flex-col items-center text-center cursor-pointer transition`}
-                                                >
-                                                  <span className="text-3xl mb-1">
-                                                    {item.emoji}
-                                                  </span>
-                                                  <span
-                                                    className={`${T_ITEM_NAME} line-clamp-1`}
-                                                  >
-                                                    {item.name}
-                                                  </span>
-                                                </div>
-                                              )
-                                            )}
-                                          </div>
-                                        )}
-                                      </div>
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              </div>
-                            );
-                          }
-                        )}
-                      </div>
+                                      <span
+                                        className={`w-2 h-2 rounded-full ${
+                                          isOut ? "bg-amber-700" : "bg-[#658C38]"
+                                        }`}
+                                      />
+                                      <span>
+                                        {isOut ? "Out (Absence)" : "Eat at Home"}
+                                      </span>
+                                    </button>
+                                  </div>
 
-                      {/* Unified Interactive Buttons */}
-                      <div className="grid grid-cols-2 gap-3 pt-1">
-                        <button
-                          onClick={() => {
-                            if (expandedMeal) setRecipeMealFilter(expandedMeal);
-                            setWeekSubScreen("recipes");
-                          }}
-                          className={`${BTN_PRIMARY} w-full px-3`}
-                        >
-                          Recipe Matches
-                        </button>
-                        <button
-                          onClick={handleImportSchedule}
-                          className={`${BTN_PRIMARY} w-full px-3`}
-                        >
-                          Import Schedule
-                        </button>
+                                  <AnimatePresence initial={false}>
+                                    {isExpanded && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{
+                                          duration: 0.24,
+                                          ease: IOS_EASE,
+                                        }}
+                                        className="overflow-hidden"
+                                      >
+                                        <div className="pt-3 mt-3 border-t border-slate-100">
+                                          {isOut ? (
+                                            <div
+                                              className={`py-3 text-center text-[12px] text-amber-800 ${TILE_CLS} font-medium`}
+                                            >
+                                              Marked as Dining Out — Excluded from grocery quota
+                                            </div>
+                                          ) : (
+                                            <div className="grid grid-cols-3 gap-2.5">
+                                              {slot.itemsPreview.map(
+                                                (item, idx) => (
+                                                  <div
+                                                    key={idx}
+                                                    onClick={() => {
+                                                      setRecipeMealFilter(
+                                                        mealType
+                                                      );
+                                                      setWeekSubScreen("recipes");
+                                                    }}
+                                                    className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-2.5 flex flex-col items-center text-center cursor-pointer transition`}
+                                                  >
+                                                    <span className="text-3xl mb-1">
+                                                      {item.emoji}
+                                                    </span>
+                                                    <span
+                                                      className={`${T_ITEM_NAME} line-clamp-1`}
+                                                    >
+                                                      {item.name}
+                                                    </span>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
+                                          )}
+                                        </div>
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 pt-1">
+                          <button
+                            onClick={() => {
+                              if (expandedMeal)
+                                setRecipeMealFilter(expandedMeal);
+                              setWeekSubScreen("recipes");
+                            }}
+                            className={`${BTN_PRIMARY} w-full px-3`}
+                          >
+                            Recipe Matches
+                          </button>
+                          <button
+                            onClick={handleImportSchedule}
+                            className={`${BTN_PRIMARY} w-full px-3`}
+                          >
+                            Import Schedule
+                          </button>
+                        </div>
                       </div>
                     </>
                   )}
@@ -1475,7 +1497,7 @@ export default function FreshDateApp() {
                   {/* SCREEN #9: RECIPES */}
                   {weekSubScreen === "recipes" && (
                     <>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between px-0.5">
                         <button
                           onClick={() => setWeekSubScreen("overview")}
                           className={BTN_ICON_CIRCLE}
@@ -1491,217 +1513,230 @@ export default function FreshDateApp() {
                         </button>
                       </div>
 
-                      {renderCalendarCard()}
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
 
-                      <div className={`${CARD_CLS} space-y-3 relative`}>
-                        <div className="flex items-center justify-between">
-                          <div className="relative">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setShowRecipeMealMenu(!showRecipeMealMenu)
-                              }
-                              className={BTN_PILL_ACTIVE}
-                            >
-                              <span>{recipeMealFilter}</span>
-                              <ChevronDown
-                                className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                                  showRecipeMealMenu ? "rotate-180" : ""
-                                }`}
-                              />
-                            </button>
+                        {renderCalendarCard()}
 
-                            <AnimatePresence>
-                              {showRecipeMealMenu && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -4, scale: 0.97 }}
-                                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                                  exit={{ opacity: 0, y: -4, scale: 0.97 }}
-                                  transition={{ duration: 0.16, ease: IOS_EASE }}
-                                  className="absolute left-0 mt-1.5 w-32 bg-white rounded-[16px] shadow-xl border border-[#04453F]/12 py-1 z-30"
-                                >
-                                  {(
-                                    ["Breakfast", "Lunch", "Dinner"] as const
-                                  ).map((m) => (
-                                    <button
-                                      key={m}
-                                      type="button"
-                                      onClick={() => {
-                                        setRecipeMealFilter(m);
-                                        setExpandedMeal(m);
-                                        setShowRecipeMealMenu(false);
-                                        const firstMatch = RECIPES.find(
-                                          (r) => r.mealType === m
-                                        );
-                                        if (firstMatch)
-                                          setActiveRecipe(firstMatch);
-                                      }}
-                                      className={`w-full px-3.5 py-2 text-left text-[12px] font-bold flex items-center justify-between hover:bg-[#F4F6EE] ${
-                                        recipeMealFilter === m
-                                          ? "text-[#04453F] bg-[#FFC45A]/20"
-                                          : "text-slate-600"
-                                      }`}
-                                    >
-                                      <span>{m}</span>
-                                      {recipeMealFilter === m && <span>✓</span>}
-                                    </button>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-
-                          <span className={`${T_META} text-right max-w-[180px]`}>
-                            Matched to expiring fridge items
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-2.5">
-                          {recipesForCurrentMeal.map((r) => (
-                            <div
-                              key={r.id}
-                              onClick={() => {
-                                setActiveRecipe(r);
-                                setWeekSubScreen("details");
-                              }}
-                              className={`${TILE_CLS} hover:ring-2 hover:ring-[#04453F] active:scale-95 p-2.5 flex flex-col items-center text-center cursor-pointer transition`}
-                            >
-                              <span className="text-3xl mb-1">{r.emoji}</span>
-                              <span
-                                className={`${T_ITEM_NAME} line-clamp-2 leading-tight`}
+                        <div className={`${CARD_CLS} space-y-3 relative`}>
+                          <div className="flex items-center justify-between">
+                            <div className="relative">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setShowRecipeMealMenu(!showRecipeMealMenu)
+                                }
+                                className={BTN_PILL_ACTIVE}
                               >
-                                {r.title}
-                              </span>
+                                <span>{recipeMealFilter}</span>
+                                <ChevronDown
+                                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                                    showRecipeMealMenu ? "rotate-180" : ""
+                                  }`}
+                                />
+                              </button>
+
+                              <AnimatePresence>
+                                {showRecipeMealMenu && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: -4, scale: 0.97 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                                    transition={{
+                                      duration: 0.16,
+                                      ease: IOS_EASE,
+                                    }}
+                                    className="absolute left-0 mt-1.5 w-32 bg-white rounded-[16px] shadow-xl border border-[#04453F]/12 py-1 z-30"
+                                  >
+                                    {(
+                                      ["Breakfast", "Lunch", "Dinner"] as const
+                                    ).map((m) => (
+                                      <button
+                                        key={m}
+                                        type="button"
+                                        onClick={() => {
+                                          setRecipeMealFilter(m);
+                                          setExpandedMeal(m);
+                                          setShowRecipeMealMenu(false);
+                                          const firstMatch = RECIPES.find(
+                                            (r) => r.mealType === m
+                                          );
+                                          if (firstMatch)
+                                            setActiveRecipe(firstMatch);
+                                        }}
+                                        className={`w-full px-3.5 py-2 text-left text-[12px] font-bold flex items-center justify-between hover:bg-[#F4F6EE] ${
+                                          recipeMealFilter === m
+                                            ? "text-[#04453F] bg-[#FFC45A]/20"
+                                            : "text-slate-600"
+                                        }`}
+                                      >
+                                        <span>{m}</span>
+                                        {recipeMealFilter === m && <span>✓</span>}
+                                      </button>
+                                    ))}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
-                          ))}
-                        </div>
 
-                        <button
-                          onClick={() => {
-                            if (recipesForCurrentMeal[0]) {
-                              setActiveRecipe(recipesForCurrentMeal[0]);
-                            }
-                            setWeekSubScreen("details");
-                          }}
-                          className={`w-full ${BTN_PRIMARY}`}
-                        >
-                          <Sparkles className="w-3.5 h-3.5 text-[#04453F]" />
-                          <span>
-                            Pick a dish for {recipeMealFilter.toLowerCase()}
-                          </span>
-                        </button>
-                      </div>
-
-                      {/* Used Ingredients Card */}
-                      <div className={`${CARD_CLS} space-y-3`}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1.5">
-                            <span className={T_CARD_TITLE}>
-                              Ingredients Used
-                            </span>
-                            <span className={T_META}>
-                              (Drag down to remove)
+                            <span
+                              className={`${T_META} text-right max-w-[180px]`}
+                            >
+                              Matched to expiring fridge items
                             </span>
                           </div>
-                          {(excludedIngredientIds.length > 0 ||
-                            addedOtherIngredients.length > 0) && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setExcludedIngredientIds([]);
-                                setAddedOtherIngredients([]);
-                                notify("Reset ingredients");
-                              }}
-                              className={BTN_PILL_ACTIVE}
-                            >
-                              <RotateCcw className="w-3 h-3" />
-                              <span>Reset</span>
-                            </button>
-                          )}
-                        </div>
 
-                        <div className="grid grid-cols-4 gap-2">
-                          {visibleIngredientsInRecipes.map((ing) => {
-                            const isDragging = draggingIngredientId === ing.id;
-                            return (
+                          <div className="grid grid-cols-3 gap-2.5">
+                            {recipesForCurrentMeal.map((r) => (
                               <div
-                                key={ing.id}
-                                draggable
-                                onDragStart={(e) => {
-                                  e.dataTransfer.setData("text/plain", ing.id);
-                                  setDraggingIngredientId(ing.id);
+                                key={r.id}
+                                onClick={() => {
+                                  setActiveRecipe(r);
+                                  setWeekSubScreen("details");
                                 }}
-                                onDragEnd={() => {
-                                  setDraggingIngredientId(null);
-                                  setIsOverTrashZone(false);
-                                }}
-                                onTouchStart={() =>
-                                  setDraggingIngredientId(ing.id)
-                                }
-                                onTouchMove={handleTouchMoveIngredient}
-                                onTouchEnd={(e) =>
-                                  handleTouchEndIngredient(e, ing.id)
-                                }
-                                className={`${TILE_CLS} p-2 flex flex-col items-center text-center cursor-grab active:cursor-grabbing transition ${
-                                  isDragging
-                                    ? "opacity-40 scale-95 ring-2 ring-red-400"
-                                    : "hover:bg-[#94C060]/15"
-                                }`}
+                                className={`${TILE_CLS} hover:ring-2 hover:ring-[#04453F] active:scale-95 p-2.5 flex flex-col items-center text-center cursor-pointer transition`}
                               >
-                                <span className="text-2xl mb-1">
-                                  {ing.emoji}
-                                </span>
-                                <span className="text-[11px] font-semibold text-[#0F2926] leading-tight">
-                                  {ing.name}
+                                <span className="text-3xl mb-1">{r.emoji}</span>
+                                <span
+                                  className={`${T_ITEM_NAME} line-clamp-2 leading-tight`}
+                                >
+                                  {r.title}
                                 </span>
                               </div>
-                            );
-                          })}
+                            ))}
+                          </div>
 
                           <button
-                            type="button"
-                            onClick={() => setShowOtherIngredientModal(true)}
-                            className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-2 flex flex-col items-center justify-center text-center transition cursor-pointer`}
+                            onClick={() => {
+                              if (recipesForCurrentMeal[0]) {
+                                setActiveRecipe(recipesForCurrentMeal[0]);
+                              }
+                              setWeekSubScreen("details");
+                            }}
+                            className={`w-full ${BTN_PRIMARY}`}
                           >
-                            <div className={BTN_STEPPER}>
-                              <Plus className="w-4 h-4" />
-                            </div>
-                            <span className="text-[11px] font-bold text-[#04453F] leading-tight mt-1">
-                              Other
+                            <Sparkles className="w-3.5 h-3.5 text-[#04453F]" />
+                            <span>
+                              Pick a dish for {recipeMealFilter.toLowerCase()}
                             </span>
                           </button>
                         </div>
 
-                        <div
-                          ref={trashZoneRef}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setIsOverTrashZone(true);
-                          }}
-                          onDragLeave={() => setIsOverTrashZone(false)}
-                          onDrop={(e) => {
-                            e.preventDefault();
-                            const droppedId =
-                              e.dataTransfer.getData("text/plain") ||
-                              draggingIngredientId;
-                            if (droppedId) {
-                              excludeIngredientById(droppedId);
-                            }
-                          }}
-                          className={`mt-2 py-2.5 px-3 rounded-[12px] border-2 border-dashed flex items-center justify-center gap-2 text-[12px] font-bold transition ${
-                            isOverTrashZone
-                              ? "border-red-500 bg-red-50 text-red-600"
-                              : draggingIngredientId
-                              ? "border-amber-400 bg-amber-50/70 text-amber-800"
-                              : "border-slate-200 bg-[#F4F6EE]/60 text-slate-400"
-                          }`}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          <span>
-                            {isOverTrashZone
-                              ? "Release to remove this ingredient"
-                              : "Drag unwanted ingredient here to remove"}
-                          </span>
+                        {/* Used Ingredients Card */}
+                        <div className={`${CARD_CLS} space-y-3`}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5">
+                              <span className={T_CARD_TITLE}>
+                                Ingredients Used
+                              </span>
+                              <span className={T_META}>
+                                (Drag down to remove)
+                              </span>
+                            </div>
+                            {(excludedIngredientIds.length > 0 ||
+                              addedOtherIngredients.length > 0) && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setExcludedIngredientIds([]);
+                                  setAddedOtherIngredients([]);
+                                  notify("Reset ingredients");
+                                }}
+                                className={BTN_PILL_ACTIVE}
+                              >
+                                <RotateCcw className="w-3 h-3" />
+                                <span>Reset</span>
+                              </button>
+                            )}
+                          </div>
+
+                          <div className="grid grid-cols-4 gap-2">
+                            {visibleIngredientsInRecipes.map((ing) => {
+                              const isDragging =
+                                draggingIngredientId === ing.id;
+                              return (
+                                <div
+                                  key={ing.id}
+                                  draggable
+                                  onDragStart={(e) => {
+                                    e.dataTransfer.setData(
+                                      "text/plain",
+                                      ing.id
+                                    );
+                                    setDraggingIngredientId(ing.id);
+                                  }}
+                                  onDragEnd={() => {
+                                    setDraggingIngredientId(null);
+                                    setIsOverTrashZone(false);
+                                  }}
+                                  onTouchStart={() =>
+                                    setDraggingIngredientId(ing.id)
+                                  }
+                                  onTouchMove={handleTouchMoveIngredient}
+                                  onTouchEnd={(e) =>
+                                    handleTouchEndIngredient(e, ing.id)
+                                  }
+                                  className={`${TILE_CLS} p-2 flex flex-col items-center text-center cursor-grab active:cursor-grabbing transition ${
+                                    isDragging
+                                      ? "opacity-40 scale-95 ring-2 ring-red-400"
+                                      : "hover:bg-[#94C060]/15"
+                                  }`}
+                                >
+                                  <span className="text-2xl mb-1">
+                                    {ing.emoji}
+                                  </span>
+                                  <span className="text-[11px] font-semibold text-[#0F2926] leading-tight">
+                                    {ing.name}
+                                  </span>
+                                </div>
+                              );
+                            })}
+
+                            <button
+                              type="button"
+                              onClick={() => setShowOtherIngredientModal(true)}
+                              className={`${TILE_CLS} hover:bg-[#94C060]/15 active:scale-95 p-2 flex flex-col items-center justify-center text-center transition cursor-pointer`}
+                            >
+                              <div className={BTN_STEPPER}>
+                                <Plus className="w-4 h-4" />
+                              </div>
+                              <span className="text-[11px] font-bold text-[#04453F] leading-tight mt-1">
+                                Other
+                              </span>
+                            </button>
+                          </div>
+
+                          <div
+                            ref={trashZoneRef}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setIsOverTrashZone(true);
+                            }}
+                            onDragLeave={() => setIsOverTrashZone(false)}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              const droppedId =
+                                e.dataTransfer.getData("text/plain") ||
+                                draggingIngredientId;
+                              if (droppedId) {
+                                excludeIngredientById(droppedId);
+                              }
+                            }}
+                            className={`mt-2 py-2.5 px-3 rounded-[12px] border-2 border-dashed flex items-center justify-center gap-2 text-[12px] font-bold transition ${
+                              isOverTrashZone
+                                ? "border-red-500 bg-red-50 text-red-600"
+                                : draggingIngredientId
+                                ? "border-amber-400 bg-amber-50/70 text-amber-800"
+                                : "border-slate-200 bg-[#F4F6EE]/60 text-slate-400"
+                            }`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            <span>
+                              {isOverTrashZone
+                                ? "Release to remove this ingredient"
+                                : "Drag unwanted ingredient here to remove"}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </>
@@ -1710,7 +1745,7 @@ export default function FreshDateApp() {
                   {/* SCREEN #10: RECIPE DETAILS */}
                   {weekSubScreen === "details" && (
                     <>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between px-0.5">
                         <button
                           onClick={() => setWeekSubScreen("recipes")}
                           className={BTN_ICON_CIRCLE}
@@ -1721,53 +1756,60 @@ export default function FreshDateApp() {
                         <div className="w-9" />
                       </div>
 
-                      <div className={`${CARD_CLS} flex items-center gap-4`}>
-                        <div className="w-20 h-20 rounded-[12px] bg-[#F4F6EE] text-4xl flex items-center justify-center shrink-0">
-                          {activeRecipe.emoji}
-                        </div>
-                        <div className="space-y-1.5">
-                          <h2 className="text-[16px] font-bold text-[#0F2926]">
-                            {activeRecipe.title}
-                          </h2>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F4F6EE] text-[#04453F]">
-                              {activeRecipe.time}
-                            </span>
-                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#94C060]/25 text-[#04453F]">
-                              {activeRecipe.difficulty}
-                            </span>
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/70 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+
+                        <div className={`${CARD_CLS} flex items-center gap-4`}>
+                          <div className="w-20 h-20 rounded-[14px] bg-[#F4F6EE] text-4xl flex items-center justify-center shrink-0">
+                            {activeRecipe.emoji}
+                          </div>
+                          <div className="space-y-1.5">
+                            <h2 className="text-[16px] font-bold text-[#0F2926]">
+                              {activeRecipe.title}
+                            </h2>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F4F6EE] text-[#04453F]">
+                                {activeRecipe.time}
+                              </span>
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#94C060]/25 text-[#04453F]">
+                                {activeRecipe.difficulty}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className={`${CARD_CLS} space-y-3`}>
-                        <h3 className={T_CARD_TITLE}>Instructions</h3>
-                        <div className="space-y-2.5">
-                          {activeRecipe.steps.map((s, idx) => (
-                            <div key={idx} className="flex items-start gap-2.5">
-                              <div className="w-5 h-5 rounded-[6px] bg-[#F4F6EE] text-[#04453F] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                                {idx + 1}
+                        <div className={`${CARD_CLS} space-y-3`}>
+                          <h3 className={T_CARD_TITLE}>Instructions</h3>
+                          <div className="space-y-2.5">
+                            {activeRecipe.steps.map((s, idx) => (
+                              <div
+                                key={idx}
+                                className="flex items-start gap-2.5"
+                              >
+                                <div className="w-5 h-5 rounded-[6px] bg-[#F4F6EE] text-[#04453F] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                  {idx + 1}
+                                </div>
+                                <div>
+                                  <div className={T_ITEM_NAME}>{s.title}</div>
+                                  <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
+                                    {s.description}
+                                  </p>
+                                </div>
                               </div>
-                              <div>
-                                <div className={T_ITEM_NAME}>{s.title}</div>
-                                <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                                  {s.description}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
 
-                        <div className="pt-2">
-                          <button
-                            onClick={() => {
-                              notify(`Cooked ${activeRecipe.title}!`);
-                              setWeekSubScreen("overview");
-                            }}
-                            className={`w-full ${BTN_PRIMARY}`}
-                          >
-                            Complete Cooking
-                          </button>
+                          <div className="pt-2">
+                            <button
+                              onClick={() => {
+                                notify(`Cooked ${activeRecipe.title}!`);
+                                setWeekSubScreen("overview");
+                              }}
+                              className={`w-full ${BTN_PRIMARY}`}
+                            >
+                              Complete Cooking
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </>
@@ -1776,7 +1818,7 @@ export default function FreshDateApp() {
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 2: MY FRIDGE (Unified Card Hierarchy & Stepper Buttons)
+                  TAB 2: MY FRIDGE (Original Two-Door Refrigerator Outer Frame & Gradients)
                  ------------------------------------------------------------- */}
               {activeTab === "fridge" && (
                 <motion.div
@@ -1784,9 +1826,9 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3"
+                  className="px-3.5 pt-2 space-y-3"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between px-0.5">
                     <div className="w-9" />
                     <div className={T_HEADER_PILL}>My Fridge</div>
                     <button
@@ -1797,122 +1839,150 @@ export default function FreshDateApp() {
                     </button>
                   </div>
 
-                  {/* CARD 1: COLLAPSIBLE REFRIGERATED */}
-                  <div className={CARD_CLS}>
-                    <div
-                      onClick={() =>
-                        setCollapsedFridgeZones((prev) => ({
-                          ...prev,
-                          refrigerated: !prev.refrigerated,
-                        }))
-                      }
-                      className="flex items-center justify-between cursor-pointer"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Thermometer className="w-4 h-4 text-[#658C38]" />
-                        <span className={T_CARD_TITLE}>Refrigerated</span>
-                        <span className={T_META}>
-                          · {refrigeratedItems.length} items
+                  {/* DOUBLE-DOOR REFRIGERATOR OUTER CABINET WITH GREEN-TO-BUTTER-YELLOW GRADIENT */}
+                  <div className="fridge-outer-frame p-3 relative">
+                    {/* Top Fridge Hinge Cap */}
+                    <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+
+                    {/* UPPER DOOR COMPARTMENT: REFRIGERATED */}
+                    <div className={`${CARD_CLS} relative`}>
+                      {/* Upper Door Recessed Handle Accent */}
+                      <span className="w-1.5 h-10 rounded-full bg-[#F4F6EE] border border-[#04453F]/20 shadow-inner absolute -right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+
+                      <div
+                        onClick={() =>
+                          setCollapsedFridgeZones((prev) => ({
+                            ...prev,
+                            refrigerated: !prev.refrigerated,
+                          }))
+                        }
+                        className="flex items-center justify-between cursor-pointer"
+                      >
+                        <span className="px-3 py-1 rounded-full bg-[#EFF3E8] border border-[#04453F]/12 text-[11px] font-extrabold text-[#04453F]">
+                          ALL ({refrigeratedItems.length})
                         </span>
+
+                        <div className="flex items-center gap-1.5">
+                          <span className={BTN_PILL_ACTIVE}>
+                            <Thermometer className="w-3.5 h-3.5 text-[#04453F]" />
+                            <span>Refrigerated</span>
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                              !collapsedFridgeZones.refrigerated
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                          />
+                        </div>
                       </div>
-                      <ChevronDown
-                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                          !collapsedFridgeZones.refrigerated ? "rotate-180" : ""
-                        }`}
-                      />
+
+                      <AnimatePresence initial={false}>
+                        {!collapsedFridgeZones.refrigerated && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.24, ease: IOS_EASE }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pt-2.5 space-y-2">
+                              <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
+                                <div className="col-span-6">Item</div>
+                                <div className="col-span-4 text-center">
+                                  Servings Left
+                                </div>
+                                <div className="col-span-2 text-right">
+                                  Days Left
+                                </div>
+                              </div>
+
+                              <div className="space-y-2">
+                                {refrigeratedItems.map((item) =>
+                                  renderEnhancedFridgeRow(item, false)
+                                )}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
 
-                    <AnimatePresence initial={false}>
-                      {!collapsedFridgeZones.refrigerated && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.24, ease: IOS_EASE }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pt-2.5 space-y-2">
-                            <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
-                              <div className="col-span-6">Item</div>
-                              <div className="col-span-4 text-center">
-                                Servings Left
-                              </div>
-                              <div className="col-span-2 text-right">
-                                Days Left
-                              </div>
-                            </div>
-
-                            <div className="space-y-2">
-                              {refrigeratedItems.map((item) =>
-                                renderEnhancedFridgeRow(item, false)
-                              )}
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* CARD 2: COLLAPSIBLE FROZEN */}
-                  <div className={CARD_CLS}>
-                    <div
-                      onClick={() =>
-                        setCollapsedFridgeZones((prev) => ({
-                          ...prev,
-                          frozen: !prev.frozen,
-                        }))
-                      }
-                      className="flex items-center justify-between cursor-pointer"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Snowflake className="w-4 h-4 text-sky-600" />
-                        <span className={T_CARD_TITLE}>Frozen</span>
-                        <span className={T_META}>
-                          · {frozenItems.length} items
-                        </span>
-                      </div>
-                      <ChevronDown
-                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                          !collapsedFridgeZones.frozen ? "rotate-180" : ""
-                        }`}
-                      />
+                    {/* REFRIGERATOR DOOR SEAM / GASKET DIVIDER */}
+                    <div className="relative py-2 flex items-center justify-center">
+                      <span className="w-2.5 h-2 rounded-r-full bg-[#04453F]/20 absolute -left-3" />
+                      <div className="w-full h-[2px] bg-[#04453F]/15 rounded-full shadow-[0_1px_0_rgba(255,255,255,0.7)]" />
+                      <span className="w-5 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute right-4" />
+                      <span className="w-2.5 h-2 rounded-l-full bg-[#04453F]/20 absolute -right-3" />
                     </div>
 
-                    <AnimatePresence initial={false}>
-                      {!collapsedFridgeZones.frozen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.24, ease: IOS_EASE }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pt-2.5 space-y-2">
-                            <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
-                              <div className="col-span-6">Item</div>
-                              <div className="col-span-4 text-center">
-                                Servings Left
-                              </div>
-                              <div className="col-span-2 text-right">
-                                Days Left
-                              </div>
-                            </div>
+                    {/* LOWER DOOR COMPARTMENT: FROZEN */}
+                    <div className={`${CARD_CLS} relative`}>
+                      {/* Lower Freezer Door Recessed Handle Accent */}
+                      <span className="w-1.5 h-10 rounded-full bg-[#F4F6EE] border border-[#04453F]/20 shadow-inner absolute -right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
 
-                            <div className="space-y-2">
-                              {frozenItems.map((item) =>
-                                renderEnhancedFridgeRow(item, true)
-                              )}
+                      <div
+                        onClick={() =>
+                          setCollapsedFridgeZones((prev) => ({
+                            ...prev,
+                            frozen: !prev.frozen,
+                          }))
+                        }
+                        className="flex items-center justify-between cursor-pointer"
+                      >
+                        <span className="px-3 py-1 rounded-full bg-[#EFF3E8] border border-[#04453F]/12 text-[11px] font-extrabold text-[#04453F]">
+                          ALL ({frozenItems.length})
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          <span className={BTN_PILL_ACTIVE}>
+                            <Snowflake className="w-3.5 h-3.5 text-[#04453F]" />
+                            <span>Frozen</span>
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                              !collapsedFridgeZones.frozen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </div>
+                      </div>
+
+                      <AnimatePresence initial={false}>
+                        {!collapsedFridgeZones.frozen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.24, ease: IOS_EASE }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pt-2.5 space-y-2">
+                              <div className="grid grid-cols-12 text-[11px] font-semibold text-slate-400 px-2">
+                                <div className="col-span-6">Item</div>
+                                <div className="col-span-4 text-center">
+                                  Servings Left
+                                </div>
+                                <div className="col-span-2 text-right">
+                                  Days Left
+                                </div>
+                              </div>
+
+                              <div className="space-y-2">
+                                {frozenItems.map((item) =>
+                                  renderEnhancedFridgeRow(item, true)
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </motion.div>
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 3: SUGGESTED LIST (Refined 3-Tier Visual Hierarchy)
+                  TAB 3: SUGGESTED LIST (Inside Gradient Refrigerator Frame)
                  ------------------------------------------------------------- */}
               {activeTab === "list" && (
                 <motion.div
@@ -1920,9 +1990,9 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3"
+                  className="px-3.5 pt-2 space-y-3"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between px-0.5">
                     <div className="w-9" />
                     <div className={T_HEADER_PILL}>Suggested List</div>
                     <button
@@ -1933,174 +2003,178 @@ export default function FreshDateApp() {
                     </button>
                   </div>
 
-                  {/* Level 0 Context Summary Bar — flat tinted strip so it doesn't compete with primary white cards */}
-                  <div
-                    className={`${CONTEXT_BAR_CLS} flex items-center justify-between text-[12px]`}
-                  >
-                    <span className="font-semibold text-slate-600">
-                      Auto-adjusted quota
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-[#04453F] bg-white/80 px-2 py-0.5 rounded-full text-[11px]">
-                        {fridgeItems.reduce((s, i) => s + i.servings, 0)} in
-                        fridge
+                  <div className={FRIDGE_FRAME_CLS}>
+                    <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+                    <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
+
+                    {/* Level 0 Context Summary Bar inside Fridge Frame */}
+                    <div
+                      className={`${CONTEXT_BAR_CLS} flex items-center justify-between text-[12px]`}
+                    >
+                      <span className="font-semibold text-[#0F2926]">
+                        Auto-adjusted quota
                       </span>
-                      <span className="font-bold text-[#04453F] bg-white/80 px-2 py-0.5 rounded-full text-[11px]">
-                        {weeklyAbsencesCount} meals out
-                      </span>
-                    </div>
-                  </div>
-
-                  {(
-                    [
-                      "Staples",
-                      "Produce",
-                      "Protein",
-                      "Drinks & Condiments",
-                    ] as const
-                  ).map((catKey) => {
-                    const items = dynamicSuggestedList.filter(
-                      (i) => i.category === catKey
-                    );
-                    const quotaInfo = getCategoryDynamicQuota(catKey);
-                    const isCollapsed =
-                      manualCategoryCollapse[catKey] !== undefined
-                        ? manualCategoryCollapse[catKey]
-                        : quotaInfo.netToBuy === 0 || items.length === 0;
-
-                    return (
-                      <div key={catKey} className={CARD_CLS}>
-                        <div
-                          onClick={() =>
-                            setManualCategoryCollapse((prev) => ({
-                              ...prev,
-                              [catKey]: !isCollapsed,
-                            }))
-                          }
-                          className="flex items-center justify-between cursor-pointer"
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className={T_CARD_TITLE}>{catKey}</span>
-                            <span className={T_META}>
-                              · {quotaInfo.inFridgeText}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {quotaInfo.quotaText ? (
-                              <span className="text-[11px] font-extrabold text-[#04453F] bg-[#F4F6EE] px-2.5 py-0.5 rounded-full">
-                                Buy {quotaInfo.quotaText}
-                              </span>
-                            ) : (
-                              <span className="text-[11px] font-bold text-[#658C38] bg-[#94C060]/18 px-2.5 py-0.5 rounded-full">
-                                Stocked ✓
-                              </span>
-                            )}
-                            <ChevronDown
-                              className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                                !isCollapsed ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                        </div>
-
-                        <AnimatePresence initial={false}>
-                          {!isCollapsed && items.length > 0 && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.24, ease: IOS_EASE }}
-                              className="overflow-hidden"
-                            >
-                              {/* Edge-to-edge bleed scroll (-mx-4 px-4) prevents awkward mid-card clipping */}
-                              <div className="pt-3 mt-3 border-t border-slate-100 -mx-4 px-4 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
-                                {items.map((item) => (
-                                  <div
-                                    key={item.id}
-                                    onClick={() =>
-                                      toggleSuggestedCheck(
-                                        item.id,
-                                        item.checked
-                                      )
-                                    }
-                                    className={`w-[112px] shrink-0 snap-start rounded-[16px] p-2.5 flex flex-col justify-between border-[1.5px] transition-all duration-150 cursor-pointer ${
-                                      item.checked
-                                        ? "bg-[#FFF9EA] border-[#FFC45A] shadow-2xs"
-                                        : "bg-[#F5F7F0] border-transparent opacity-80 hover:opacity-100"
-                                    }`}
-                                  >
-                                    {/* Tier 1: Fridge Status Tag + Circular Selection Check */}
-                                    <div className="w-full flex items-center justify-between">
-                                      <span className="text-[10px] font-semibold text-slate-400">
-                                        {item.inFridgeServings > 0
-                                          ? `Have ${item.inFridgeServings}`
-                                          : "Suggested"}
-                                      </span>
-                                      <button
-                                        type="button"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          toggleSuggestedCheck(
-                                            item.id,
-                                            item.checked
-                                          );
-                                        }}
-                                        className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold transition cursor-pointer ${
-                                          item.checked
-                                            ? "bg-[#FFC45A] text-[#04453F] shadow-2xs"
-                                            : "bg-white border-[1.5px] border-slate-300 text-transparent"
-                                        }`}
-                                      >
-                                        ✓
-                                      </button>
-                                    </div>
-
-                                    {/* Tier 2: Crisp White Icon Stage + Item Name */}
-                                    <div className="my-2 flex flex-col items-center text-center">
-                                      <div className="w-11 h-11 rounded-[12px] bg-white shadow-2xs flex items-center justify-center text-2xl mb-1.5">
-                                        {item.emoji}
-                                      </div>
-                                      <span
-                                        className={`${T_ITEM_NAME} line-clamp-1 w-full`}
-                                      >
-                                        {item.name}
-                                      </span>
-                                    </div>
-
-                                    {/* Tier 3: Integrated Stepper Capsule [ -  1  + ] */}
-                                    {renderStepperCapsule(
-                                      item.servings,
-                                      (e) => {
-                                        e.stopPropagation();
-                                        adjustSuggestedServings(item.id, -1);
-                                      },
-                                      (e) => {
-                                        e.stopPropagation();
-                                        adjustSuggestedServings(item.id, 1);
-                                      },
-                                      true
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-[#04453F] bg-[#EFF3E8] px-2.5 py-0.5 rounded-full text-[11px]">
+                          {fridgeItems.reduce((s, i) => s + i.servings, 0)} in
+                          fridge
+                        </span>
+                        <span className="font-bold text-[#04453F] bg-[#EFF3E8] px-2.5 py-0.5 rounded-full text-[11px]">
+                          {weeklyAbsencesCount} meals out
+                        </span>
                       </div>
-                    );
-                  })}
+                    </div>
 
-                  <button
-                    onClick={importCheckedToFridge}
-                    className={`w-full ${BTN_PRIMARY} py-3`}
-                  >
-                    Import Selected Items to My Fridge
-                  </button>
+                    {(
+                      [
+                        "Staples",
+                        "Produce",
+                        "Protein",
+                        "Drinks & Condiments",
+                      ] as const
+                    ).map((catKey) => {
+                      const items = dynamicSuggestedList.filter(
+                        (i) => i.category === catKey
+                      );
+                      const quotaInfo = getCategoryDynamicQuota(catKey);
+                      const isCollapsed =
+                        manualCategoryCollapse[catKey] !== undefined
+                          ? manualCategoryCollapse[catKey]
+                          : quotaInfo.netToBuy === 0 || items.length === 0;
+
+                      return (
+                        <div key={catKey} className={CARD_CLS}>
+                          <div
+                            onClick={() =>
+                              setManualCategoryCollapse((prev) => ({
+                                ...prev,
+                                [catKey]: !isCollapsed,
+                              }))
+                            }
+                            className="flex items-center justify-between cursor-pointer"
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className={T_CARD_TITLE}>{catKey}</span>
+                              <span className={T_META}>
+                                · {quotaInfo.inFridgeText}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {quotaInfo.quotaText ? (
+                                <span className="text-[11px] font-extrabold text-[#04453F] bg-[#F4F6EE] px-2.5 py-0.5 rounded-full">
+                                  Buy {quotaInfo.quotaText}
+                                </span>
+                              ) : (
+                                <span className="text-[11px] font-bold text-[#658C38] bg-[#94C060]/18 px-2.5 py-0.5 rounded-full">
+                                  Stocked ✓
+                                </span>
+                              )}
+                              <ChevronDown
+                                className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                                  !isCollapsed ? "rotate-180" : ""
+                                }`}
+                              />
+                            </div>
+                          </div>
+
+                          <AnimatePresence initial={false}>
+                            {!isCollapsed && items.length > 0 && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.24, ease: IOS_EASE }}
+                                className="overflow-hidden"
+                              >
+                                <div className="pt-3 mt-3 border-t border-slate-100 -mx-4 px-4 flex overflow-x-auto gap-2.5 pb-1 no-scrollbar snap-x snap-mandatory">
+                                  {items.map((item) => (
+                                    <div
+                                      key={item.id}
+                                      onClick={() =>
+                                        toggleSuggestedCheck(
+                                          item.id,
+                                          item.checked
+                                        )
+                                      }
+                                      className={`w-[112px] shrink-0 snap-start rounded-[16px] p-2.5 flex flex-col justify-between border-[1.5px] transition-all duration-150 cursor-pointer ${
+                                        item.checked
+                                          ? "bg-gradient-to-b from-[#FFFDF4] to-[#FFF6DC] border-[#FFC45A] shadow-2xs"
+                                          : "bg-[#F5F7F0] border-transparent opacity-80 hover:opacity-100"
+                                      }`}
+                                    >
+                                      {/* Tier 1: Fridge Status Tag + Circular Selection Check */}
+                                      <div className="w-full flex items-center justify-between">
+                                        <span className="text-[10px] font-semibold text-slate-400">
+                                          {item.inFridgeServings > 0
+                                            ? `Have ${item.inFridgeServings}`
+                                            : "Suggested"}
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleSuggestedCheck(
+                                              item.id,
+                                              item.checked
+                                            );
+                                          }}
+                                          className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-extrabold transition cursor-pointer ${
+                                            item.checked
+                                              ? "amber-gradient-btn text-[#04453F]"
+                                              : "bg-white border-[1.5px] border-slate-300 text-transparent"
+                                          }`}
+                                        >
+                                          ✓
+                                        </button>
+                                      </div>
+
+                                      {/* Tier 2: Crisp White Icon Stage with Soft Radial Halo + Item Name */}
+                                      <div className="my-2 flex flex-col items-center text-center">
+                                        <div className="w-11 h-11 rounded-[12px] bg-white shadow-2xs flex items-center justify-center text-2xl mb-1.5 bg-[radial-gradient(circle,rgba(148,192,96,0.2)_0%,transparent_72%)]">
+                                          {item.emoji}
+                                        </div>
+                                        <span
+                                          className={`${T_ITEM_NAME} line-clamp-1 w-full`}
+                                        >
+                                          {item.name}
+                                        </span>
+                                      </div>
+
+                                      {/* Tier 3: Integrated Stepper Capsule [ -  1  + ] */}
+                                      {renderStepperCapsule(
+                                        item.servings,
+                                        (e) => {
+                                          e.stopPropagation();
+                                          adjustSuggestedServings(item.id, -1);
+                                        },
+                                        (e) => {
+                                          e.stopPropagation();
+                                          adjustSuggestedServings(item.id, 1);
+                                        },
+                                        true
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+
+                    <button
+                      onClick={importCheckedToFridge}
+                      className={`w-full ${BTN_PRIMARY} py-3`}
+                    >
+                      Import Selected Items to My Fridge
+                    </button>
+                  </div>
                 </motion.div>
               )}
 
               {/* -------------------------------------------------------------
-                  TAB 4: ME -> PROFILE -> EDIT PROFILE
+                  TAB 4: ME -> PROFILE -> EDIT PROFILE (Inside Fridge Frame)
                  ------------------------------------------------------------- */}
               {activeTab === "me" && (
                 <motion.div
@@ -2108,7 +2182,7 @@ export default function FreshDateApp() {
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, ease: IOS_EASE }}
-                  className="px-4 pt-2 space-y-3"
+                  className="px-3.5 pt-2 space-y-3"
                 >
                   {meSubScreen === "menu" && (
                     <>
@@ -2116,75 +2190,85 @@ export default function FreshDateApp() {
                         <div className={T_HEADER_PILL}>Me</div>
                       </div>
 
-                      <div
-                        onClick={() => setMeSubScreen("profile_view")}
-                        className={`${CARD_CLS} flex items-center justify-between cursor-pointer`}
-                      >
-                        <div className="flex items-center gap-3.5">
-                          <div className="w-12 h-12 rounded-[12px] bg-[#F4F6EE] flex items-center justify-center text-2xl">
-                            🙂
-                          </div>
-                          <div>
-                            <h2 className={T_CARD_TITLE}>Freshie</h2>
-                            <p className={`${T_META} mt-0.5`}>
-                              {weightKg} KG · {dinersCount} Diner(s) ·{" "}
-                              {effectiveFlavorPref}
-                            </p>
-                          </div>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-slate-400" />
-                      </div>
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+                        <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
 
-                      <div className={`${CARD_CLS} divide-y divide-slate-100 p-0 overflow-hidden`}>
-                        {[
-                          {
-                            label: "Profile",
-                            action: () => setMeSubScreen("profile_view"),
-                          },
-                          {
-                            label: "Account & Household",
-                            action: () =>
-                              notify("Account & Household synced"),
-                          },
-                          {
-                            label: "Help & Support",
-                            action: () =>
-                              notify("Opening Storage & Help Guide"),
-                          },
-                          {
-                            label: "Contact Us",
-                            action: () => notify("support@freshdate.app"),
-                          },
-                          {
-                            label: "Send Feedback",
-                            action: () =>
-                              notify("Thank you for your feedback!"),
-                          },
-                          {
-                            label: "About",
-                            action: () => setAppStage("intro"),
-                          },
-                          {
-                            label: "Settings",
-                            action: () => setMeSubScreen("profile_edit"),
-                          },
-                        ].map((row, idx) => (
-                          <button
-                            key={idx}
-                            onClick={row.action}
-                            className={`w-full px-4 py-3.5 hover:bg-[#F4F6EE] flex items-center justify-between ${T_ITEM_NAME} transition cursor-pointer`}
-                          >
-                            <span>{row.label}</span>
-                            <ChevronRight className="w-4 h-4 text-slate-400" />
-                          </button>
-                        ))}
+                        {/* Original Design Dark Forest-Green Gradient Profile Header Card */}
+                        <div
+                          onClick={() => setMeSubScreen("profile_view")}
+                          className="bg-gradient-to-br from-[#065A52] via-[#04453F] to-[#022C28] text-white rounded-[20px] p-4 border-[1.5px] border-[#04453F]/40 shadow-md flex items-center justify-between cursor-pointer"
+                        >
+                          <div className="flex items-center gap-3.5">
+                            <div className="w-12 h-12 rounded-[14px] amber-gradient-btn flex items-center justify-center text-2xl">
+                              🙂
+                            </div>
+                            <div>
+                              <h2 className="text-[15px] font-bold text-white">
+                                Freshie
+                              </h2>
+                              <p className="text-[11px] font-medium text-[#F0E98F]/85 mt-0.5">
+                                {weightKg} KG · {dinersCount} Diner(s) ·{" "}
+                                {effectiveFlavorPref}
+                              </p>
+                            </div>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-[#F0E98F]" />
+                        </div>
+
+                        <div
+                          className={`${CARD_CLS} divide-y divide-slate-100 p-0 overflow-hidden`}
+                        >
+                          {[
+                            {
+                              label: "Profile",
+                              action: () => setMeSubScreen("profile_view"),
+                            },
+                            {
+                              label: "Account & Household",
+                              action: () =>
+                                notify("Account & Household synced"),
+                            },
+                            {
+                              label: "Help & Support",
+                              action: () =>
+                                notify("Opening Storage & Help Guide"),
+                            },
+                            {
+                              label: "Contact Us",
+                              action: () => notify("support@freshdate.app"),
+                            },
+                            {
+                              label: "Send Feedback",
+                              action: () =>
+                                notify("Thank you for your feedback!"),
+                            },
+                            {
+                              label: "About",
+                              action: () => setAppStage("intro"),
+                            },
+                            {
+                              label: "Settings",
+                              action: () => setMeSubScreen("profile_edit"),
+                            },
+                          ].map((row, idx) => (
+                            <button
+                              key={idx}
+                              onClick={row.action}
+                              className={`w-full px-4 py-3.5 hover:bg-[#F4F6EE] flex items-center justify-between ${T_ITEM_NAME} transition cursor-pointer`}
+                            >
+                              <span>{row.label}</span>
+                              <ChevronRight className="w-4 h-4 text-slate-400" />
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </>
                   )}
 
                   {meSubScreen === "profile_view" && (
                     <>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between px-0.5">
                         <button
                           onClick={() => setMeSubScreen("menu")}
                           className={BTN_ICON_CIRCLE}
@@ -2195,48 +2279,56 @@ export default function FreshDateApp() {
                         <div className="w-9" />
                       </div>
 
-                      {renderVernierWeightCard(true)}
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
 
-                      <div
-                        className={`${CARD_CLS} flex items-center justify-between`}
-                      >
-                        <span className={T_CARD_TITLE}>Number of Diners</span>
-                        <span className="text-[14px] font-extrabold text-[#04453F]">
-                          {dinersCount}
-                        </span>
-                      </div>
+                        {renderVernierWeightCard(true)}
 
-                      <div className={`${CARD_CLS} space-y-3`}>
-                        <div className="flex justify-between items-center">
-                          <span className={T_ITEM_NAME}>Foods to Avoid</span>
-                          <span className={T_META}>{effectiveAvoidFoods}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className={T_ITEM_NAME}>Allergens</span>
-                          <span className={T_META}>{effectiveAllergens}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className={T_ITEM_NAME}>
-                            Flavor Preferences
-                          </span>
-                          <span className={T_META}>{effectiveFlavorPref}</span>
-                        </div>
-                      </div>
-
-                      <div className="pt-4 flex justify-center">
-                        <button
-                          onClick={() => setMeSubScreen("profile_edit")}
-                          className={`w-44 ${BTN_PRIMARY}`}
+                        <div
+                          className={`${CARD_CLS} flex items-center justify-between`}
                         >
-                          Edit
-                        </button>
+                          <span className={T_CARD_TITLE}>Number of Diners</span>
+                          <span className="text-[14px] font-extrabold text-[#04453F]">
+                            {dinersCount}
+                          </span>
+                        </div>
+
+                        <div className={`${CARD_CLS} space-y-3`}>
+                          <div className="flex justify-between items-center">
+                            <span className={T_ITEM_NAME}>Foods to Avoid</span>
+                            <span className={T_META}>
+                              {effectiveAvoidFoods}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className={T_ITEM_NAME}>Allergens</span>
+                            <span className={T_META}>{effectiveAllergens}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className={T_ITEM_NAME}>
+                              Flavor Preferences
+                            </span>
+                            <span className={T_META}>
+                              {effectiveFlavorPref}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="pt-4 pb-1 flex justify-center">
+                          <button
+                            onClick={() => setMeSubScreen("profile_edit")}
+                            className={`w-44 ${BTN_PRIMARY}`}
+                          >
+                            Edit
+                          </button>
+                        </div>
                       </div>
                     </>
                   )}
 
                   {meSubScreen === "profile_edit" && (
                     <>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between px-0.5">
                         <button
                           onClick={() => {
                             setOpenDropdownKey(null);
@@ -2250,97 +2342,101 @@ export default function FreshDateApp() {
                         <div className="w-9" />
                       </div>
 
-                      {renderVernierWeightCard(false)}
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
 
-                      <div
-                        className={`${CARD_CLS} flex items-center justify-between`}
-                      >
-                        <span className={T_CARD_TITLE}>Number of Diners</span>
-                        {renderStepperCapsule(
-                          dinersCount,
-                          () => setDinersCount(Math.max(1, dinersCount - 1)),
-                          () => setDinersCount(dinersCount + 1)
-                        )}
-                      </div>
+                        {renderVernierWeightCard(false)}
 
-                      {renderDietaryDropdownsWithOther()}
-
-                      <div className={`${CARD_CLS} space-y-3`}>
-                        <div className={T_CARD_TITLE}>
-                          Notification Settings
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className={T_ITEM_NAME}>
-                            Enable Expiration Reminder
-                          </span>
-                          <button
-                            onClick={() =>
-                              setReminderEnabled(!reminderEnabled)
-                            }
-                            className={`w-11 h-6 rounded-full p-0.5 transition cursor-pointer ${
-                              reminderEnabled
-                                ? "bg-[#FFC45A]"
-                                : "bg-slate-300"
-                            }`}
-                          >
-                            <div
-                              className={`w-5 h-5 rounded-full bg-white transition transform ${
-                                reminderEnabled
-                                  ? "translate-x-5"
-                                  : "translate-x-0"
-                              }`}
-                            />
-                          </button>
-                        </div>
-
-                        <div className="space-y-1.5">
-                          <div className="flex items-center justify-between">
-                            <span className={T_ITEM_NAME}>
-                              Reminder Interval
-                            </span>
-                            {renderCustomSansDropdown(
-                              "reminder",
-                              reminderDaysChoice,
-                              [
-                                { value: "1", label: "1 day" },
-                                { value: "2", label: "2 days" },
-                                { value: "3", label: "3 days" },
-                                { value: "Other", label: "Other..." },
-                              ],
-                              setReminderDaysChoice
-                            )}
-                          </div>
-
-                          {reminderDaysChoice === "Other" && (
-                            <div className="flex items-center gap-2 pt-1">
-                              <input
-                                type="number"
-                                min={1}
-                                max={30}
-                                value={customReminderDays}
-                                onChange={(e) =>
-                                  setCustomReminderDays(e.target.value)
-                                }
-                                placeholder="Custom days..."
-                                className={`flex-1 px-3 py-1.5 ${TILE_CLS} border border-[#04453F]/15 text-[12px] text-[#0F2926] outline-none`}
-                              />
-                              <span className={T_META}>days before</span>
-                            </div>
+                        <div
+                          className={`${CARD_CLS} flex items-center justify-between`}
+                        >
+                          <span className={T_CARD_TITLE}>Number of Diners</span>
+                          {renderStepperCapsule(
+                            dinersCount,
+                            () => setDinersCount(Math.max(1, dinersCount - 1)),
+                            () => setDinersCount(dinersCount + 1)
                           )}
                         </div>
-                      </div>
 
-                      <div className="pt-2 flex justify-center">
-                        <button
-                          onClick={() => {
-                            setOpenDropdownKey(null);
-                            setMeSubScreen("profile_view");
-                            notify("Profile saved");
-                          }}
-                          className={`w-44 ${BTN_PRIMARY}`}
-                        >
-                          Done
-                        </button>
+                        {renderDietaryDropdownsWithOther()}
+
+                        <div className={`${CARD_CLS} space-y-3`}>
+                          <div className={T_CARD_TITLE}>
+                            Notification Settings
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className={T_ITEM_NAME}>
+                              Enable Expiration Reminder
+                            </span>
+                            <button
+                              onClick={() =>
+                                setReminderEnabled(!reminderEnabled)
+                              }
+                              className={`w-11 h-6 rounded-full p-0.5 transition cursor-pointer ${
+                                reminderEnabled
+                                  ? "bg-[#FFC45A]"
+                                  : "bg-slate-300"
+                              }`}
+                            >
+                              <div
+                                className={`w-5 h-5 rounded-full bg-white transition transform ${
+                                  reminderEnabled
+                                    ? "translate-x-5"
+                                    : "translate-x-0"
+                                }`}
+                              />
+                            </button>
+                          </div>
+
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className={T_ITEM_NAME}>
+                                Reminder Interval
+                              </span>
+                              {renderCustomSansDropdown(
+                                "reminder",
+                                reminderDaysChoice,
+                                [
+                                  { value: "1", label: "1 day" },
+                                  { value: "2", label: "2 days" },
+                                  { value: "3", label: "3 days" },
+                                  { value: "Other", label: "Other..." },
+                                ],
+                                setReminderDaysChoice
+                              )}
+                            </div>
+
+                            {reminderDaysChoice === "Other" && (
+                              <div className="flex items-center gap-2 pt-1">
+                                <input
+                                  type="number"
+                                  min={1}
+                                  max={30}
+                                  value={customReminderDays}
+                                  onChange={(e) =>
+                                    setCustomReminderDays(e.target.value)
+                                  }
+                                  placeholder="Custom days..."
+                                  className={`flex-1 px-3 py-1.5 ${TILE_CLS} border border-[#04453F]/15 text-[12px] text-[#0F2926] outline-none`}
+                                />
+                                <span className={T_META}>days before</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="pt-2 pb-1 flex justify-center">
+                          <button
+                            onClick={() => {
+                              setOpenDropdownKey(null);
+                              setMeSubScreen("profile_view");
+                              notify("Profile saved");
+                            }}
+                            className={`w-44 ${BTN_PRIMARY}`}
+                          >
+                            Done
+                          </button>
+                        </div>
                       </div>
                     </>
                   )}
@@ -2518,8 +2614,8 @@ export default function FreshDateApp() {
                   className="fixed inset-0 max-w-[480px] mx-auto z-40 bg-[#F4F6EE] flex flex-col"
                 >
                   {importScreen === "hub" && (
-                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-8 space-y-3 no-scrollbar">
-                      <div className="flex items-center justify-between">
+                    <div className="flex-1 overflow-y-auto px-3.5 pt-4 pb-8 space-y-3 no-scrollbar">
+                      <div className="flex items-center justify-between px-0.5">
                         <button
                           onClick={() => setImportScreen("closed")}
                           className={BTN_ICON_CIRCLE}
@@ -2530,49 +2626,54 @@ export default function FreshDateApp() {
                         <div className="w-9" />
                       </div>
 
-                      <button
-                        onClick={() => {
-                          setCameraMode("scan");
-                          setImportScreen("scan");
-                        }}
-                        className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
-                      >
-                        <div>
-                          <div className={T_CARD_TITLE}>
-                            Take Photo / Scan / Gallery
+                      <div className={FRIDGE_FRAME_CLS}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+                        <span className="w-1.5 h-10 rounded-full bg-white/75 border border-[#04453F]/25 shadow-inner absolute right-1 top-28 pointer-events-none" />
+
+                        <button
+                          onClick={() => {
+                            setCameraMode("scan");
+                            setImportScreen("scan");
+                          }}
+                          className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
+                        >
+                          <div>
+                            <div className={T_CARD_TITLE}>
+                              Take Photo / Scan / Gallery
+                            </div>
+                            <p className={`${T_META} mt-0.5`}>
+                              Take a photo of the product or barcode—auto identified
+                            </p>
                           </div>
-                          <p className={`${T_META} mt-0.5`}>
-                            Take a photo of the product or barcode—auto identified
-                          </p>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
-                      </button>
+                          <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                        </button>
 
-                      <button
-                        onClick={() => setImportScreen("manual")}
-                        className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
-                      >
-                        <span className={T_CARD_TITLE}>Manual Entry</span>
-                        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
-                      </button>
+                        <button
+                          onClick={() => setImportScreen("manual")}
+                          className={`w-full ${CARD_CLS} flex items-center justify-between text-left hover:bg-[#94C060]/10 transition cursor-pointer`}
+                        >
+                          <span className={T_CARD_TITLE}>Manual Entry</span>
+                          <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                        </button>
 
-                      <div className={`${CARD_CLS} space-y-3`}>
-                        <div className={T_CARD_TITLE}>Recent Entries</div>
-                        <div className="grid grid-cols-3 gap-2.5">
-                          {RECENT_ENTRIES.map((item) => (
-                            <button
-                              key={item.id}
-                              onClick={() => openFoodInfoSheet(item)}
-                              className={`${TILE_CLS} hover:bg-[#94C060]/20 active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
-                            >
-                              <span className="text-3xl mb-1">
-                                {item.emoji}
-                              </span>
-                              <span className={`${T_ITEM_NAME} line-clamp-1`}>
-                                {item.name}
-                              </span>
-                            </button>
-                          ))}
+                        <div className={`${CARD_CLS} space-y-3`}>
+                          <div className={T_CARD_TITLE}>Recent Entries</div>
+                          <div className="grid grid-cols-3 gap-2.5">
+                            {RECENT_ENTRIES.map((item) => (
+                              <button
+                                key={item.id}
+                                onClick={() => openFoodInfoSheet(item)}
+                                className={`${TILE_CLS} hover:bg-[#94C060]/20 active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
+                              >
+                                <span className="text-3xl mb-1">
+                                  {item.emoji}
+                                </span>
+                                <span className={`${T_ITEM_NAME} line-clamp-1`}>
+                                  {item.name}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2690,89 +2791,100 @@ export default function FreshDateApp() {
                   )}
 
                   {importScreen === "manual" && (
-                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-8 flex flex-col justify-between no-scrollbar">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <button
-                            onClick={() => setImportScreen("hub")}
-                            className={BTN_ICON_CIRCLE}
-                          >
-                            <ChevronLeft className="w-5 h-5" />
-                          </button>
-                          <div className={T_HEADER_PILL}>Import</div>
-                          <div className="w-9" />
-                        </div>
-
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search for food"
-                            className="w-full pl-4 pr-10 py-2.5 bg-white rounded-full text-[13px] font-medium outline-none border border-[#04453F]/10 pro-card-shadow"
-                          />
-                          <Search className="w-4 h-4 text-[#658C38] absolute right-3.5 top-1/2 -translate-y-1/2" />
-                        </div>
-
-                        <div className={`${CARD_CLS} space-y-3`}>
-                          <div className="bg-[#F4F6EE] p-1 rounded-full grid grid-cols-4 gap-1">
-                            {(
-                              ["All", "Staples", "Produce", "Protein"] as const
-                            ).map((cat) => (
-                              <button
-                                key={cat}
-                                onClick={() => setManualCategory(cat)}
-                                className={
-                                  manualCategory === cat
-                                    ? `${BTN_PILL_ACTIVE} w-full`
-                                    : "py-1.5 text-[12px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
-                                }
-                              >
-                                {cat}
-                              </button>
-                            ))}
-                          </div>
-
-                          <div className="grid grid-cols-3 gap-2.5">
-                            {filteredCatalog.map((item) => (
-                              <button
-                                key={item.id}
-                                onClick={() =>
-                                  openFoodInfoSheet(item, defaultZoneFilter)
-                                }
-                                className={`${TILE_CLS} hover:ring-2 hover:ring-[#04453F] active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
-                              >
-                                <span className="text-3xl mb-1">
-                                  {item.emoji}
-                                </span>
-                                <span className={T_ITEM_NAME}>{item.name}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                    <div className="flex-1 overflow-y-auto px-3.5 pt-4 pb-8 flex flex-col no-scrollbar space-y-3">
+                      <div className="flex items-center justify-between px-0.5">
+                        <button
+                          onClick={() => setImportScreen("hub")}
+                          className={BTN_ICON_CIRCLE}
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <div className={T_HEADER_PILL}>Import</div>
+                        <div className="w-9" />
                       </div>
 
-                      <div className="bg-white p-1.5 rounded-full pro-card-shadow border border-[#04453F]/8 grid grid-cols-2 gap-1.5 mt-4">
-                        <button
-                          onClick={() => setDefaultZoneFilter("refrigerated")}
-                          className={
-                            defaultZoneFilter === "refrigerated"
-                              ? `${BTN_PRIMARY} w-full`
-                              : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
-                          }
-                        >
-                          Refrigerated
-                        </button>
-                        <button
-                          onClick={() => setDefaultZoneFilter("frozen")}
-                          className={
-                            defaultZoneFilter === "frozen"
-                              ? `${BTN_PRIMARY} w-full`
-                              : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
-                          }
-                        >
-                          Frozen
-                        </button>
+                      <div className={`${FRIDGE_FRAME_CLS} flex-1 flex flex-col justify-between`}>
+                        <span className="w-8 h-1.5 rounded-full bg-white/75 border border-[#04453F]/25 absolute -top-1 right-7 pointer-events-none" />
+
+                        <div className="space-y-3">
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              placeholder="Search for food"
+                              className="w-full pl-4 pr-10 py-2.5 bg-white/95 rounded-full text-[13px] font-medium outline-none border-[1.5px] border-[#04453F]/16 pro-card-shadow"
+                            />
+                            <Search className="w-4 h-4 text-[#658C38] absolute right-3.5 top-1/2 -translate-y-1/2" />
+                          </div>
+
+                          <div className={`${CARD_CLS} space-y-3`}>
+                            <div className="bg-[#F4F6EE] p-1 rounded-full grid grid-cols-4 gap-1">
+                              {(
+                                [
+                                  "All",
+                                  "Staples",
+                                  "Produce",
+                                  "Protein",
+                                ] as const
+                              ).map((cat) => (
+                                <button
+                                  key={cat}
+                                  onClick={() => setManualCategory(cat)}
+                                  className={
+                                    manualCategory === cat
+                                      ? `${BTN_PILL_ACTIVE} w-full`
+                                      : "py-1.5 text-[12px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
+                                  }
+                                >
+                                  {cat}
+                                </button>
+                              ))}
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-2.5">
+                              {filteredCatalog.map((item) => (
+                                <button
+                                  key={item.id}
+                                  onClick={() =>
+                                    openFoodInfoSheet(item, defaultZoneFilter)
+                                  }
+                                  className={`${TILE_CLS} hover:ring-2 hover:ring-[#04453F] active:scale-95 p-3 flex flex-col items-center text-center transition cursor-pointer`}
+                                >
+                                  <span className="text-3xl mb-1">
+                                    {item.emoji}
+                                  </span>
+                                  <span className={T_ITEM_NAME}>
+                                    {item.name}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-white/95 p-1.5 rounded-full pro-card-shadow border-[1.5px] border-[#04453F]/14 grid grid-cols-2 gap-1.5 mt-4">
+                          <button
+                            onClick={() => setDefaultZoneFilter("refrigerated")}
+                            className={
+                              defaultZoneFilter === "refrigerated"
+                                ? `${BTN_PRIMARY} w-full`
+                                : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
+                            }
+                          >
+                            Refrigerated
+                          </button>
+                          <button
+                            onClick={() => setDefaultZoneFilter("frozen")}
+                            className={
+                              defaultZoneFilter === "frozen"
+                                ? `${BTN_PRIMARY} w-full`
+                                : "py-2.5 rounded-full text-[13px] font-bold text-slate-500 hover:text-[#04453F] cursor-pointer"
+                            }
+                          >
+                            Frozen
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
